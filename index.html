@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- Continuum Designs -->
 <title>Continuum Designs — Infinity Coffee Tables</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
@@ -300,7 +301,10 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
     <span class="lbl">The Collection</span>
     <h2>Designed to belong in exceptional spaces.</h2>
   </div>
-  <div class="gallery-grid" id="galleryGrid"></div>
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="g-item reveal"><img class="g-canvas" src="images/New Project - Arcads image asset (1).png" alt="Continuum Designs infinity coffee table"></div>
+    <div class="g-item reveal d1"><img class="g-canvas" src="images/New Project - Arcads image asset (5).png" alt="Continuum Designs infinity coffee table"></div>
+  </div>
   <div class="gallery-cta-wrap reveal">
     <p class="gallery-cta-title">Customise size, materials, and interior atmosphere.</p>
     <a href="configure.html" class="gallery-cta-btn">Design Yours<span class="cta-arrow"></span></a>
@@ -462,7 +466,7 @@ function buildPortfolio(){
     div.appendChild(canvas);div.appendChild(label);grid.appendChild(div);drawScene(canvas,item,null);
   });
 }
-buildGallery();
+// buildGallery(); // replaced with real photos
 buildPortfolio();
 
 /* PARALLAX */
