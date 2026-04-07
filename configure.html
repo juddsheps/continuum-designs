@@ -1,0 +1,1883 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design Your Piece — Continuum Designs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════
+   RESET + TOKENS
+═══════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#06050a;--deep:#0c0b10;--obsidian:#111018;--surface:#17161e;--rim:#232130;
+  --fog:#4e4c58;--ash:#7a7888;--silver:#a8a6b0;--linen:#d4cfc8;--cream:#ede8e0;--white:#f8f5f0;
+  --bronze:#b8936a;--bronze-l:#d4b08a;--bronze-d:#7a5f40;--bronze-pale:rgba(184,147,106,0.12);
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Jost',sans-serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);--ease2:cubic-bezier(0.25,0.46,0.45,0.94);
+}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--linen);font-family:var(--sans);font-weight:300;line-height:1.7;overflow-x:hidden;cursor:none}
+
+/* ═══════════════════════════════
+   GRAIN
+═══════════════════════════════ */
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:9000;opacity:.025;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+animation:grain-d 9s steps(10) infinite}
+@keyframes grain-d{0%,100%{transform:translate(0,0)}20%{transform:translate(-2%,3%)}40%{transform:translate(3%,-1%)}60%{transform:translate(-1%,-3%)}80%{transform:translate(2%,2%)}}
+
+/* ═══════════════════════════════
+   CURSOR
+═══════════════════════════════ */
+.c-dot{position:fixed;width:5px;height:5px;background:var(--bronze-l);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:screen;transition:opacity .3s}
+.c-ring{position:fixed;width:36px;height:36px;border:1px solid rgba(184,147,106,.28);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .35s var(--ease),height .35s var(--ease),border-color .35s}
+.c-ring.hov{width:56px;height:56px;border-color:rgba(184,147,106,.5)}
+
+/* ═══════════════════════════════
+   NAV
+═══════════════════════════════ */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:1.75rem 3.5rem;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(6,5,10,.9) 0%,transparent 100%)}
+.nav-logo{font-family:var(--serif);font-weight:300;font-size:1rem;letter-spacing:.22em;text-transform:uppercase;color:var(--cream);text-decoration:none}
+.nav-logo span{display:block;font-size:.45rem;letter-spacing:.5em;color:var(--bronze);font-family:var(--sans);margin-top:2px}
+.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links a{font-size:.62rem;font-weight:300;letter-spacing:.28em;text-transform:uppercase;color:rgba(212,207,200,.45);text-decoration:none;transition:color .4s}
+.nav-links a:hover{color:var(--bronze-l)}
+.nav-btn{font-size:.62rem;font-weight:300;letter-spacing:.35em;text-transform:uppercase;color:var(--bronze);border:1px solid rgba(184,147,106,.35);padding:.55rem 1.4rem;text-decoration:none;transition:background .4s,color .4s}
+.nav-btn:hover{background:var(--bronze);color:var(--ink)}
+.n-burger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;padding:0;z-index:10}
+.n-burger span{display:block;width:20px;height:1px;background:var(--linen);transition:all .35s var(--ease)}
+.n-burger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.n-burger.open span:nth-child(2){opacity:0}
+.n-burger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.n-drawer{display:none;position:fixed;inset:0;z-index:490;background:rgba(6,5,10,.97);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.n-drawer.open{display:flex}
+.n-drawer a{font-family:var(--serif);font-size:2rem;font-weight:300;color:var(--linen);text-decoration:none;letter-spacing:.08em;transition:color .3s}
+.n-drawer a:hover{color:var(--bronze-l)}
+
+/* ═══════════════════════════════
+   INTRO
+═══════════════════════════════ */
+.intro{min-height:52vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 2rem 5rem;text-align:center;position:relative;overflow:hidden}
+.intro-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 80%,rgba(184,147,106,.05) 0%,var(--ink) 70%)}
+.intro-label{font-size:.58rem;letter-spacing:.5em;text-transform:uppercase;color:var(--bronze);margin-bottom:1.5rem;opacity:0;animation:up .9s var(--ease) .3s forwards}
+.intro-h1{font-family:var(--serif);font-weight:300;font-size:clamp(2.8rem,7vw,6rem);line-height:.95;letter-spacing:-.01em;color:var(--white);margin-bottom:2rem;opacity:0;animation:up 1s var(--ease) .5s forwards}
+.intro-h1 em{font-style:italic}
+.intro-sub{font-size:clamp(.82rem,1.4vw,.96rem);font-weight:300;letter-spacing:.07em;color:rgba(212,207,200,.48);max-width:42ch;line-height:1.85;opacity:0;animation:up .9s var(--ease) .7s forwards}
+@keyframes up{to{opacity:1;transform:translateY(0)}
+from{opacity:0;transform:translateY(18px)}}
+
+/* ═══════════════════════════════
+   CONFIGURATOR
+═══════════════════════════════ */
+.config{padding:0 0 0;background:var(--deep)}
+.config-sticky-wrap{position:sticky;top:0;z-index:10;background:var(--deep);border-bottom:1px solid rgba(184,147,106,.08);padding:.75rem 3.5rem;display:flex;align-items:center;justify-content:space-between}
+.config-step-track{display:flex;gap:.5rem;align-items:center}
+.cst{font-size:.56rem;letter-spacing:.35em;text-transform:uppercase;color:var(--fog);padding:.35rem .9rem;border:1px solid transparent;cursor:pointer;transition:color .3s,border-color .3s;white-space:nowrap}
+.cst.active{color:var(--bronze);border-color:rgba(184,147,106,.3)}
+.cst-sep{color:var(--fog);opacity:.35;font-size:.7rem;user-select:none}
+.config-summary-chip{font-size:.58rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(184,147,106,.55);white-space:nowrap}
+
+.config-main{display:grid;grid-template-columns:1fr 420px;min-height:90vh;align-items:start}
+
+/* ─ PREVIEW ─ */
+.preview-col{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--deep)}
+.preview-wrap{position:relative;width:min(560px,90%);aspect-ratio:4/3}
+#previewCanvas{width:100%;height:100%;display:block;border-radius:2px}
+#prevOverlay{position:absolute;inset:0;border-radius:2px;pointer-events:none;transition:opacity .6s var(--ease)}
+.preview-label{margin-top:1.75rem;text-align:center}
+.pl-config{font-size:.56rem;letter-spacing:.4em;text-transform:uppercase;color:var(--bronze);margin-bottom:.4rem}
+.pl-name{font-family:var(--serif);font-size:1.5rem;font-weight:300;color:var(--cream);letter-spacing:.06em}
+.pl-size{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(184,147,106,.45);margin-top:.25rem}
+/* crossfade canvas */
+#prevFade{position:absolute;inset:0;border-radius:2px;pointer-events:none;opacity:0;transition:opacity .0s}
+
+/* ─ CONTROLS ─ */
+.controls-col{padding:4rem 3rem 8rem;background:var(--obsidian);border-left:1px solid rgba(184,147,106,.07)}
+
+.ctrl-section{margin-bottom:3.5rem;padding-bottom:3.5rem;border-bottom:1px solid rgba(184,147,106,.07)}
+.ctrl-section:last-of-type{border-bottom:none;margin-bottom:0}
+.ctrl-title{font-size:.58rem;letter-spacing:.45em;text-transform:uppercase;color:var(--bronze);margin-bottom:1.75rem;display:flex;align-items:center;gap:1rem}
+.ctrl-title::after{content:'';flex:1;height:1px;background:rgba(184,147,106,.12)}
+
+/* Option cards */
+.opt-list{display:flex;flex-direction:column;gap:.65rem}
+.opt-card{display:flex;align-items:center;gap:1.1rem;padding:1.1rem 1.25rem;border:1px solid rgba(184,147,106,.1);cursor:pointer;transition:border-color .35s var(--ease),background .35s;position:relative;overflow:hidden}
+.opt-card::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.03) 50%,transparent 60%);transform:translateX(-100%);transition:transform .6s var(--ease)}
+.opt-card:hover::after{transform:translateX(100%)}
+.opt-card:hover{border-color:rgba(184,147,106,.28)}
+.opt-card.active{border-color:rgba(184,147,106,.55);background:rgba(184,147,106,.05)}
+.opt-swatch{width:32px;height:32px;border-radius:2px;flex-shrink:0;position:relative;overflow:hidden}
+.opt-card-text{}
+.opt-card-name{font-size:.78rem;font-weight:400;letter-spacing:.1em;text-transform:uppercase;color:var(--linen);margin-bottom:.15rem}
+.opt-card-hint{font-size:.65rem;color:var(--ash);letter-spacing:.04em;line-height:1.5}
+.opt-card-check{position:absolute;right:1.25rem;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;border:1px solid rgba(184,147,106,.3);display:flex;align-items:center;justify-content:center;transition:background .3s,border-color .3s}
+.opt-card.active .opt-card-check{background:var(--bronze);border-color:var(--bronze)}
+.opt-card.active .opt-card-check::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--ink)}
+
+/* Swatches row (for atmospheres) */
+.atmo-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.atmo-card{padding:1rem;border:1px solid rgba(184,147,106,.1);cursor:pointer;transition:border-color .35s,background .35s;position:relative;text-align:center}
+.atmo-card:hover{border-color:rgba(184,147,106,.28)}
+.atmo-card.active{border-color:rgba(184,147,106,.55);background:rgba(184,147,106,.05)}
+.atmo-thumb{width:100%;height:44px;border-radius:1px;margin-bottom:.7rem;display:block;transition:transform .5s var(--ease)}
+.atmo-card:hover .atmo-thumb{transform:scale(1.03)}
+.atmo-name{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--linen)}
+.atmo-card.active .atmo-name{color:var(--bronze-l)}
+
+/* ─ DESCRIPTION PANEL ─ */
+.desc-panel{margin-top:2.5rem;padding:1.5rem;background:rgba(184,147,106,.04);border:1px solid rgba(184,147,106,.1);min-height:90px;position:relative}
+.desc-panel-label{font-size:.52rem;letter-spacing:.4em;text-transform:uppercase;color:var(--bronze);margin-bottom:.6rem}
+.desc-panel-text{font-family:var(--serif);font-style:italic;font-size:1rem;font-weight:300;color:rgba(212,207,200,.7);line-height:1.7;transition:opacity .4s var(--ease);min-height:3.5rem}
+.desc-panel-text.fading{opacity:0}
+
+/* ─ ENQUIRE BLOCK ─ */
+.enquire-block{margin-top:3.5rem;padding-top:3.5rem;border-top:1px solid rgba(184,147,106,.1)}
+.enq-summary{margin-bottom:2rem}
+.enq-row{display:flex;justify-content:space-between;align-items:center;padding:.65rem 0;border-bottom:1px solid rgba(184,147,106,.07)}
+.enq-row:last-child{border-bottom:none}
+.enq-key{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--fog)}
+.enq-val{font-size:.78rem;font-weight:400;color:var(--linen);letter-spacing:.06em}
+.enq-btn{display:block;width:100%;padding:1.25rem;background:var(--bronze);color:var(--ink);font-family:var(--sans);font-size:.68rem;font-weight:400;letter-spacing:.42em;text-transform:uppercase;border:none;cursor:none;transition:background .4s var(--ease),transform .25s var(--ease);margin-top:1.5rem;text-align:center;text-decoration:none}
+.enq-btn:hover{background:var(--bronze-l);transform:translateY(-2px)}
+.enq-note{font-size:.6rem;letter-spacing:.12em;color:rgba(184,147,106,.4);text-align:center;margin-top:1rem;line-height:1.7}
+
+/* ═══════════════════════════════
+   GLASS SECTION
+═══════════════════════════════ */
+.glass-section{padding:10rem 3.5rem;background:var(--ink);position:relative;overflow:hidden}
+.glass-section::before{content:'';position:absolute;top:-30%;left:-10%;width:70%;height:130%;background:radial-gradient(ellipse at 30% 50%,rgba(184,147,106,.04) 0%,transparent 65%);pointer-events:none}
+.glass-grid{display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;max-width:1200px;margin:0 auto}
+.glass-canvas-wrap{position:relative}
+.glass-canvas-bg{width:100%;aspect-ratio:3/4;background:var(--surface);position:relative;overflow:hidden}
+.glass-canvas-bg::before{content:'';position:absolute;inset:16px;border:1px solid rgba(184,147,106,.14);z-index:1;pointer-events:none}
+#glassCanvas{width:100%;height:100%;display:block}
+.glass-badge{position:absolute;bottom:-1.5rem;right:-1.5rem;width:100px;height:100px;border-radius:50%;background:var(--bronze);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2}
+.gb-num{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--ink);line-height:1}
+.gb-txt{font-size:.42rem;letter-spacing:.22em;text-transform:uppercase;color:var(--ink);opacity:.75;text-align:center;line-height:1.4;margin-top:2px}
+.glass-text{}
+.gl-label{font-size:.57rem;letter-spacing:.48em;text-transform:uppercase;color:var(--bronze);margin-bottom:1.25rem;display:block}
+.gl-h2{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,3.8vw,3.4rem);line-height:1.05;color:var(--white);margin-bottom:2.5rem}
+.gl-h2 em{font-style:italic}
+.gl-body p{font-size:.86rem;font-weight:300;color:rgba(212,207,200,.52);line-height:2.1;margin-bottom:1.4rem;max-width:44ch}
+.gl-body p strong{color:rgba(212,207,200,.78);font-weight:400}
+.gl-rule{width:40px;height:1px;background:rgba(184,147,106,.35);margin:3rem 0}
+
+/* ─ Editorial glass features ─ */
+.gl-features{margin-top:0}
+.gl-feat{
+  padding:1.6rem 0;
+  border-top:1px solid rgba(184,147,106,.08);
+  opacity:0;
+  transition:opacity .9s cubic-bezier(0.16,1,0.3,1),transform .9s cubic-bezier(0.16,1,0.3,1);
+}
+.gl-feat:last-child{border-bottom:1px solid rgba(184,147,106,.08)}
+.gl-feat.from-left { transform:translateX(-22px) }
+.gl-feat.from-right{ transform:translateX( 22px) }
+.gl-feat.visible{opacity:1;transform:translateX(0)}
+
+/* Middle feature pushed right for asymmetric layout */
+.gl-feat:nth-child(2) .gl-feat-title,
+.gl-feat:nth-child(2) .gl-feat-body{
+  margin-left:auto;
+  text-align:right;
+}
+
+.gl-feat-title{
+  font-family:var(--serif);
+  font-weight:300;
+  font-size:clamp(1.15rem,2.2vw,1.55rem);
+  color:var(--white);
+  letter-spacing:.01em;
+  line-height:1.15;
+  margin-bottom:.75rem;
+}
+.gl-feat-body{
+  font-size:.82rem;
+  font-weight:300;
+  color:rgba(212,207,200,.42);
+  line-height:1.9;
+  letter-spacing:.03em;
+  max-width:40ch;
+}
+
+/* ═══════════════════════════════
+   FAQ — REFINED DETAILS
+═══════════════════════════════ */
+.faq-section{
+  padding:10rem 0;
+  background:var(--ink);
+  position:relative;
+  overflow:hidden;
+}
+.faq-section::before{
+  content:'';
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 55% 40% at 50% 20%,rgba(184,147,106,.04) 0%,transparent 65%),
+    radial-gradient(ellipse 40% 50% at 80% 80%,rgba(184,147,106,.025) 0%,transparent 60%);
+  pointer-events:none;
+}
+
+.faq-inner{
+  max-width:860px;
+  margin:0 auto;
+  padding:0 3.5rem;
+  position:relative;
+  z-index:2;
+}
+
+/* ─ Header ─ */
+.faq-header{text-align:center;margin-bottom:5rem}
+.faq-header .lbl{font-size:.57rem;letter-spacing:.5em;text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:1.25rem}
+.faq-header h2{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(2.2rem,4.5vw,4rem);
+  color:var(--white);line-height:1.0;
+}
+.faq-header h2 em{font-style:italic}
+
+/* ─ Search field ─ */
+.faq-search-wrap{
+  position:relative;
+  margin-bottom:3.5rem;
+}
+.faq-search-line{
+  position:absolute;bottom:0;left:0;right:0;
+  height:1px;
+  background:rgba(184,147,106,.2);
+  transition:background .4s;
+}
+.faq-search-line::after{
+  content:'';
+  position:absolute;bottom:0;left:0;
+  width:0;height:1px;
+  background:var(--bronze);
+  transition:width .5s var(--ease);
+}
+.faq-search-wrap:focus-within .faq-search-line::after{width:100%}
+.faq-search-wrap:focus-within .faq-search-line{background:rgba(184,147,106,.1)}
+
+.faq-input{
+  width:100%;
+  background:transparent;
+  border:none;
+  outline:none;
+  font-family:var(--serif);
+  font-style:italic;
+  font-weight:300;
+  font-size:clamp(1.1rem,2.5vw,1.55rem);
+  color:var(--linen);
+  letter-spacing:.02em;
+  padding:.75rem 3rem .75rem 0;
+  caret-color:var(--bronze);
+  -webkit-appearance:none;
+}
+.faq-input::placeholder{
+  color:rgba(212,207,200,.25);
+  font-style:italic;
+}
+.faq-search-icon{
+  position:absolute;right:0;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;
+  opacity:.35;
+  pointer-events:none;
+  transition:opacity .3s;
+}
+.faq-search-wrap:focus-within .faq-search-icon{opacity:.6}
+.faq-clear-btn{
+  position:absolute;right:0;top:50%;transform:translateY(-50%);
+  width:28px;height:28px;
+  background:none;border:none;cursor:pointer;
+  display:none;align-items:center;justify-content:center;
+  opacity:.4;transition:opacity .3s;padding:0;
+}
+.faq-clear-btn:hover{opacity:.8}
+.faq-clear-btn.visible{display:flex}
+.faq-clear-btn svg{width:14px;height:14px}
+
+/* ─ Suggested questions ─ */
+.faq-suggested{margin-bottom:0;transition:opacity .35s var(--ease),transform .35s var(--ease)}
+.faq-suggested.hidden{opacity:0;transform:translateY(-8px);pointer-events:none;height:0;margin:0;overflow:hidden}
+.faq-suggested-label{
+  font-size:.55rem;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--fog);margin-bottom:1.25rem;display:block;
+}
+.faq-q-list{display:flex;flex-direction:column;gap:0}
+.faq-q{
+  display:flex;align-items:center;gap:1.25rem;
+  padding:1rem 0;
+  border-bottom:1px solid rgba(184,147,106,.07);
+  cursor:pointer;
+  position:relative;
+  transition:border-color .3s;
+  group:true;
+}
+.faq-q:first-child{border-top:1px solid rgba(184,147,106,.07)}
+.faq-q-text{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(.95rem,1.8vw,1.15rem);
+  color:rgba(212,207,200,.5);
+  letter-spacing:.02em;
+  line-height:1.4;
+  transition:color .3s;
+  flex:1;
+}
+.faq-q-arrow{
+  width:22px;height:1px;
+  background:rgba(184,147,106,.25);
+  position:relative;flex-shrink:0;
+  transition:width .35s var(--ease),background .3s;
+}
+.faq-q-arrow::after{
+  content:'';position:absolute;right:0;top:50%;
+  transform:translateY(-50%) rotate(45deg) translate(-2px,-2px);
+  width:5px;height:5px;
+  border-right:1px solid rgba(184,147,106,.25);
+  border-top:1px solid rgba(184,147,106,.25);
+  transition:border-color .3s;
+}
+.faq-q:hover .faq-q-text{color:rgba(212,207,200,.85)}
+.faq-q:hover .faq-q-arrow{width:32px;background:var(--bronze)}
+.faq-q:hover .faq-q-arrow::after{border-color:var(--bronze)}
+.faq-q.active .faq-q-text{color:var(--bronze-l)}
+.faq-q.active .faq-q-arrow{background:var(--bronze);width:28px}
+.faq-q.active .faq-q-arrow::after{border-color:var(--bronze)}
+
+/* subtle cascade opacity on questions */
+.faq-q:nth-child(1){opacity:1}
+.faq-q:nth-child(2){opacity:.95}
+.faq-q:nth-child(3){opacity:.88}
+.faq-q:nth-child(4){opacity:.8}
+.faq-q:nth-child(5){opacity:.72}
+.faq-q:nth-child(6){opacity:.64}
+.faq-q:nth-child(7){opacity:.56}
+.faq-q:nth-child(8){opacity:.48}
+
+/* ─ Answer panel ─ */
+.faq-answer{
+  margin-top:0;
+  max-height:0;overflow:hidden;
+  transition:max-height .0s;/* JS controlled */
+}
+.faq-answer.open{max-height:600px}
+
+.faq-answer-inner{
+  padding:3.5rem 0 4rem;
+  border-top:1px solid rgba(184,147,106,.12);
+  opacity:0;transform:translateY(12px);
+  transition:opacity .55s var(--ease),transform .55s var(--ease);
+}
+.faq-answer-inner.visible{opacity:1;transform:none}
+
+.faq-answer-tag{
+  font-size:.52rem;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--bronze);margin-bottom:1.5rem;display:block;
+}
+.faq-answer-q{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(1.3rem,2.8vw,2rem);
+  color:var(--white);line-height:1.1;
+  margin-bottom:2rem;letter-spacing:.01em;
+}
+.faq-answer-q em{font-style:italic;color:var(--bronze-l)}
+.faq-answer-body{
+  font-family:var(--sans);font-size:.9rem;font-weight:300;
+  color:rgba(212,207,200,.58);line-height:2.05;
+  letter-spacing:.03em;max-width:58ch;
+}
+.faq-answer-body p{margin-bottom:1rem}
+.faq-answer-body p:last-child{margin-bottom:0}
+.faq-answer-body strong{color:rgba(212,207,200,.82);font-weight:400}
+
+/* ─ Search results ─ */
+.faq-results{display:none;flex-direction:column;gap:0}
+.faq-results.visible{display:flex}
+.faq-result-item{
+  display:flex;align-items:center;gap:1.25rem;
+  padding:1rem 0;
+  border-bottom:1px solid rgba(184,147,106,.07);
+  cursor:pointer;
+}
+.faq-result-item:first-child{border-top:1px solid rgba(184,147,106,.07)}
+.faq-result-text{
+  font-family:var(--serif);font-weight:300;
+  font-size:clamp(.95rem,1.8vw,1.1rem);
+  color:rgba(212,207,200,.6);letter-spacing:.02em;flex:1;
+  transition:color .3s;
+}
+.faq-result-item:hover .faq-result-text{color:rgba(212,207,200,.9)}
+.faq-result-match{color:var(--bronze-l);font-style:italic}
+
+/* ─ No result state ─ */
+.faq-no-result{
+  display:none;padding:3.5rem 0;text-align:center;
+  border-top:1px solid rgba(184,147,106,.1);
+}
+.faq-no-result.visible{display:block}
+.faq-no-result-label{
+  font-size:.55rem;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--fog);margin-bottom:1.25rem;display:block;
+}
+.faq-no-result-msg{
+  font-family:var(--serif);font-style:italic;font-weight:300;
+  font-size:clamp(1.1rem,2.5vw,1.5rem);
+  color:rgba(212,207,200,.4);margin-bottom:2.5rem;
+}
+.faq-send-btn{
+  display:inline-flex;align-items:center;gap:1rem;
+  font-size:.65rem;font-weight:300;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--bronze);border:1px solid rgba(184,147,106,.3);
+  padding:.9rem 2.25rem;text-decoration:none;background:none;cursor:pointer;
+  transition:background .4s,color .4s,border-color .4s,gap .3s var(--ease);
+  font-family:var(--sans);
+}
+.faq-send-btn:hover{background:var(--bronze);color:var(--ink);border-color:var(--bronze);gap:1.5rem}
+
+/* ─ Send Query modal / inline ─ */
+.faq-query-form{
+  display:none;margin-top:2.5rem;
+  padding:2.5rem;
+  border:1px solid rgba(184,147,106,.15);
+  background:rgba(184,147,106,.03);
+  animation:faq-form-in .4s var(--ease) forwards;
+}
+.faq-query-form.open{display:block}
+@keyframes faq-form-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.faq-form-label{font-size:.52rem;letter-spacing:.38em;text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:.75rem}
+.faq-form-input{
+  width:100%;background:transparent;border:none;border-bottom:1px solid rgba(184,147,106,.2);
+  outline:none;font-family:var(--serif);font-style:italic;font-size:1rem;font-weight:300;
+  color:var(--linen);padding:.65rem 0;letter-spacing:.03em;margin-bottom:1.5rem;
+  caret-color:var(--bronze);transition:border-color .35s;
+}
+.faq-form-input:focus{border-bottom-color:var(--bronze)}
+.faq-form-input::placeholder{color:rgba(212,207,200,.2)}
+.faq-form-submit{
+  display:inline-flex;align-items:center;gap:.9rem;
+  font-size:.63rem;font-weight:300;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--ink);background:var(--bronze);border:none;padding:.85rem 2rem;
+  cursor:pointer;font-family:var(--sans);
+  transition:background .3s,gap .3s var(--ease);
+}
+.faq-form-submit:hover{background:var(--bronze-l);gap:1.3rem}
+.faq-form-sent{
+  font-family:var(--serif);font-style:italic;font-size:1rem;
+  color:rgba(184,147,106,.7);display:none;padding:.5rem 0;
+}
+.faq-form-sent.visible{display:block}
+
+/* ═══════════════════════════════
+   SHEPHERDCRAFT
+═══════════════════════════════ */
+.shepherd-section{padding:10rem 3.5rem;background:var(--deep);position:relative;overflow:hidden}
+.shepherd-grid{display:grid;grid-template-columns:1fr 1fr;gap:8rem;align-items:center;max-width:1200px;margin:0 auto}
+.sh-text .lbl{font-size:.57rem;letter-spacing:.48em;text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:1.25rem}
+.sh-text h2{font-family:var(--serif);font-weight:300;font-size:clamp(2rem,3.8vw,3.4rem);line-height:1.05;color:var(--white);margin-bottom:2.5rem}
+.sh-text h2 em{font-style:italic}
+.sh-text p{font-size:.86rem;color:rgba(212,207,200,.5);line-height:2.1;margin-bottom:1.4rem;max-width:40ch}
+.sh-text p strong{color:rgba(212,207,200,.78);font-weight:400}
+.sh-stats{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:3rem;padding-top:3rem;border-top:1px solid rgba(184,147,106,.1)}
+.sh-stat-n{font-family:var(--serif);font-size:2.8rem;font-weight:300;color:var(--bronze);line-height:1}
+.sh-stat-l{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:var(--fog);margin-top:.3rem}
+.sh-visual{position:relative}
+.sh-img-box{width:100%;aspect-ratio:3/4;background:var(--surface);overflow:hidden;position:relative}
+.sh-img-box::before{content:'';position:absolute;inset:14px;border:1px solid rgba(184,147,106,.13);z-index:1;pointer-events:none}
+#shCanvas{width:100%;height:100%;display:block}
+
+/* ═══════════════════════════════
+   FOOTER (minimal)
+═══════════════════════════════ */
+.footer-strip{background:var(--ink);border-top:1px solid rgba(184,147,106,.07);padding:3rem 3.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1.5rem}
+.fs-brand{font-family:var(--serif);font-size:1rem;font-weight:300;letter-spacing:.22em;text-transform:uppercase;color:var(--cream)}
+.fs-brand span{display:block;font-size:.42rem;letter-spacing:.5em;color:var(--bronze);font-family:var(--sans);margin-top:2px}
+.fs-links{display:flex;gap:2rem;list-style:none}
+.fs-links a{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(212,207,200,.3);text-decoration:none;transition:color .3s}
+.fs-links a:hover{color:var(--bronze-l)}
+.fs-copy{font-size:.6rem;letter-spacing:.1em;color:rgba(212,207,200,.2)}
+
+/* ═══════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════ */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}.d4{transition-delay:.32s}
+
+/* ═══════════════════════════════
+   MOBILE CONFIGURATOR — STICKY SPLIT
+   Preview locked top 44vh, controls scroll below
+═══════════════════════════════ */
+
+/* ── MOBILE TAB SYSTEM ── */
+.m-tabs{display:none}
+.m-tab-bar{display:flex;background:var(--obsidian);border-bottom:1px solid rgba(184,147,106,.1);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.m-tab-bar::-webkit-scrollbar{display:none}
+.m-tab{flex:1;min-width:0;padding:.9rem .5rem;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:var(--fog);text-align:center;cursor:pointer;border-bottom:2px solid transparent;transition:color .25s,border-color .25s;white-space:nowrap;position:relative;user-select:none;-webkit-user-select:none;border-right:1px solid rgba(184,147,106,.07)}
+.m-tab:last-child{border-right:none}
+.m-tab.active{color:var(--bronze-l);border-bottom-color:var(--bronze)}
+.m-tab-dot{position:absolute;top:.5rem;right:.5rem;width:5px;height:5px;border-radius:50%;background:var(--bronze);opacity:0;transition:opacity .3s}
+.m-tab.done .m-tab-dot{opacity:.6}
+
+.m-panel{display:none;padding:1.25rem 1.25rem 1.5rem;background:var(--obsidian)}
+.m-panel.active{display:block}
+
+/* Compact option rows for mobile */
+.m-opt-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem}
+.m-opt{display:flex;align-items:center;gap:.6rem;padding:.75rem 1rem;border:1px solid rgba(184,147,106,.12);cursor:pointer;flex:1;min-width:130px;transition:border-color .3s,background .3s;position:relative;overflow:hidden}
+.m-opt::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.04) 50%,transparent 65%);transform:translateX(-100%);transition:transform .5s var(--ease)}
+.m-opt:active::after{transform:translateX(100%)}
+.m-opt.active{border-color:rgba(184,147,106,.55);background:rgba(184,147,106,.06)}
+.m-opt-sw{width:22px;height:22px;border-radius:2px;flex-shrink:0;position:relative;overflow:hidden}
+.m-opt-name{font-size:.68rem;font-weight:400;letter-spacing:.08em;text-transform:uppercase;color:var(--linen);line-height:1.2}
+.m-opt-hint{font-size:.56rem;color:var(--ash);letter-spacing:.03em;line-height:1.3;margin-top:.1rem}
+.m-opt-check{width:14px;height:14px;border-radius:50%;border:1px solid rgba(184,147,106,.3);margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .25s,border-color .25s}
+.m-opt.active .m-opt-check{background:var(--bronze);border-color:var(--bronze)}
+.m-opt.active .m-opt-check::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--ink)}
+
+/* Compact atmosphere grid */
+.m-atmo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem}
+.m-atmo{border:1px solid rgba(184,147,106,.1);cursor:pointer;transition:border-color .3s,background .3s;text-align:center;padding:.5rem .25rem .6rem}
+.m-atmo.active{border-color:rgba(184,147,106,.55);background:rgba(184,147,106,.06)}
+.m-atmo-thumb{width:100%;height:28px;display:block;margin-bottom:.45rem;border-radius:1px}
+.m-atmo-name{font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:var(--linen);line-height:1.3}
+.m-atmo.active .m-atmo-name{color:var(--bronze-l)}
+
+/* Mobile description + CTA strip at bottom of controls */
+.m-desc-strip{background:rgba(184,147,106,.04);border-top:1px solid rgba(184,147,106,.1);padding:1rem 1.25rem;min-height:54px}
+.m-desc-lbl{font-size:.48rem;letter-spacing:.38em;text-transform:uppercase;color:var(--bronze);margin-bottom:.3rem}
+.m-desc-txt{font-family:var(--serif);font-style:italic;font-size:.88rem;font-weight:300;color:rgba(212,207,200,.65);line-height:1.55;transition:opacity .3s}
+.m-desc-txt.fading{opacity:0}
+
+.m-enq-bar{padding:1rem 1.25rem;background:var(--obsidian);border-top:1px solid rgba(184,147,106,.1);display:flex;gap:.75rem;align-items:center}
+.m-enq-summary{flex:1;min-width:0}
+.m-enq-name{font-size:.7rem;font-weight:400;letter-spacing:.08em;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-enq-detail{font-size:.55rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(184,147,106,.5);margin-top:.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.m-enq-btn{flex-shrink:0;padding:.8rem 1.25rem;background:var(--bronze);color:var(--ink);font-family:var(--sans);font-size:.6rem;font-weight:400;letter-spacing:.35em;text-transform:uppercase;border:none;cursor:pointer;transition:background .3s;white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center}
+.m-enq-btn:active{background:var(--bronze-l)}
+
+/* Flash animation for preview update confirmation */
+@keyframes preview-flash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+.preview-flash-ring{position:absolute;inset:-2px;border:1px solid rgba(184,147,106,0);border-radius:3px;pointer-events:none;z-index:5}
+.preview-flash-ring.flash{animation:preview-flash .55s var(--ease) forwards;border-color:rgba(184,147,106,.5)}
+
+/* ── TABLET 960px ── */
+@media(max-width:960px){
+  nav{padding:1.5rem 2rem}
+  .nav-links,.nav-btn{display:none}
+  .n-burger{display:flex}
+  .config-sticky-wrap{display:none}
+  .glass-section,.faq-section,.shepherd-section{padding:6rem 2rem}
+  .glass-grid,.shepherd-grid{grid-template-columns:1fr;gap:3.5rem}
+  .glass-canvas-wrap{order:-1}
+  .shepherd-grid .sh-visual{display:none}
+  .footer-strip{padding:2.5rem 2rem;flex-direction:column;align-items:flex-start;gap:1.5rem}
+  .faq-inner{padding:0 2rem}
+  .faq-input{font-size:1.1rem}
+  .faq-answer-inner{padding:2.5rem 0 3rem}
+
+  /* Kill intro extra height — no gap before configurator */
+  .intro{min-height:0;padding:5rem 2rem 3rem}
+
+  /* Kill desktop config min-height */
+  .config-main{display:block;min-height:0}
+
+  /* ── MOBILE CONFIGURATOR LAYOUT ── */
+  .preview-col{
+    position:sticky;
+    top:0;
+    z-index:50;
+    height:44svh;
+    min-height:240px;
+    max-height:340px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:var(--deep);
+    padding:1.25rem 1rem 0.75rem;
+    border-bottom:1px solid rgba(184,147,106,.1);
+  }
+  .preview-wrap{
+    width:min(320px,88vw);
+    aspect-ratio:unset;
+    height:calc(100% - 52px);
+    position:relative;
+  }
+  #previewCanvas,#prevFade{width:100%;height:100%;position:absolute;inset:0}
+  .preview-label{
+    margin-top:.6rem;
+    display:flex;gap:.75rem;align-items:center;justify-content:center;
+    width:100%;
+    padding-bottom:.25rem;
+  }
+  .pl-config{display:none}
+  .pl-name{font-size:1rem;letter-spacing:.08em;margin-bottom:0}
+  .pl-size{font-size:.5rem;margin-top:0;border-left:1px solid rgba(184,147,106,.25);padding-left:.75rem}
+
+  .controls-col{display:none}
+
+  /* Show mobile tab system */
+  .m-tabs{display:block;background:var(--obsidian)}
+}
+
+/* ── MOBILE 600px ── */
+@media(max-width:600px){
+  nav{padding:1.25rem 1.5rem}
+  .intro{min-height:0;padding:4.5rem 1.5rem 2.5rem}
+  .intro-h1{font-size:clamp(2.4rem,11vw,3.8rem)}
+  .preview-col{
+    top:0;
+    height:42svh;
+    min-height:220px;
+    max-height:300px;
+    padding:1rem 1rem 0.6rem;
+  }
+  .preview-wrap{width:min(280px,90vw)}
+  .gl-safety{grid-template-columns:1fr 1fr}
+  .sh-stats{grid-template-columns:1fr 1fr}
+  .glass-section{padding:5rem 1.5rem}
+  .shepherd-section{padding:5rem 1.5rem}
+  .faq-section{padding:5rem 0}
+  .faq-inner{padding:0 1.5rem}
+  .faq-header{margin-bottom:3rem}
+  .faq-input{font-size:1.05rem}
+  .faq-answer-q{font-size:1.15rem}
+  .faq-answer-body{font-size:.82rem}
+  .faq-query-form{padding:1.5rem 1rem}
+  .m-atmo-grid{grid-template-columns:repeat(5,1fr)}
+  .m-opt{min-width:100px}
+}
+</style>
+</head>
+<body>
+
+<div class="grain" aria-hidden="true"></div>
+<div class="c-ring" id="cRing"></div>
+<div class="c-dot" id="cDot"></div>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <a href="index.html" class="nav-logo">Continuum Designs<span>Infinity Tables · Perth</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#glass">The Glass</a></li>
+    <li><a href="#faq">Details</a></li>
+  </ul>
+  <a href="#enquire" class="nav-btn">Enquire</a>
+  <button class="n-burger" id="nBurger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+<div class="n-drawer" id="nDrawer">
+  <a href="index.html" class="ndl">Home</a>
+  <a href="#glass" class="ndl">The Glass</a>
+  <a href="#faq" class="ndl">Details</a>
+  <a href="#enquire" class="ndl">Enquire</a>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+  <div class="intro-bg" aria-hidden="true"></div>
+  <p class="intro-label">Made to Order · Perth, Australia</p>
+  <h1 class="intro-h1"><em>Design</em><br>Your Piece</h1>
+  <p class="intro-sub">Every table is commissioned exclusively for you — configured to your space, your materials, and your atmosphere. No two pieces are the same.</p>
+</section>
+
+<!-- CONFIGURATOR STICKY HEADER -->
+<div class="config-sticky-wrap" id="configSticky">
+  <div class="config-step-track">
+    <span class="cst active" data-step="size">Size</span>
+    <span class="cst-sep">·</span>
+    <span class="cst" data-step="wood">Wood</span>
+    <span class="cst-sep">·</span>
+    <span class="cst" data-step="interior">Interior</span>
+    <span class="cst-sep">·</span>
+    <span class="cst" data-step="atmosphere">Atmosphere</span>
+  </div>
+  <span class="config-summary-chip" id="configChip">Luxe Edition · Ebony Oak</span>
+</div>
+
+<!-- CONFIGURATOR MAIN -->
+<div class="config" id="configSection">
+  <div class="config-main">
+
+    <!-- PREVIEW -->
+    <div class="preview-col">
+      <div class="preview-wrap">
+        <canvas id="previewCanvas" width="560" height="420"></canvas>
+        <canvas id="prevFade" width="560" height="420"></canvas>
+        <div id="prevOverlay"></div>
+        <div class="preview-flash-ring" id="flashRing"></div>
+      </div>
+      <div class="preview-label">
+        <p class="pl-config">Your Configuration</p>
+        <p class="pl-name" id="previewName">Luxe Edition</p>
+        <p class="pl-size" id="previewSub">Ebony Oak · Penthouse</p>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls-col" id="controlsCol">
+
+      <!-- SIZE -->
+      <div class="ctrl-section" id="step-size">
+        <div class="ctrl-title" data-step="size">Size</div>
+        <div class="opt-list" id="sizeOpts">
+          <div class="opt-card active" data-group="size" data-val="luxe">
+            <div class="opt-swatch" style="background:linear-gradient(135deg,#1a1208,#2e2010);">
+              <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 32 32"><rect x="4" y="14" width="24" height="5" rx="1" fill="rgba(184,147,106,.3)"/><rect x="4" y="19" width="24" height="8" rx="0" fill="rgba(184,147,106,.1)"/><line x1="7" y1="27" x2="7" y2="32" stroke="rgba(184,147,106,.4)" stroke-width="1.5"/><line x1="25" y1="27" x2="25" y2="32" stroke="rgba(184,147,106,.4)" stroke-width="1.5"/></svg>
+            </div>
+            <div class="opt-card-text">
+              <div class="opt-card-name">Luxe Edition</div>
+              <div class="opt-card-hint">50 × 50 × 43.5 cm · 24 kg</div>
+            </div>
+            <div class="opt-card-check"></div>
+          </div>
+          <div class="opt-card" data-group="size" data-val="luxe-grand">
+            <div class="opt-swatch" style="background:linear-gradient(135deg,#1a1208,#2e2010);">
+              <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 32 32"><rect x="2" y="14" width="28" height="6" rx="1" fill="rgba(184,147,106,.3)"/><rect x="2" y="20" width="28" height="8" rx="0" fill="rgba(184,147,106,.1)"/><line x1="5" y1="28" x2="5" y2="32" stroke="rgba(184,147,106,.4)" stroke-width="1.5"/><line x1="27" y1="28" x2="27" y2="32" stroke="rgba(184,147,106,.4)" stroke-width="1.5"/></svg>
+            </div>
+            <div class="opt-card-text">
+              <div class="opt-card-name">Luxe Grand Edition</div>
+              <div class="opt-card-hint">96 × 50 × 43.5 cm · 42 kg</div>
+            </div>
+            <div class="opt-card-check"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WOOD -->
+      <div class="ctrl-section" id="step-wood">
+        <div class="ctrl-title" data-step="wood">Wood Exterior</div>
+        <div class="opt-list" id="woodOpts">
+          <div class="opt-card active" data-group="wood" data-val="ebony">
+            <div class="opt-swatch" style="background:linear-gradient(135deg,#120e06,#1e1808);border:1px solid rgba(184,147,106,.2)"></div>
+            <div class="opt-card-text">
+              <div class="opt-card-name">Ebony Oak</div>
+              <div class="opt-card-hint">Deep, rich &amp; architectural</div>
+            </div>
+            <div class="opt-card-check"></div>
+          </div>
+          <div class="opt-card" data-group="wood" data-val="light">
+            <div class="opt-swatch" style="background:linear-gradient(135deg,#c8902a,#a87020);"></div>
+            <div class="opt-card-text">
+              <div class="opt-card-name">Light Oak</div>
+              <div class="opt-card-hint">Warm honey tones, natural grain</div>
+            </div>
+            <div class="opt-card-check"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERIOR -->
+      <div class="ctrl-section" id="step-interior">
+        <div class="ctrl-title" data-step="interior">Interior Design</div>
+        <div class="opt-list" id="interiorOpts">
+          <div class="opt-card active" data-group="interior" data-val="crimson">
+            <div class="opt-swatch" style="background:linear-gradient(135deg,#3a1008,#5a1c0a);border:1px solid rgba(180,80,40,.25)"></div>
+            <div class="opt-card-text">
+              <div class="opt-card-name">Crimson Atelier</div>
+              <div class="opt-card-hint">Red brick · warm, urban, atmospheric</div>
+            </div>
+            <div class="opt-card-check"></div>
+          </div>
+          <div class="opt-card" data-group="interior" data-val="slate">
+            <div class="opt-swatch" style="background:linear-gradient(135deg,#1e2028,#282830);border:1px solid rgba(120,130,150,.2)"></div>
+            <div class="opt-card-text">
+              <div class="opt-card-name">Slate Studio</div>
+              <div class="opt-card-hint">Grey brick · cooler, architectural, minimal</div>
+            </div>
+            <div class="opt-card-check"></div>
+          </div>
+          <div class="opt-card" data-group="interior" data-val="jungle">
+            <div class="opt-swatch" style="background:linear-gradient(135deg,#0a1808,#142810);border:1px solid rgba(60,130,60,.2)"></div>
+            <div class="opt-card-text">
+              <div class="opt-card-name">Jungle Sanctuary</div>
+              <div class="opt-card-hint">Lush foliage · immersive, organic, alive</div>
+            </div>
+            <div class="opt-card-check"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ATMOSPHERE -->
+      <div class="ctrl-section" id="step-atmosphere">
+        <div class="ctrl-title" data-step="atmosphere">Atmosphere</div>
+        <div class="atmo-grid" id="atmoOpts">
+          <div class="atmo-card active" data-group="atmo" data-val="penthouse">
+            <canvas class="atmo-thumb" width="160" height="44" data-atmo="penthouse"></canvas>
+            <div class="atmo-name">Penthouse</div>
+          </div>
+          <div class="atmo-card" data-group="atmo" data-val="gallery">
+            <canvas class="atmo-thumb" width="160" height="44" data-atmo="gallery"></canvas>
+            <div class="atmo-name">Gallery Quiet</div>
+          </div>
+          <div class="atmo-card" data-group="atmo" data-val="boutique">
+            <canvas class="atmo-thumb" width="160" height="44" data-atmo="boutique"></canvas>
+            <div class="atmo-name">Boutique Suite</div>
+          </div>
+          <div class="atmo-card" data-group="atmo" data-val="evening">
+            <canvas class="atmo-thumb" width="160" height="44" data-atmo="evening"></canvas>
+            <div class="atmo-name">Evening Mood</div>
+          </div>
+          <div class="atmo-card" data-group="atmo" data-val="warm">
+            <canvas class="atmo-thumb" width="160" height="44" data-atmo="warm"></canvas>
+            <div class="atmo-name">Warm Residence</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESCRIPTION PANEL -->
+      <div class="desc-panel" id="descPanel">
+        <div class="desc-panel-label" id="descLabel">Selected</div>
+        <div class="desc-panel-text" id="descText">A refined, versatile size designed for everyday living spaces. Balanced in proportion, it delivers the full depth experience without overwhelming the room.</div>
+      </div>
+
+      <!-- ENQUIRE BLOCK -->
+      <div class="enquire-block" id="enquire">
+        <div class="enq-summary" id="enqSummary">
+          <div class="enq-row"><span class="enq-key">Size</span><span class="enq-val" id="eq-size">Luxe Edition</span></div>
+          <div class="enq-row"><span class="enq-key">Wood</span><span class="enq-val" id="eq-wood">Ebony Oak</span></div>
+          <div class="enq-row"><span class="enq-key">Interior</span><span class="enq-val" id="eq-interior">Crimson Atelier</span></div>
+          <div class="enq-row"><span class="enq-key">Atmosphere</span><span class="enq-val" id="eq-atmo">Penthouse</span></div>
+          <div class="enq-row"><span class="enq-key">Lead Time</span><span class="enq-val">2–3 weeks</span></div>
+        </div>
+        <a href="#" class="enq-btn" id="enqBtn">Commission This Piece</a>
+        <p class="enq-note">Each table is made exclusively for you at our Osborne Park studio. We'll be in touch within 24 hours.</p>
+      </div>
+
+    </div><!-- /controls -->
+  </div><!-- /config-main -->
+</div><!-- /config -->
+
+<!-- ═══════════════════════════════
+     MOBILE CONFIGURATOR (≤960px)
+     Tabbed compact panel below sticky preview
+═══════════════════════════════ -->
+<div class="m-tabs" id="mTabs">
+
+  <!-- TAB BAR -->
+  <div class="m-tab-bar">
+    <div class="m-tab active" data-tab="size">Size<div class="m-tab-dot"></div></div>
+    <div class="m-tab" data-tab="wood">Wood<div class="m-tab-dot"></div></div>
+    <div class="m-tab" data-tab="interior">Interior<div class="m-tab-dot"></div></div>
+    <div class="m-tab" data-tab="atmo">Atmosphere<div class="m-tab-dot"></div></div>
+    <div class="m-tab" data-tab="order">Order<div class="m-tab-dot"></div></div>
+  </div>
+
+  <!-- SIZE PANEL -->
+  <div class="m-panel active" id="m-panel-size">
+    <div class="m-opt-row" id="mSizeOpts">
+      <div class="m-opt active" data-group="size" data-val="luxe">
+        <div class="m-opt-sw" style="background:linear-gradient(135deg,#1a1208,#2e2010);border:1px solid rgba(184,147,106,.2)">
+          <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 22 22"><rect x="3" y="9" width="16" height="4" rx="1" fill="rgba(184,147,106,.35)"/><line x1="5" y1="13" x2="5" y2="20" stroke="rgba(184,147,106,.45)" stroke-width="1.2"/><line x1="17" y1="13" x2="17" y2="20" stroke="rgba(184,147,106,.45)" stroke-width="1.2"/></svg>
+        </div>
+        <div><div class="m-opt-name">Luxe Edition</div><div class="m-opt-hint">50 × 50 × 43.5 cm · 24 kg</div></div>
+        <div class="m-opt-check"></div>
+      </div>
+      <div class="m-opt" data-group="size" data-val="luxe-grand">
+        <div class="m-opt-sw" style="background:linear-gradient(135deg,#1a1208,#2e2010);border:1px solid rgba(184,147,106,.2)">
+          <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 22 22"><rect x="1" y="9" width="20" height="4" rx="1" fill="rgba(184,147,106,.35)"/><line x1="3" y1="13" x2="3" y2="20" stroke="rgba(184,147,106,.45)" stroke-width="1.2"/><line x1="19" y1="13" x2="19" y2="20" stroke="rgba(184,147,106,.45)" stroke-width="1.2"/></svg>
+        </div>
+        <div><div class="m-opt-name">Luxe Grand</div><div class="m-opt-hint">96 × 50 × 43.5 cm · 42 kg</div></div>
+        <div class="m-opt-check"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WOOD PANEL -->
+  <div class="m-panel" id="m-panel-wood">
+    <div class="m-opt-row" id="mWoodOpts">
+      <div class="m-opt active" data-group="wood" data-val="ebony">
+        <div class="m-opt-sw" style="background:linear-gradient(135deg,#120e06,#1e1808);border:1px solid rgba(184,147,106,.25)"></div>
+        <div><div class="m-opt-name">Ebony Oak</div><div class="m-opt-hint">Deep, rich &amp; architectural</div></div>
+        <div class="m-opt-check"></div>
+      </div>
+      <div class="m-opt" data-group="wood" data-val="light">
+        <div class="m-opt-sw" style="background:linear-gradient(135deg,#c8902a,#a87020)"></div>
+        <div><div class="m-opt-name">Light Oak</div><div class="m-opt-hint">Warm honey tones</div></div>
+        <div class="m-opt-check"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INTERIOR PANEL -->
+  <div class="m-panel" id="m-panel-interior">
+    <div class="m-opt-row" id="mInteriorOpts" style="flex-direction:column;gap:.45rem">
+      <div class="m-opt active" data-group="interior" data-val="crimson">
+        <div class="m-opt-sw" style="background:linear-gradient(135deg,#3a1008,#5a1c0a);border:1px solid rgba(180,80,40,.3)"></div>
+        <div><div class="m-opt-name">Crimson Atelier</div><div class="m-opt-hint">Red brick · warm, urban, atmospheric</div></div>
+        <div class="m-opt-check"></div>
+      </div>
+      <div class="m-opt" data-group="interior" data-val="slate">
+        <div class="m-opt-sw" style="background:linear-gradient(135deg,#1e2028,#282830);border:1px solid rgba(120,130,150,.25)"></div>
+        <div><div class="m-opt-name">Slate Studio</div><div class="m-opt-hint">Grey brick · architectural, minimal</div></div>
+        <div class="m-opt-check"></div>
+      </div>
+      <div class="m-opt" data-group="interior" data-val="jungle">
+        <div class="m-opt-sw" style="background:linear-gradient(135deg,#0a1808,#142810);border:1px solid rgba(60,130,60,.25)"></div>
+        <div><div class="m-opt-name">Jungle Sanctuary</div><div class="m-opt-hint">Lush foliage · immersive, organic</div></div>
+        <div class="m-opt-check"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ATMOSPHERE PANEL -->
+  <div class="m-panel" id="m-panel-atmo">
+    <div class="m-atmo-grid" id="mAtmoOpts">
+      <div class="m-atmo active" data-group="atmo" data-val="penthouse">
+        <canvas class="m-atmo-thumb" width="80" height="28" data-atmo="penthouse"></canvas>
+        <div class="m-atmo-name">Penthouse</div>
+      </div>
+      <div class="m-atmo" data-group="atmo" data-val="gallery">
+        <canvas class="m-atmo-thumb" width="80" height="28" data-atmo="gallery"></canvas>
+        <div class="m-atmo-name">Gallery</div>
+      </div>
+      <div class="m-atmo" data-group="atmo" data-val="boutique">
+        <canvas class="m-atmo-thumb" width="80" height="28" data-atmo="boutique"></canvas>
+        <div class="m-atmo-name">Boutique</div>
+      </div>
+      <div class="m-atmo" data-group="atmo" data-val="evening">
+        <canvas class="m-atmo-thumb" width="80" height="28" data-atmo="evening"></canvas>
+        <div class="m-atmo-name">Evening</div>
+      </div>
+      <div class="m-atmo" data-group="atmo" data-val="warm">
+        <canvas class="m-atmo-thumb" width="80" height="28" data-atmo="warm"></canvas>
+        <div class="m-atmo-name">Warm</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER PANEL -->
+  <div class="m-panel" id="m-panel-order" style="padding-bottom:.75rem">
+    <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem">
+      <div class="enq-row"><span class="enq-key">Size</span><span class="enq-val" id="meq-size">Luxe Edition</span></div>
+      <div class="enq-row"><span class="enq-key">Wood</span><span class="enq-val" id="meq-wood">Ebony Oak</span></div>
+      <div class="enq-row"><span class="enq-key">Interior</span><span class="enq-val" id="meq-interior">Crimson Atelier</span></div>
+      <div class="enq-row"><span class="enq-key">Atmosphere</span><span class="enq-val" id="meq-atmo">Penthouse</span></div>
+      <div class="enq-row"><span class="enq-key">Lead Time</span><span class="enq-val">2–3 weeks</span></div>
+    </div>
+    <a href="#" class="enq-btn" id="mEnqBtn" style="display:block;text-align:center">Commission This Piece</a>
+    <p class="enq-note">Made exclusively for you at our Osborne Park studio.</p>
+  </div>
+
+  <!-- DESCRIPTION STRIP -->
+  <div class="m-desc-strip">
+    <div class="m-desc-lbl" id="mDescLabel">Size</div>
+    <div class="m-desc-txt" id="mDescText">A refined, versatile size designed for everyday living spaces. Balanced in proportion, it delivers the full depth experience without overwhelming the room.</div>
+  </div>
+
+  <!-- BOTTOM COMMISSION BAR (always visible) -->
+  <div class="m-enq-bar">
+    <div class="m-enq-summary">
+      <div class="m-enq-name" id="mBarName">Luxe Edition</div>
+      <div class="m-enq-detail" id="mBarDetail">Ebony Oak · Penthouse</div>
+    </div>
+    <a href="#" class="m-enq-btn" id="mBarBtn">Commission →</a>
+  </div>
+
+</div><!-- /m-tabs -->
+
+<!-- GLASS SECTION -->
+<section class="glass-section" id="glass">
+  <div class="glass-grid">
+    <div class="glass-canvas-wrap reveal">
+      <div class="glass-canvas-bg">
+        <canvas id="glassCanvas"></canvas>
+      </div>
+      <div class="glass-badge">
+        <div class="gb-num">100M+</div>
+        <div class="gb-txt">Social<br>Views</div>
+      </div>
+    </div>
+    <div class="glass-text">
+      <span class="gl-label reveal">The Glass — A Different Standard</span>
+      <h2 class="gl-h2 reveal">Not a film.<br><em>Infused into the glass itself.</em></h2>
+      <div class="gl-body">
+        <p class="reveal">Most infinity tables use a thin reflective film adhered to standard glass. We tested <strong>over 10 Australian suppliers</strong> before rejecting them all. The results were shallow, inconsistent, and unconvincing.</p>
+        <p class="reveal d1">Our glass is <strong>sourced internationally</strong> — made through a specialised process that infuses reflectivity directly into the material. The result is a clarity and depth that no film can replicate. The illusion doesn't just look deeper — it <em>is</em> deeper.</p>
+        <p class="reveal d2">This is the reason the table has generated <strong>over 100 million views</strong> across TikTok and Instagram, and fulfilled hundreds of orders globally. People see the difference immediately.</p>
+        <div class="gl-rule"></div>
+        <div class="gl-features">
+          <div class="gl-feat from-left">
+            <div class="gl-feat-title">Toughened and tempered for strength</div>
+            <div class="gl-feat-body">The glass is engineered to withstand a 100kg load applied directly to its surface.</div>
+          </div>
+          <div class="gl-feat from-right">
+            <div class="gl-feat-title">Safety glass construction</div>
+            <div class="gl-feat-body">In the unlikely event of breakage, it shatters into thousands of small, harmless pieces rather than sharp shards.</div>
+          </div>
+          <div class="gl-feat from-left">
+            <div class="gl-feat-title">Precision-edged finish</div>
+            <div class="gl-feat-body">Each panel is carefully edged for safe handling, ensuring a smooth, refined finish throughout.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ — REFINED DETAILS -->
+<section class="faq-section" id="faq">
+  <div class="faq-inner">
+
+    <div class="faq-header reveal">
+      <span class="lbl">Everything you need to know</span>
+      <h2>Refined <em>Details</em></h2>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="faq-search-wrap reveal d1">
+      <svg class="faq-search-icon" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="8.5" cy="8.5" r="5.5" stroke="rgba(184,147,106,.8)" stroke-width=".9"/>
+        <line x1="12.5" y1="12.5" x2="17" y2="17" stroke="rgba(184,147,106,.8)" stroke-width=".9" stroke-linecap="round"/>
+      </svg>
+      <input type="text" class="faq-input" id="faqInput" placeholder="Ask anything about the piece…" autocomplete="off" spellcheck="false">
+      <button class="faq-clear-btn" id="faqClear" aria-label="Clear">
+        <svg viewBox="0 0 14 14" fill="none"><line x1="1" y1="1" x2="13" y2="13" stroke="rgba(212,207,200,.6)" stroke-width="1" stroke-linecap="round"/><line x1="13" y1="1" x2="1" y2="13" stroke="rgba(212,207,200,.6)" stroke-width="1" stroke-linecap="round"/></svg>
+      </button>
+      <div class="faq-search-line"></div>
+    </div>
+
+    <!-- SUGGESTED QUESTIONS -->
+    <div class="faq-suggested" id="faqSuggested">
+      <span class="faq-suggested-label">Suggested questions</span>
+      <div class="faq-q-list" id="faqQList">
+        <div class="faq-q" data-faq="power"><span class="faq-q-text">How is the table powered?</span><span class="faq-q-arrow"></span></div>
+        <div class="faq-q" data-faq="cable"><span class="faq-q-text">How does cable management work?</span><span class="faq-q-arrow"></span></div>
+        <div class="faq-q" data-faq="shipping"><span class="faq-q-text">How is the table shipped and unboxed?</span><span class="faq-q-arrow"></span></div>
+        <div class="faq-q" data-faq="glass"><span class="faq-q-text">Is the glass safe and durable?</span><span class="faq-q-arrow"></span></div>
+        <div class="faq-q" data-faq="clean"><span class="faq-q-text">How do I clean and maintain it?</span><span class="faq-q-arrow"></span></div>
+        <div class="faq-q" data-faq="wrong"><span class="faq-q-text">What happens if something goes wrong?</span><span class="faq-q-arrow"></span></div>
+        <div class="faq-q" data-faq="support"><span class="faq-q-text">Do you offer support after purchase?</span><span class="faq-q-arrow"></span></div>
+        <div class="faq-q" data-faq="led"><span class="faq-q-text">What is the LED lighting system like?</span><span class="faq-q-arrow"></span></div>
+      </div>
+    </div>
+
+    <!-- SEARCH RESULTS -->
+    <div class="faq-results" id="faqResults"></div>
+
+    <!-- NO RESULT -->
+    <div class="faq-no-result" id="faqNoResult">
+      <span class="faq-no-result-label">No match found</span>
+      <p class="faq-no-result-msg">That question isn't here yet —<br>but we'd like to answer it.</p>
+      <button class="faq-send-btn" id="faqSendBtn">
+        Send Query
+        <span style="display:inline-block;width:18px;height:1px;background:currentColor;position:relative;vertical-align:middle;transition:width .3s"></span>
+      </button>
+      <div class="faq-query-form" id="faqQueryForm">
+        <label class="faq-form-label" for="faqQueryInput">Your question</label>
+        <input type="text" class="faq-form-input" id="faqQueryInput" placeholder="Type your question here…">
+        <label class="faq-form-label" for="faqQueryEmail" style="margin-top:.25rem">Your email <span style="color:var(--fog);font-size:.9em">(optional)</span></label>
+        <input type="email" class="faq-form-input" id="faqQueryEmail" placeholder="hello@example.com">
+        <button class="faq-form-submit" id="faqQuerySubmit">
+          Send
+          <span style="display:inline-block;width:14px;height:1px;background:currentColor;vertical-align:middle"></span>
+        </button>
+        <p class="faq-form-sent" id="faqFormSent">Thank you — we'll be in touch.</p>
+      </div>
+    </div>
+
+    <!-- ANSWER PANEL -->
+    <div class="faq-answer" id="faqAnswer">
+      <div class="faq-answer-inner" id="faqAnswerInner">
+        <span class="faq-answer-tag" id="faqAnswerTag">Answer</span>
+        <p class="faq-answer-q" id="faqAnswerQ"></p>
+        <div class="faq-answer-body" id="faqAnswerBody"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer-strip">
+  <div class="fs-brand">Continuum Designs<span>Infinity Tables · Perth WA</span></div>
+  <ul class="fs-links">
+    <li><a href="#">Collection</a></li>
+    <li><a href="#">Instagram</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+  <p class="fs-copy">© 2025 Continuum Designs Furniture</p>
+</footer>
+
+<script>
+/* ════════════════════════════
+   CURSOR
+════════════════════════════ */
+const cDot = document.getElementById('cDot');
+const cRing = document.getElementById('cRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; cDot.style.left=mx+'px'; cDot.style.top=my+'px'; });
+(function raf(){ rx+=(mx-rx)*.13; ry+=(my-ry)*.13; cRing.style.left=rx+'px'; cRing.style.top=ry+'px'; requestAnimationFrame(raf); })();
+document.querySelectorAll('a,button,.opt-card,.atmo-card').forEach(el=>{ el.addEventListener('mouseenter',()=>cRing.classList.add('hov')); el.addEventListener('mouseleave',()=>cRing.classList.remove('hov')); });
+if('ontouchstart' in window){ cDot.style.display='none'; cRing.style.display='none'; document.body.style.cursor='auto'; }
+
+/* ════════════════════════════
+   NAV BURGER
+════════════════════════════ */
+const burger=document.getElementById('nBurger'), drawer=document.getElementById('nDrawer');
+burger.addEventListener('click',()=>{ burger.classList.toggle('open'); drawer.classList.toggle('open'); });
+document.querySelectorAll('.ndl').forEach(a=>a.addEventListener('click',()=>{ burger.classList.remove('open'); drawer.classList.remove('open'); }));
+
+/* ════════════════════════════
+   SCROLL REVEAL
+════════════════════════════ */
+const io = new IntersectionObserver(entries=>entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } }),{threshold:0,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// Hard fallback
+setTimeout(()=>{ document.querySelectorAll('.reveal:not(.visible)').forEach(el=>el.classList.add('visible')); }, 400);
+
+/* ════════════════════════════
+   GLASS FEATURES — directional entry
+════════════════════════════ */
+const glFeatObs = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      // stagger siblings slightly
+      const siblings = Array.from(entry.target.parentElement.children);
+      const idx = siblings.indexOf(entry.target);
+      setTimeout(() => entry.target.classList.add('visible'), idx * 140);
+      glFeatObs.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0, rootMargin: '0px 0px -20px 0px' });
+document.querySelectorAll('.gl-feat').forEach(el => glFeatObs.observe(el));
+
+/* ════════════════════════════
+   CONFIGURATOR STATE
+════════════════════════════ */
+const state = { size:'luxe', wood:'ebony', interior:'crimson', atmo:'penthouse' };
+
+const descriptions = {
+  'size-luxe':'A refined, versatile size designed for everyday living spaces. Balanced in proportion, it delivers the full depth experience without overwhelming the room.',
+  'size-luxe-grand':'A larger, more commanding presence. Designed for open spaces and statement interiors, where scale and impact become part of the experience.',
+  'wood-ebony':'The deep, rich tones of Ebony Oak add a sense of weight and luxury, pairing beautifully with both contemporary and classic interiors.',
+  'wood-light':'For a brighter, more natural presence, Light Oak brings warm honey tones and subtle grain detail, creating a softer, more relaxed feel.',
+  'interior-crimson':'Warm red brick framing with a handcrafted vine ladder — bold, atmospheric, and full of character. Urban energy made intimate.',
+  'interior-slate':'Cooler grey brick surrounds with architectural rigour. Composed, minimal, and quietly powerful. A gallery within a table.',
+  'interior-jungle':'Lush foliage and organic depth — a living world beneath glass. Immersive, unexpected, and impossible to look away from.',
+  'atmo-penthouse':'Floor-to-ceiling city light. Hard surfaces, deep shadows, restrained luxury. The table as centrepiece of something exceptional.',
+  'atmo-gallery':'White cube silence. Soft, diffused light. The kind of room where nothing is superfluous — and this table still commands attention.',
+  'atmo-boutique':'Warm low lighting, textured walls, a space that exists only at night. The table glows like a found artefact.',
+  'atmo-evening':'Last light. The moment between day and night when everything feels suspended. Amber warmth that never overstays.',
+  'atmo-warm':'Lived-in comfort. Natural light, wooden floors, the smell of timber. The table feels inevitable here, like it was always meant to be.',
+};
+
+const displayNames = {
+  'size-luxe':'Luxe Edition','size-luxe-grand':'Luxe Grand Edition',
+  'wood-ebony':'Ebony Oak','wood-light':'Light Oak',
+  'interior-crimson':'Crimson Atelier','interior-slate':'Slate Studio','interior-jungle':'Jungle Sanctuary',
+  'atmo-penthouse':'Penthouse','atmo-gallery':'Gallery Quiet','atmo-boutique':'Boutique Suite','atmo-evening':'Evening Mood','atmo-warm':'Warm Residence'
+};
+
+/* ════════════════════════════
+   ATMOSPHERE PALETTES
+════════════════════════════ */
+const atmos = {
+  penthouse:{ bg:['#0a0910','#141220'], floor:'#1a1828', ambient:'rgba(184,147,106,.08)', light:'rgba(200,180,140,.12)', ledTint:'rgba(255,230,190,.7)' },
+  gallery:  { bg:['#1a191c','#232028'], floor:'#2a2830', ambient:'rgba(255,255,255,.04)', light:'rgba(220,220,220,.08)', ledTint:'rgba(240,240,255,.75)' },
+  boutique: { bg:['#0d0a08','#1a1410'], floor:'#221a14', ambient:'rgba(180,120,60,.07)', light:'rgba(220,170,100,.1)', ledTint:'rgba(255,210,150,.7)' },
+  evening:  { bg:['#0a0608','#150e0a'], floor:'#1c120c', ambient:'rgba(200,100,40,.07)', light:'rgba(220,140,60,.09)', ledTint:'rgba(255,180,80,.7)' },
+  warm:     { bg:['#100e0a','#1c1a12'], floor:'#26221a', ambient:'rgba(200,170,100,.06)', light:'rgba(220,190,130,.1)', ledTint:'rgba(255,220,160,.72)' },
+};
+
+const woodPalette = {
+  ebony:{ top:'#12100a', mid:'#1a1610', base:'#0e0c08', leg:'#181408' },
+  light:{ top:'#4a3418', mid:'#5a4020', base:'#3a2810', leg:'#4a3418' },
+};
+
+const interiorColors = {
+  crimson:{ wall1:'#3a1008', wall2:'#5a2010', floor:'#2a1408', accent:'rgba(200,80,30,.3)' },
+  slate:  { wall1:'#1e2028', wall2:'#282a32', floor:'#181a20', accent:'rgba(100,120,160,.25)' },
+  jungle: { wall1:'#0a1808', wall2:'#142810', floor:'#0a1206', accent:'rgba(40,120,40,.3)' },
+};
+
+/* ════════════════════════════
+   DRAW PREVIEW
+════════════════════════════ */
+function drawPreview(canvas, s) {
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  ctx.clearRect(0,0,w,h);
+
+  const atm = atmos[s.atmo];
+  const wp  = woodPalette[s.wood];
+  const ip  = interiorColors[s.interior];
+  const isGrand = s.size === 'luxe-grand';
+
+  // ─ ROOM BACKGROUND ─
+  const bg = ctx.createLinearGradient(0,0,w,h);
+  bg.addColorStop(0, atm.bg[0]); bg.addColorStop(1, atm.bg[1]);
+  ctx.fillStyle = bg; ctx.fillRect(0,0,w,h);
+
+  // ─ INTERIOR WORLD (visible through glass) ─
+  const glassH = 90, glassW = isGrand ? 420 : 260, glassX = (w-glassW)/2, glassY = h*.38;
+  const wTop = ctx.createLinearGradient(glassX, glassY, glassX+glassW, glassY+glassH);
+  wTop.addColorStop(0, ip.wall1); wTop.addColorStop(1, ip.wall2);
+
+  // floor
+  ctx.fillStyle = atm.floor; ctx.fillRect(0, h*.62, w, h*.38);
+  // wall behind table
+  ctx.fillStyle = ip.wall1; ctx.fillRect(0, 0, w, h*.62);
+
+  // interior detail rendering
+  if(s.interior === 'crimson' || s.interior === 'slate') {
+    // brick pattern
+    const bc = s.interior === 'crimson' ? 'rgba(180,60,20,.12)' : 'rgba(80,90,120,.1)';
+    const bh = 14, bw = 32, gap = 2;
+    ctx.save();
+    for(let row = 0; row*bh < h*.62; row++) {
+      const offX = (row%2) * (bw/2);
+      for(let col = -1; col < w/(bw+gap)+1; col++) {
+        ctx.fillStyle = bc;
+        ctx.fillRect(col*(bw+gap)+offX, row*(bh+gap), bw, bh);
+      }
+    }
+    ctx.restore();
+  }
+  if(s.interior === 'jungle') {
+    // foliage blobs
+    const leaves = [[.2,.3,.25],[.8,.25,.22],[.5,.18,.18],[.1,.5,.15],[.9,.45,.2],[.35,.55,.12],[.65,.6,.14]];
+    leaves.forEach(([lx,ly,lr])=>{
+      const g = ctx.createRadialGradient(w*lx,h*ly,0,w*lx,h*ly,w*lr);
+      g.addColorStop(0,'rgba(20,80,20,.7)'); g.addColorStop(.5,'rgba(10,50,10,.5)'); g.addColorStop(1,'transparent');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(w*lx,h*ly,w*lr,w*lr*.7,0,0,Math.PI*2); ctx.fill();
+    });
+  }
+
+  // ─ AMBIENT LIGHT ─
+  const al = ctx.createRadialGradient(w*.5, h*.5, 0, w*.5, h*.5, w*.55);
+  al.addColorStop(0, atm.ambient); al.addColorStop(1, 'transparent');
+  ctx.fillStyle = al; ctx.fillRect(0,0,w,h);
+
+  // ─ TABLE PROPORTIONS ─
+  const tW = isGrand ? 430 : 265, tX = (w-tW)/2;
+  const tGlassY = h*.45, tGlassH = 20, tBodyH = 52, tBaseH = 10, tLegH = 52, tLegW = 11;
+  const legGap = tW * .78;
+
+  // Floor reflection
+  const fr = ctx.createRadialGradient(w/2, h*.72, 0, w/2, h*.72, tW*.6);
+  fr.addColorStop(0, atm.ledTint.replace(/[\d.]+\)$/,'.07)')); fr.addColorStop(1,'transparent');
+  ctx.fillStyle = fr; ctx.fillRect(0, h*.62, w, h*.4);
+
+  // Legs
+  [[tX+tW*.06, tGlassY+tGlassH+tBodyH+tBaseH],[tX+tW*.94-tLegW, tGlassY+tGlassH+tBodyH+tBaseH]].forEach(([lx,ly])=>{
+    const lg = ctx.createLinearGradient(lx,ly,lx,ly+tLegH);
+    lg.addColorStop(0, wp.leg); lg.addColorStop(1,'rgba(8,6,4,.9)');
+    ctx.fillStyle=lg; ctx.beginPath(); ctx.roundRect(lx,ly,tLegW,tLegH,[0,0,2,2]); ctx.fill();
+  });
+
+  // Body/frame
+  const bodyGrad = ctx.createLinearGradient(tX, tGlassY+tGlassH, tX, tGlassY+tGlassH+tBodyH);
+  bodyGrad.addColorStop(0, ip.wall1); bodyGrad.addColorStop(1, ip.wall2);
+  ctx.fillStyle = bodyGrad; ctx.fillRect(tX, tGlassY+tGlassH, tW, tBodyH);
+  // Frame glow rim
+  ctx.strokeStyle = ip.accent; ctx.lineWidth = 1;
+  ctx.strokeRect(tX, tGlassY+tGlassH, tW, tBodyH);
+
+  // Interior scene strip (viewable through body)
+  const intVis = ctx.createLinearGradient(tX, tGlassY+tGlassH+2, tX, tGlassY+tGlassH+tBodyH-2);
+  intVis.addColorStop(0, ip.wall1); intVis.addColorStop(.5, ip.wall2); intVis.addColorStop(1, ip.floor);
+  ctx.fillStyle = intVis; ctx.fillRect(tX+2, tGlassY+tGlassH+2, tW-4, tBodyH-4);
+
+  // Base
+  const baseG = ctx.createLinearGradient(tX, 0, tX+tW, 0);
+  baseG.addColorStop(0, wp.base); baseG.addColorStop(.5, wp.mid); baseG.addColorStop(1, wp.base);
+  ctx.fillStyle = baseG; ctx.beginPath(); ctx.roundRect(tX, tGlassY+tGlassH+tBodyH, tW, tBaseH, 1); ctx.fill();
+
+  // Glass top
+  const glassGrad = ctx.createLinearGradient(tX, tGlassY, tX, tGlassY+tGlassH);
+  glassGrad.addColorStop(0,'rgba(24,22,34,.96)'); glassGrad.addColorStop(1,'rgba(14,12,22,.99)');
+  ctx.fillStyle = glassGrad; ctx.beginPath(); ctx.roundRect(tX, tGlassY, tW, tGlassH, [3,3,0,0]); ctx.fill();
+
+  // LED inner glow on glass edge
+  ctx.strokeStyle = 'rgba(184,147,106,.22)'; ctx.lineWidth = .5;
+  ctx.beginPath(); ctx.roundRect(tX, tGlassY, tW, tGlassH, [3,3,0,0]); ctx.stroke();
+
+  // Infinity dot cascade (the effect)
+  const ledG = ctx.createRadialGradient(w/2, tGlassY+tGlassH*.5, 0, w/2, tGlassY+tGlassH*.5, tW*.5);
+  ledG.addColorStop(0, atm.ledTint); ledG.addColorStop(1,'transparent');
+  ctx.fillStyle = ledG; ctx.fillRect(tX, tGlassY, tW, tGlassH);
+
+  const nDots = 11, cx = w/2, cy = tGlassY + tGlassH/2;
+  for(let i=0; i<nDots; i++){
+    const t = i/(nDots-1), r = Math.max(.4, 2.8*(1-t*.85)), a = Math.max(.04,(1-t)*0.88);
+    const spread = tW*.38, offX = (i-nDots/2)*spread/nDots*1.4;
+    ctx.beginPath(); ctx.arc(cx+offX, cy, r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,240,200,${a})`; ctx.fill();
+  }
+
+  // Glass highlight sweep
+  const hl = ctx.createLinearGradient(tX, tGlassY, tX+tW*.4, tGlassY+tGlassH);
+  hl.addColorStop(0,'rgba(255,255,255,.07)'); hl.addColorStop(1,'transparent');
+  ctx.fillStyle = hl; ctx.beginPath(); ctx.roundRect(tX, tGlassY, tW*.45, tGlassH, [3,3,0,0]); ctx.fill();
+
+  // Wood grain on base
+  ctx.strokeStyle = 'rgba(255,255,255,.03)'; ctx.lineWidth = .6;
+  for(let gi=0; gi<4; gi++){
+    ctx.beginPath(); ctx.moveTo(tX, tGlassY+tGlassH+tBodyH+gi*2.5);
+    ctx.lineTo(tX+tW, tGlassY+tGlassH+tBodyH+gi*2.5); ctx.stroke();
+  }
+
+  // Ambient glow under table
+  const ag = ctx.createRadialGradient(w/2, tGlassY+tGlassH*.5, 0, w/2, tGlassY+tGlassH*.5, tW*.6);
+  ag.addColorStop(0, atm.light); ag.addColorStop(1,'transparent');
+  ctx.fillStyle = ag; ctx.fillRect(0,0,w,h);
+}
+
+/* ════════════════════════════
+   SMOOTH CROSSFADE TRANSITION
+════════════════════════════ */
+const mainCanvas = document.getElementById('previewCanvas');
+const fadeCanvas = document.getElementById('prevFade');
+let transitioning = false;
+
+function transitionPreview() {
+  if(transitioning) { drawPreview(mainCanvas, state); return; }
+  transitioning = true;
+  // Snapshot current into fade canvas
+  const fCtx = fadeCanvas.getContext('2d');
+  fCtx.clearRect(0,0,fadeCanvas.width,fadeCanvas.height);
+  fCtx.drawImage(mainCanvas, 0, 0);
+  // Draw new state on main
+  drawPreview(mainCanvas, state);
+  // Fade out overlay
+  fadeCanvas.style.transition = 'none';
+  fadeCanvas.style.opacity = '1';
+  requestAnimationFrame(()=>{
+    fadeCanvas.style.transition = 'opacity .55s cubic-bezier(0.16,1,0.3,1)';
+    fadeCanvas.style.opacity = '0';
+    setTimeout(()=>{ transitioning = false; }, 600);
+  });
+}
+
+/* Initial draw */
+drawPreview(mainCanvas, state);
+
+/* ════════════════════════════
+   ATMOSPHERE THUMBNAILS (desktop + mobile)
+════════════════════════════ */
+document.querySelectorAll('[data-atmo]').forEach(c => drawAtmoThumb(c, c.dataset.atmo));
+
+/* ════════════════════════════
+   ATMOSPHERE THUMBNAILS
+════════════════════════════ */
+function drawAtmoThumb(canvas, key) {
+  const atm = atmos[key];
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  const bg = ctx.createLinearGradient(0,0,w,0);
+  bg.addColorStop(0, atm.bg[0]); bg.addColorStop(1, atm.bg[1]);
+  ctx.fillStyle = bg; ctx.fillRect(0,0,w,h);
+  // tiny table
+  ctx.fillStyle = 'rgba(20,18,28,.9)';
+  ctx.beginPath(); ctx.roundRect(w*.2,h*.3,w*.6,h*.25,1); ctx.fill();
+  ctx.strokeStyle = 'rgba(184,147,106,.25)'; ctx.lineWidth=.5; ctx.stroke();
+  const lg = ctx.createRadialGradient(w*.5,h*.43,0,w*.5,h*.43,w*.28);
+  lg.addColorStop(0, atm.ledTint); lg.addColorStop(1,'transparent');
+  ctx.fillStyle=lg; ctx.fillRect(w*.2,h*.3,w*.6,h*.25);
+  const ag = ctx.createRadialGradient(w*.5,h*.5,0,w*.5,h*.5,w*.45);
+  ag.addColorStop(0, atm.ambient); ag.addColorStop(1,'transparent');
+  ctx.fillStyle=ag; ctx.fillRect(0,0,w,h);
+}
+document.querySelectorAll('[data-atmo]').forEach(c => drawAtmoThumb(c, c.dataset.atmo));
+
+/* ════════════════════════════
+   OPTION SELECTION HANDLERS
+════════════════════════════ */
+const descText = document.getElementById('descText');
+const descLabel = document.getElementById('descLabel');
+
+function setDescription(key, label) {
+  descText.classList.add('fading');
+  setTimeout(()=>{
+    descLabel.textContent = label;
+    descText.textContent = descriptions[key] || '';
+    descText.classList.remove('fading');
+  }, 220);
+}
+
+function updateSummary() {
+  document.getElementById('previewName').textContent = displayNames['size-'+state.size];
+  document.getElementById('previewSub').textContent = displayNames['wood-'+state.wood]+' · '+displayNames['atmo-'+state.atmo];
+  document.getElementById('configChip').textContent = displayNames['size-'+state.size]+' · '+displayNames['wood-'+state.wood];
+  document.getElementById('eq-size').textContent = displayNames['size-'+state.size];
+  document.getElementById('eq-wood').textContent = displayNames['wood-'+state.wood];
+  document.getElementById('eq-interior').textContent = displayNames['interior-'+state.interior];
+  document.getElementById('eq-atmo').textContent = displayNames['atmo-'+state.atmo];
+}
+
+function handleOptClick(e) {
+  const card = e.target.closest('[data-group][data-val]');
+  if(!card) return;
+  const group = card.dataset.group, val = card.dataset.val;
+  document.querySelectorAll(`[data-group="${group}"]`).forEach(c=>c.classList.remove('active'));
+  card.classList.add('active');
+  let key, label;
+  if(group==='size'){ state.size=val; key='size-'+val; label='Size'; }
+  if(group==='wood'){ state.wood=val; key='wood-'+val; label='Wood'; }
+  if(group==='interior'){ state.interior=val; key='interior-'+val; label='Interior'; }
+  if(group==='atmo'){ state.atmo=val; key='atmo-'+val; label='Atmosphere'; }
+  setDescription(key, label);
+  updateSummary();
+  transitionPreview();
+  // highlight step
+  document.querySelectorAll('.cst').forEach(c=>c.classList.toggle('active', c.dataset.step===group));
+}
+
+document.getElementById('sizeOpts').addEventListener('click', handleOptClick);
+document.getElementById('woodOpts').addEventListener('click', handleOptClick);
+document.getElementById('interiorOpts').addEventListener('click', handleOptClick);
+document.getElementById('atmoOpts').addEventListener('click', handleOptClick);
+
+/* enquire button */
+document.getElementById('enqBtn').addEventListener('click', e=>{
+  e.preventDefault();
+  const s = state;
+  const subject = `Infinity Table Commission — ${displayNames['size-'+s.size]}, ${displayNames['wood-'+s.wood]}`;
+  const body = `Hi,\n\nI'd like to commission the following:\n\nSize: ${displayNames['size-'+s.size]}\nWood: ${displayNames['wood-'+s.wood]}\nInterior: ${displayNames['interior-'+s.interior]}\nAtmosphere: ${displayNames['atmo-'+s.atmo]}\n\nPlease get in touch to discuss further.`;
+  window.location.href = `mailto:hello@continuumdesigns.com.au?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+});
+
+/* ════════════════════════════
+   GLASS CANVAS
+════════════════════════════ */
+(function drawGlass(){
+  const canvas = document.getElementById('glassCanvas');
+  if(!canvas||!canvas.getContext) return;
+  canvas.width = canvas.parentElement.offsetWidth || 400;
+  canvas.height = (canvas.width/3)*4;
+  const ctx = canvas.getContext('2d'), w=canvas.width, h=canvas.height;
+  ctx.fillStyle='#0d0c12'; ctx.fillRect(0,0,w,h);
+  // Cross-section diagram of glass
+  const cx=w/2, layers=[
+    {y:.15,h:.04,label:'One-way mirror surface',col:'rgba(180,200,220,.15)',stroke:'rgba(184,147,106,.5)'},
+    {y:.23,h:.18,label:'LED depth cavity',col:'rgba(30,28,50,.6)',stroke:'rgba(184,147,106,.2)'},
+    {y:.45,h:.04,label:'Full mirror base',col:'rgba(160,170,200,.12)',stroke:'rgba(184,147,106,.4)'},
+  ];
+  layers.forEach((l,i)=>{
+    ctx.fillStyle=l.col; ctx.fillRect(w*.1,h*l.y,w*.8,h*l.h);
+    ctx.strokeStyle=l.stroke; ctx.lineWidth=.8; ctx.strokeRect(w*.1,h*l.y,w*.8,h*l.h);
+    if(i===1){
+      // dot cascade inside cavity
+      for(let d=0;d<11;d++){
+        const t=d/10, r=Math.max(.5,3*(1-t*.8)), a=(1-t)*.9;
+        const ox=(d-5)*22;
+        ctx.beginPath(); ctx.arc(cx+ox, h*(l.y+l.h/2), r, 0, Math.PI*2);
+        ctx.fillStyle=`rgba(255,230,180,${a})`; ctx.fill();
+      }
+      const ledG=ctx.createRadialGradient(cx,h*(l.y+l.h/2),0,cx,h*(l.y+l.h/2),w*.4);
+      ledG.addColorStop(0,'rgba(255,200,100,.12)'); ledG.addColorStop(1,'transparent');
+      ctx.fillStyle=ledG; ctx.fillRect(0,h*l.y,w,h*l.h);
+    }
+    ctx.fillStyle='rgba(184,147,106,.5)'; ctx.font=`300 ${Math.max(10,w*.028)}px 'Jost',sans-serif`;
+    ctx.fillText(l.label, w*.12, h*l.y - 8);
+  });
+  // Vertical leader lines
+  ctx.strokeStyle='rgba(184,147,106,.12)'; ctx.lineWidth=.5;
+  ctx.beginPath(); ctx.moveTo(w*.05,h*.1); ctx.lineTo(w*.05,h*.52); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(w*.03,h*.1); ctx.lineTo(w*.07,h*.1); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(w*.03,h*.52); ctx.lineTo(w*.07,h*.52); ctx.stroke();
+  ctx.fillStyle='rgba(184,147,106,.4)'; ctx.font=`300 ${Math.max(9,w*.025)}px 'Jost',sans-serif`;
+  ctx.save(); ctx.translate(w*.028, h*.31); ctx.rotate(-Math.PI/2);
+  ctx.fillText('35mm', 0, 0); ctx.restore();
+  // "Infused reflectivity" label
+  ctx.fillStyle='rgba(212,207,200,.3)'; ctx.font=`italic 300 ${Math.max(11,w*.032)}px 'Cormorant Garamond',serif`;
+  ctx.fillText('Infused reflectivity — not a film', w*.1, h*.6);
+  ctx.fillStyle='rgba(184,147,106,.35)'; ctx.font=`300 ${Math.max(10,w*.027)}px 'Jost',sans-serif`;
+  ctx.fillText('Sourced internationally. Tested obsessively.', w*.1, h*.64);
+})();
+
+/* ════════════════════════════
+   SHEPHERDCRAFT CANVAS
+════════════════════════════ */
+(function drawShep(){
+  const canvas=document.getElementById('shCanvas');
+  if(!canvas||!canvas.getContext) return;
+  canvas.width=canvas.parentElement.offsetWidth||400;
+  canvas.height=(canvas.width/3)*4;
+  const ctx=canvas.getContext('2d'),w=canvas.width,h=canvas.height;
+  ctx.fillStyle='#0e0d0a'; ctx.fillRect(0,0,w,h);
+  const wg=ctx.createRadialGradient(w*.5,h*.3,0,w*.5,h*.3,w*.6);
+  wg.addColorStop(0,'rgba(184,147,106,.07)'); wg.addColorStop(1,'transparent');
+  ctx.fillStyle=wg; ctx.fillRect(0,0,w,h);
+  // Workbench
+  ctx.fillStyle='#2a1e10'; ctx.fillRect(0,h*.58,w,h*.06);
+  ctx.fillStyle='#1a120a'; ctx.fillRect(0,h*.64,w,h*.36);
+  // Timber slab
+  const tg2=ctx.createLinearGradient(w*.1,h*.5,w*.9,h*.58);
+  tg2.addColorStop(0,'#3a2818'); tg2.addColorStop(.5,'#4a3420'); tg2.addColorStop(1,'#3a2818');
+  ctx.fillStyle=tg2; ctx.fillRect(w*.1,h*.5,w*.8,h*.08);
+  // Grain lines
+  ctx.strokeStyle='rgba(255,255,255,.04)'; ctx.lineWidth=.7;
+  for(let i=0;i<5;i++){ ctx.beginPath(); ctx.moveTo(w*.1,h*(.51+i*.014)); ctx.lineTo(w*.9,h*(.51+i*.014)); ctx.stroke(); }
+  // Gold edge reveal
+  ctx.fillStyle='rgba(184,147,106,.45)'; ctx.fillRect(w*.1,h*.5,w*.8,1);
+  // Measurement marks
+  ctx.strokeStyle='rgba(184,147,106,.2)'; ctx.lineWidth=.5;
+  ctx.beginPath(); ctx.moveTo(w*.08,h*.48); ctx.lineTo(w*.08,h*.6); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(w*.05,h*.48); ctx.lineTo(w*.11,h*.48); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(w*.05,h*.6); ctx.lineTo(w*.11,h*.6); ctx.stroke();
+  // Particles
+  [[.3,.3],[.7,.2],[.5,.15],[.8,.38],[.2,.44],[.6,.38]].forEach(([px,py])=>{
+    ctx.beginPath(); ctx.arc(w*px,h*py,1.5,0,Math.PI*2);
+    ctx.fillStyle=`rgba(184,147,106,${.15+Math.random()*.25})`; ctx.fill();
+  });
+  ctx.fillStyle='rgba(184,147,106,.28)'; ctx.font=`italic 300 ${Math.max(12,w*.034)}px 'Cormorant Garamond',serif`;
+  ctx.textAlign='center'; ctx.fillText('Osborne Park, Perth WA',w/2,h-.028*h);
+})();
+
+/* ════════════════════════════
+   FAQ — REFINED DETAILS
+════════════════════════════ */
+const faqData = {
+  power: {
+    q: 'How is the table powered?',
+    tag: 'Power & Lighting',
+    a: `<p>The table plugs into any standard wall socket. It comes with a <strong>3-metre cable</strong> and a plug matched to your country — no adapters, no guesswork.</p><p>The integrated LED system runs quietly and efficiently in the background. There's no switch visible on the surface. The light is simply always there, waiting to be noticed.</p>`
+  },
+  cable: {
+    q: 'How does cable management work?',
+    tag: 'Cable Management',
+    a: `<p>We understand the importance of a clutter-free space. Our Infinity Tables come with a 3-metre cable and plug for your country, discreetly located under the table. Excess cable can be neatly coiled and stored underneath.</p><p>Nothing breaks the surface. Nothing interrupts the room.</p>`
+  },
+  shipping: {
+    q: 'How is the table shipped and unboxed?',
+    tag: 'Delivery & Unboxing',
+    a: `<p>The packaging has been <strong>engineered for the experience</strong>. The outer top box lifts off cleanly — you never need to tilt or wrestle the table out of a box. It rises to meet you.</p><p>For Perth and Australian orders, <strong>expect delivery within 2–8 business days</strong>. International orders typically arrive within 6–16 days. Every piece is inspected before it leaves the studio.</p>`
+  },
+  glass: {
+    q: 'Is the glass safe and durable?',
+    tag: 'Glass & Safety',
+    a: `<p>The glass is <strong>tempered, edged, and safety-certified</strong>. It has been tested to hold <strong>100kg of standing weight</strong> and passed hammer impact testing — not because we expect that of you, but because we believe in leaving nothing to chance.</p><p>The edges are hand-finished for safe, comfortable handling. This is glass made to last generations, not seasons.</p>`
+  },
+  clean: {
+    q: 'How do I clean and maintain it?',
+    tag: 'Maintenance',
+    a: `<p>Maintenance is intentionally minimal. The glass surface responds well to <strong>standard glass cleaning products</strong> and a soft, lint-free cloth. No specialist chemicals, no complicated rituals.</p><p>One precaution: <strong>avoid prolonged direct sunlight</strong> on the surface. Over time, harsh UV exposure can affect both the timber and the glass's optical properties. Position the table away from extended direct sun and it will reward you indefinitely.</p>`
+  },
+  wrong: {
+    q: 'What happens if something goes wrong?',
+    tag: 'Warranty & Workmanship',
+    a: `<p>If any issue arises as a result of <strong>workmanship or manufacturing</strong>, we will fix it — free of charge, without debate. Your piece comes with a <strong>one-year full warranty</strong> covering any defect we've introduced.</p><p>We build every table as if it will be in someone's home for the next thirty years. We stand behind that belief.</p>`
+  },
+  support: {
+    q: 'Do you offer support after purchase?',
+    tag: 'Ongoing Support',
+    a: `<p>Yes — and without a time limit. We're <strong>locally based in Perth</strong>, and our team remains available to any customer who needs us, whether the table was purchased last month or three years ago.</p><p>For international customers, we offer remote support by email and video. If there's a question, a concern, or a scenario we haven't anticipated — reach out. We'll respond personally.</p>`
+  },
+  led: {
+    q: 'What is the LED lighting system like?',
+    tag: 'Lighting System',
+    a: `<p>The LEDs are <strong>commercial-grade strips</strong>, chosen for evenness, longevity, and colour fidelity. They're run through soft milky diffusers that eliminate harsh points of light and create the seamless depth cascade the table is known for.</p><p>Designed for tens of thousands of hours of life, the system won't dim, flicker, or degrade noticeably over normal use. The light you see today is the light you'll see in a decade.</p>`
+  }
+};
+
+// keyword index for search matching
+const faqKeywords = {
+  power:    ['power','powered','plug','electricity','socket','cable','outlet','voltage'],
+  cable:    ['cable','wire','cord','management','clutter','tidy','plug','lead'],
+  shipping: ['ship','shipping','delivered','delivery','unbox','packaging','arrive','freight','australia','international','days'],
+  glass:    ['glass','safe','safety','durable','break','hammer','weight','tempered','strong','fragile'],
+  clean:    ['clean','maintain','maintenance','wipe','dust','sunlight','care','look after'],
+  wrong:    ['wrong','warranty','guarantee','broken','damaged','repair','defect','workmanship','fault'],
+  support:  ['support','help','after','purchase','contact','service','assist','team','local','perth'],
+  led:      ['led','light','lighting','glow','illuminate','strip','bright','dim','colour','color','leds']
+};
+
+const faqInput = document.getElementById('faqInput');
+const faqClear = document.getElementById('faqClear');
+const faqSuggested = document.getElementById('faqSuggested');
+const faqResults = document.getElementById('faqResults');
+const faqNoResult = document.getElementById('faqNoResult');
+const faqAnswer = document.getElementById('faqAnswer');
+const faqAnswerInner = document.getElementById('faqAnswerInner');
+const faqAnswerTag = document.getElementById('faqAnswerTag');
+const faqAnswerQ = document.getElementById('faqAnswerQ');
+const faqAnswerBody = document.getElementById('faqAnswerBody');
+const faqSendBtn = document.getElementById('faqSendBtn');
+const faqQueryForm = document.getElementById('faqQueryForm');
+
+let faqAnswerTimer = null;
+let currentFaqKey = null;
+
+function showFaqAnswer(key) {
+  if(currentFaqKey === key) return;
+  currentFaqKey = key;
+  const d = faqData[key];
+  if(!d) return;
+
+  // highlight active question
+  document.querySelectorAll('.faq-q').forEach(q => q.classList.toggle('active', q.dataset.faq === key));
+  document.querySelectorAll('.faq-result-item').forEach(r => r.classList.toggle('active', r.dataset.faq === key));
+
+  // close first if open, then reopen with new content
+  faqAnswerInner.classList.remove('visible');
+  if(faqAnswer.classList.contains('open')) {
+    setTimeout(populateAndOpen, 200);
+  } else {
+    populateAndOpen();
+  }
+
+  function populateAndOpen() {
+    faqAnswerTag.textContent = d.tag;
+    faqAnswerQ.textContent = d.q;
+    faqAnswerBody.innerHTML = d.a;
+    // measure natural height then set
+    faqAnswer.classList.add('open');
+    clearTimeout(faqAnswerTimer);
+    faqAnswerTimer = setTimeout(() => {
+      faqAnswerInner.classList.add('visible');
+    }, 30);
+  }
+}
+
+function searchFaq(query) {
+  if(!query.trim()) {
+    // reset to suggested
+    faqSuggested.classList.remove('hidden');
+    faqResults.classList.remove('visible');
+    faqResults.innerHTML = '';
+    faqNoResult.classList.remove('visible');
+    currentFaqKey = null;
+    return;
+  }
+  faqSuggested.classList.add('hidden');
+  const q = query.toLowerCase().trim();
+  const matches = [];
+
+  Object.entries(faqKeywords).forEach(([key, words]) => {
+    const score = words.filter(w => q.includes(w) || w.includes(q.split(' ')[0])).length;
+    // also match question text
+    const qText = faqData[key].q.toLowerCase();
+    const textScore = q.split(' ').filter(w => w.length > 2 && qText.includes(w)).length;
+    if(score > 0 || textScore > 0) matches.push({ key, score: score + textScore * 1.5 });
+  });
+
+  matches.sort((a,b) => b.score - a.score);
+
+  if(matches.length === 0) {
+    faqResults.classList.remove('visible');
+    faqResults.innerHTML = '';
+    faqNoResult.classList.add('visible');
+    return;
+  }
+
+  faqNoResult.classList.remove('visible');
+  faqResults.innerHTML = '';
+
+  // highlight matching fragment in question text
+  function highlightMatch(text, q) {
+    const words = q.split(' ').filter(w => w.length > 2);
+    let result = text;
+    words.forEach(w => {
+      const re = new RegExp('('+w+')', 'gi');
+      result = result.replace(re, '<em class="faq-result-match">$1</em>');
+    });
+    return result;
+  }
+
+  matches.forEach(({ key }) => {
+    const item = document.createElement('div');
+    item.className = 'faq-result-item';
+    item.dataset.faq = key;
+    item.innerHTML = `<span class="faq-result-text">${highlightMatch(faqData[key].q, q)}</span><span class="faq-q-arrow" style="width:22px;display:inline-block;height:1px;background:rgba(184,147,106,.2);position:relative;flex-shrink:0"></span>`;
+    item.addEventListener('click', () => showFaqAnswer(key));
+    item.addEventListener('mouseenter', () => {
+      const arrow = item.querySelector('.faq-q-arrow');
+      if(arrow){ arrow.style.width='32px'; arrow.style.background='var(--bronze)'; }
+    });
+    item.addEventListener('mouseleave', () => {
+      const arrow = item.querySelector('.faq-q-arrow');
+      if(arrow){ arrow.style.width='22px'; arrow.style.background='rgba(184,147,106,.2)'; }
+    });
+    faqResults.appendChild(item);
+  });
+  faqResults.classList.add('visible');
+
+  // auto-show top match
+  if(matches.length === 1) showFaqAnswer(matches[0].key);
+}
+
+// Debounce search
+let searchTimer;
+faqInput.addEventListener('input', () => {
+  const val = faqInput.value;
+  faqClear.classList.toggle('visible', val.length > 0);
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => searchFaq(val), 160);
+});
+
+faqInput.addEventListener('keydown', e => {
+  if(e.key === 'Escape') { faqInput.value = ''; faqClear.classList.remove('visible'); searchFaq(''); faqAnswer.classList.remove('open'); faqAnswerInner.classList.remove('visible'); currentFaqKey = null; }
+});
+
+faqClear.addEventListener('click', () => {
+  faqInput.value = '';
+  faqClear.classList.remove('visible');
+  searchFaq('');
+  faqAnswer.classList.remove('open');
+  faqAnswerInner.classList.remove('visible');
+  currentFaqKey = null;
+  faqInput.focus();
+});
+
+// Suggested question clicks
+document.querySelectorAll('.faq-q').forEach(q => {
+  q.addEventListener('click', () => {
+    showFaqAnswer(q.dataset.faq);
+    // scroll answer into view gently
+    setTimeout(() => faqAnswer.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 300);
+  });
+});
+
+// Send query form toggle
+faqSendBtn.addEventListener('click', () => {
+  faqQueryForm.classList.toggle('open');
+  if(faqQueryForm.classList.contains('open')) {
+    // pre-fill with typed query
+    const qi = document.getElementById('faqQueryInput');
+    if(qi && faqInput.value) qi.value = faqInput.value;
+    setTimeout(() => qi && qi.focus(), 50);
+  }
+});
+
+document.getElementById('faqQuerySubmit').addEventListener('click', () => {
+  const qi = document.getElementById('faqQueryInput');
+  const sent = document.getElementById('faqFormSent');
+  if(qi && qi.value.trim()) {
+    // In production: send to backend / email
+    const qEmail = document.getElementById('faqQueryEmail').value;
+    window.location.href = `mailto:hello@continuumdesigns.com.au?subject=Customer Question&body=${encodeURIComponent(qi.value + (qEmail ? '\n\nReply to: '+qEmail : ''))}`;
+    qi.value = '';
+    if(sent) { sent.classList.add('visible'); setTimeout(() => sent.classList.remove('visible'), 4000); }
+  }
+});
+document.querySelectorAll('.cst').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const step = btn.dataset.step;
+    const el = document.getElementById('step-'+step);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+    document.querySelectorAll('.cst').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+/* ════════════════════════════
+   FLASH RING — preview update confirmation
+════════════════════════════ */
+const flashRing = document.getElementById('flashRing');
+function flashPreview(){
+  if(!flashRing) return;
+  flashRing.classList.remove('flash');
+  void flashRing.offsetWidth; // reflow
+  flashRing.classList.add('flash');
+}
+
+/* ════════════════════════════
+   MOBILE TAB SYSTEM
+════════════════════════════ */
+const mTabs = document.querySelectorAll('.m-tab');
+const mPanels = document.querySelectorAll('.m-panel');
+
+mTabs.forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    const target = tab.dataset.tab;
+    mTabs.forEach(t=>t.classList.remove('active'));
+    mPanels.forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    const panel = document.getElementById('m-panel-'+target);
+    if(panel) panel.classList.add('active');
+  });
+});
+
+/* ════════════════════════════
+   MOBILE OPTION HANDLERS
+════════════════════════════ */
+const mDescText = document.getElementById('mDescText');
+const mDescLabel = document.getElementById('mDescLabel');
+
+function mSetDescription(key, label){
+  if(!mDescText) return;
+  mDescText.classList.add('fading');
+  setTimeout(()=>{
+    mDescLabel.textContent = label;
+    mDescText.textContent = descriptions[key] || '';
+    mDescText.classList.remove('fading');
+  }, 200);
+}
+
+function mUpdateSummary(){
+  const sn = displayNames['size-'+state.size];
+  const wn = displayNames['wood-'+state.wood];
+  const an = displayNames['atmo-'+state.atmo];
+  const inn = displayNames['interior-'+state.interior];
+  const el = id => document.getElementById(id);
+  if(el('mBarName')) el('mBarName').textContent = sn;
+  if(el('mBarDetail')) el('mBarDetail').textContent = wn+' · '+an;
+  if(el('meq-size')) el('meq-size').textContent = sn;
+  if(el('meq-wood')) el('meq-wood').textContent = wn;
+  if(el('meq-interior')) el('meq-interior').textContent = inn;
+  if(el('meq-atmo')) el('meq-atmo').textContent = an;
+  // Mark tab as done
+  const tabMap = {size:'size',wood:'wood',interior:'interior',atmo:'atmo'};
+}
+
+function handleMobileOpt(e){
+  const card = e.target.closest('[data-group][data-val]');
+  if(!card) return;
+  const group = card.dataset.group, val = card.dataset.val;
+  // Update all matching groups (desktop + mobile sync)
+  document.querySelectorAll(`[data-group="${group}"]`).forEach(c=>c.classList.remove('active'));
+  card.classList.add('active');
+  // Sync desktop controls too
+  document.querySelectorAll(`[data-group="${group}"][data-val="${val}"]`).forEach(c=>c.classList.add('active'));
+  let key, label;
+  if(group==='size'){ state.size=val; key='size-'+val; label='Size'; }
+  if(group==='wood'){ state.wood=val; key='wood-'+val; label='Wood'; }
+  if(group==='interior'){ state.interior=val; key='interior-'+val; label='Interior'; }
+  if(group==='atmo'){ state.atmo=val; key='atmo-'+val; label='Atmosphere'; }
+  mSetDescription(key, label);
+  setDescription(key, label); // also update desktop desc
+  updateSummary();
+  mUpdateSummary();
+  transitionPreview();
+  flashPreview();
+  // mark tab done
+  const tabEl = document.querySelector(`.m-tab[data-tab="${group==='atmo'?'atmo':group}"]`);
+  if(tabEl) tabEl.classList.add('done');
+  // auto advance to next tab after selection (size→wood, wood→interior, interior→atmo)
+  const flow = ['size','wood','interior','atmo'];
+  const idx = flow.indexOf(group);
+  if(idx >= 0 && idx < flow.length-1){
+    setTimeout(()=>{
+      const nextTab = document.querySelector(`.m-tab[data-tab="${flow[idx+1]}"]`);
+      if(nextTab) nextTab.click();
+    }, 380);
+  }
+}
+
+['mSizeOpts','mWoodOpts','mInteriorOpts','mAtmoOpts'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('click', handleMobileOpt);
+});
+
+/* Mobile commission buttons */
+['mEnqBtn','mBarBtn'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('click', e=>{
+    e.preventDefault();
+    const s = state;
+    const subject = `Infinity Table Commission — ${displayNames['size-'+s.size]}, ${displayNames['wood-'+s.wood]}`;
+    const body = `Hi,\n\nI'd like to commission the following:\n\nSize: ${displayNames['size-'+s.size]}\nWood: ${displayNames['wood-'+s.wood]}\nInterior: ${displayNames['interior-'+s.interior]}\nAtmosphere: ${displayNames['atmo-'+s.atmo]}\n\nPlease get in touch to discuss further.`;
+    window.location.href = `mailto:hello@continuumdesigns.com.au?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+});
+
+/* Initial mobile summary */
+mUpdateSummary();
+</script>
+</body>
+</html>
