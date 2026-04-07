@@ -1449,7 +1449,7 @@ function goToCheckout() {
     woodLabel: displayNames['wood-'+state.wood],
     interiorLabel: displayNames['interior-'+state.interior]
   }));
-  window.location.href = 'checkout.html';
+  window.location.href = '/checkout';
 }
 document.getElementById('enqBtn').addEventListener('click', e=>{ e.preventDefault(); goToCheckout(); });
 

@@ -68,20 +68,21 @@ nav.solid::after{opacity:1}
 @keyframes scroll-drop{0%{transform:scaleY(0);transform-origin:top;opacity:0}30%{opacity:1}70%{transform:scaleY(1);transform-origin:top}71%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom;opacity:0}}
 @keyframes line-in{to{opacity:1;transform:translateY(0)}}
 
-.s2{position:relative;padding:14rem 0;overflow:hidden}
-.s2-bg{position:absolute;inset:0;background:linear-gradient(to bottom,var(--ink) 0%,var(--deep) 40%,var(--obsidian) 100%)}
-.s2-light{position:absolute;top:20%;right:-10%;width:40vw;height:60vh;background:radial-gradient(ellipse at 70% 50%,rgba(184,147,106,.04) 0%,transparent 65%);pointer-events:none;animation:s2-light-drift 10s ease-in-out infinite alternate}
-@keyframes s2-light-drift{to{transform:translate(-3%,5%) scale(1.05)}}
-.s2-inner{position:relative;z-index:2;max-width:720px;margin:0 auto;padding:0 3.5rem}
-.s2-h2{font-family:var(--serif);font-weight:300;font-size:clamp(2.4rem,5.5vw,5rem);line-height:1;color:var(--white);letter-spacing:-.01em;margin-bottom:4rem}
+.s2{position:relative;background:var(--ink);overflow:hidden}
+.s2-inner{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;align-items:center;max-width:1400px;margin:0 auto}
+.s2-content{padding:8rem 4rem 8rem 5rem}
+.s2-photo-wrap{background:#000;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.s2-photo-wrap img{width:110%;height:auto;object-fit:contain;display:block;filter:brightness(.7)}
+.s2-photo-wrap::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,transparent 40%,#000 100%);pointer-events:none}
+.s2-h2{font-family:var(--serif);font-weight:300;font-size:clamp(2.4rem,5.5vw,5rem);line-height:1;color:var(--white);letter-spacing:-.01em;margin-bottom:2.5rem}
 .s2-h2 em{font-style:italic}
-.s2-line{display:block;font-size:clamp(.95rem,1.6vw,1.12rem);font-weight:300;letter-spacing:.03em;color:rgba(212,207,200,.5);line-height:1.9;margin-bottom:.1rem;transform:translateY(30px);opacity:0;transition:opacity .9s var(--ease),transform .9s var(--ease),color .9s}
+.s2-line{display:block;font-size:clamp(.95rem,1.6vw,1.12rem);font-weight:300;letter-spacing:.03em;color:rgba(212,207,200,.5);line-height:1.4;margin-bottom:0;transform:translateY(30px);opacity:0;transition:opacity .9s var(--ease),transform .9s var(--ease),color .9s}
 .s2-line.em{font-family:var(--serif);font-style:italic;font-size:clamp(1.05rem,1.9vw,1.3rem);color:rgba(212,207,200,.38)}
 .s2-line.visible{opacity:1;transform:translateY(0);color:rgba(212,207,200,.72)}
 .s2-line.em.visible{color:rgba(212,207,200,.6)}
 .s2-line.strong{font-family:var(--serif);font-size:clamp(1.1rem,2vw,1.45rem);font-weight:300;font-style:italic;color:rgba(212,207,200,.45)}
 .s2-line.strong.visible{color:var(--cream)}
-.s2-gap{height:1.4rem;display:block}
+.s2-gap{height:.5rem;display:block}
 
 .gallery-section{position:relative;padding:8rem 0 4rem;background:var(--obsidian)}
 .gallery-header{padding:0 3.5rem;margin-bottom:5rem;text-align:center}
@@ -161,7 +162,7 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
   .nav-burger{display:flex}
   .hero-content{padding:0 2rem 5rem}
   .hero-scroll-cue{right:2rem}
-  .s2-inner{padding:0 2rem}
+  .s2-inner{grid-template-columns:1fr} .s2-content{padding:5rem 2rem} .s2-photo-wrap{order:-1}
   .gallery-grid{columns:2;padding:0 1.5rem}
   .gallery-header{padding:0 2rem;margin-bottom:3.5rem}
   .gallery-cta-wrap{padding:4rem 2rem 5rem}
@@ -211,7 +212,7 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
     <li><a href="#gallery" class="nl">Collection</a></li>
     <li><a href="#portfolio" class="nl">Craft</a></li>
     <li><a href="#testimonials" class="nl">Clients</a></li>
-    <li><a href="configure.html" class="nl">Design Yours</a></li>
+    <li><a href="/buildinfinitytable" class="nl">Design Yours</a></li>
     <li><a href="#footer" class="nl">Enquire</a></li>
   </ul>
   <button class="nav-burger" id="navBurger" aria-label="Menu">
@@ -223,7 +224,7 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
   <a href="#gallery" class="ndl">Collection</a>
   <a href="#portfolio" class="ndl">Craft</a>
   <a href="#testimonials" class="ndl">Clients</a>
-  <a href="configure.html" class="ndl">Design Yours</a>
+  <a href="/buildinfinitytable" class="ndl">Design Yours</a>
   <a href="#footer" class="ndl">Enquire</a>
 </div>
 
@@ -271,11 +272,10 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
 </section>
 
 <section class="s2">
-  <div class="s2-bg" aria-hidden="true"></div>
-  <div class="s2-light" aria-hidden="true"></div>
   <div class="s2-inner">
-    <h2 class="s2-h2 reveal">It doesn't sit in a room.<br><em>It changes it.</em></h2>
-    <div class="s2-body" id="s2Body">
+    <div class="s2-content">
+      <h2 class="s2-h2 reveal">It doesn't sit in a room.<br><em>It changes it.</em></h2>
+      <div class="s2-body" id="s2Body">
       <span class="s2-line em">Most furniture fills space.</span>
       <span class="s2-gap"></span>
       <span class="s2-line strong">This changes it.</span>
@@ -292,6 +292,10 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
       <span class="s2-line strong">It's an experience.</span>
       <span class="s2-gap"></span>
       <span class="s2-line strong">No other table in the room matters anymore.</span>
+      </div>
+    </div>
+    <div class="s2-photo-wrap">
+      <img src="images/P9300058.jpg" alt="Continuum Designs infinity coffee table">
     </div>
   </div>
 </section>
@@ -307,7 +311,7 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
   </div>
   <div class="gallery-cta-wrap reveal">
     <p class="gallery-cta-title">Customise size, materials, and interior atmosphere.</p>
-    <a href="configure.html" class="gallery-cta-btn">Design Yours<span class="cta-arrow"></span></a>
+    <a href="/buildinfinitytable" class="gallery-cta-btn">Design Yours<span class="cta-arrow"></span></a>
     <p class="gallery-cta-sub">Every piece is made to order in Perth</p>
   </div>
 </section>
@@ -361,9 +365,9 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
     <div class="footer-col">
       <h4>Collection</h4>
       <ul>
-        <li><a href="configure.html">Ebony Oak</a></li>
-        <li><a href="configure.html">Light Oak</a></li>
-        <li><a href="configure.html">Bespoke Orders</a></li>
+        <li><a href="/buildinfinitytable">Ebony Oak</a></li>
+        <li><a href="/buildinfinitytable">Light Oak</a></li>
+        <li><a href="/buildinfinitytable">Bespoke Orders</a></li>
       </ul>
     </div>
     <div class="footer-col">
