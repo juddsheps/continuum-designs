@@ -659,7 +659,7 @@ from{opacity:0;transform:translateY(18px)}}
 
 <!-- NAV -->
 <nav id="mainNav">
-  <a href="index.html" class="nav-logo">Continuum Designs<span>Infinity Tables · Perth</span></a>
+  <a href="index.html" class="nav-logo"><img src="images/Continuum Designs Logo - Full Horizontal - White.png" alt="Continuum Designs" style="height:32px;width:auto;display:block;"></a>
   <ul class="nav-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="#glass">The Glass</a></li>
@@ -839,11 +839,11 @@ from{opacity:0;transform:translateY(18px)}}
           <div class="enq-row"><span class="enq-key">Size</span><span class="enq-val" id="eq-size">Luxe Edition</span></div>
           <div class="enq-row"><span class="enq-key">Wood</span><span class="enq-val" id="eq-wood">Ebony Oak</span></div>
           <div class="enq-row"><span class="enq-key">Interior</span><span class="enq-val" id="eq-interior">Crimson Atelier</span></div>
-          <div class="enq-row"><span class="enq-key">Atmosphere</span><span class="enq-val" id="eq-atmo">Penthouse</span></div>
           <div class="enq-row"><span class="enq-key">Lead Time</span><span class="enq-val">2–3 weeks</span></div>
+          <div class="enq-row" style="border-bottom:none;padding-top:1rem"><span class="enq-key" style="color:var(--bronze)">Total</span><span class="enq-val" id="eq-price" style="color:var(--bronze);font-size:1.1rem">$749 AUD</span></div>
         </div>
-        <a href="#" class="enq-btn" id="enqBtn">Commission This Piece</a>
-        <p class="enq-note">Each table is made exclusively for you at our Osborne Park studio. We'll be in touch within 24 hours.</p>
+        <a href="#" class="enq-btn" id="enqBtn">Buy Now</a>
+        <p class="enq-note">Each table is made exclusively for you at our Osborne Park studio. Dispatched within 2–3 weeks.</p>
       </div>
 
     </div><!-- /controls -->
@@ -954,10 +954,10 @@ from{opacity:0;transform:translateY(18px)}}
       <div class="enq-row"><span class="enq-key">Size</span><span class="enq-val" id="meq-size">Luxe Edition</span></div>
       <div class="enq-row"><span class="enq-key">Wood</span><span class="enq-val" id="meq-wood">Ebony Oak</span></div>
       <div class="enq-row"><span class="enq-key">Interior</span><span class="enq-val" id="meq-interior">Crimson Atelier</span></div>
-      <div class="enq-row"><span class="enq-key">Atmosphere</span><span class="enq-val" id="meq-atmo">Penthouse</span></div>
       <div class="enq-row"><span class="enq-key">Lead Time</span><span class="enq-val">2–3 weeks</span></div>
+      <div class="enq-row" style="border-bottom:none;padding-top:1rem"><span class="enq-key" style="color:var(--bronze)">Total</span><span class="enq-val" id="meq-price" style="color:var(--bronze);font-size:1.1rem">$749 AUD</span></div>
     </div>
-    <a href="#" class="enq-btn" id="mEnqBtn" style="display:block;text-align:center">Commission This Piece</a>
+    <a href="#" class="enq-btn" id="mEnqBtn" style="display:block;text-align:center">Buy Now</a>
     <p class="enq-note">Made exclusively for you at our Osborne Park studio.</p>
   </div>
 
@@ -973,7 +973,7 @@ from{opacity:0;transform:translateY(18px)}}
       <div class="m-enq-name" id="mBarName">Luxe Edition</div>
       <div class="m-enq-detail" id="mBarDetail">Ebony Oak · Penthouse</div>
     </div>
-    <a href="#" class="m-enq-btn" id="mBarBtn">Commission →</a>
+    <a href="#" class="m-enq-btn" id="mBarBtn">Buy Now →</a>
   </div>
 
 </div><!-- /m-tabs -->
@@ -1092,7 +1092,7 @@ from{opacity:0;transform:translateY(18px)}}
 
 <!-- FOOTER -->
 <footer class="footer-strip">
-  <div class="fs-brand">Continuum Designs<span>Infinity Tables · Perth WA</span></div>
+  <div class="fs-brand"><img src="images/Continuum Designs Logo - Full Horizontal - White.png" alt="Continuum Designs" style="height:36px;width:auto;display:block;opacity:.8;"></div>
   <ul class="fs-links">
     <li><a href="#">Collection</a></li>
     <li><a href="#">Instagram</a></li>
@@ -1399,6 +1399,10 @@ function setDescription(key, label) {
   }, 220);
 }
 
+const prices = { 'luxe': 749, 'luxe-grand': 1120 };
+
+function getPrice() { return prices[state.size] || 749; }
+
 function updateSummary() {
   document.getElementById('previewName').textContent = displayNames['size-'+state.size];
   document.getElementById('previewSub').textContent = displayNames['wood-'+state.wood]+' · '+displayNames['atmo-'+state.atmo];
@@ -1406,7 +1410,9 @@ function updateSummary() {
   document.getElementById('eq-size').textContent = displayNames['size-'+state.size];
   document.getElementById('eq-wood').textContent = displayNames['wood-'+state.wood];
   document.getElementById('eq-interior').textContent = displayNames['interior-'+state.interior];
-  document.getElementById('eq-atmo').textContent = displayNames['atmo-'+state.atmo];
+  const p = '$'+getPrice().toLocaleString()+' AUD';
+  const ep = document.getElementById('eq-price'); if(ep) ep.textContent = p;
+  const mp = document.getElementById('meq-price'); if(mp) mp.textContent = p;
 }
 
 function handleOptClick(e) {
@@ -1432,14 +1438,20 @@ document.getElementById('woodOpts').addEventListener('click', handleOptClick);
 document.getElementById('interiorOpts').addEventListener('click', handleOptClick);
 document.getElementById('atmoOpts').addEventListener('click', handleOptClick);
 
-/* enquire button */
-document.getElementById('enqBtn').addEventListener('click', e=>{
-  e.preventDefault();
-  const s = state;
-  const subject = `Infinity Table Commission — ${displayNames['size-'+s.size]}, ${displayNames['wood-'+s.wood]}`;
-  const body = `Hi,\n\nI'd like to commission the following:\n\nSize: ${displayNames['size-'+s.size]}\nWood: ${displayNames['wood-'+s.wood]}\nInterior: ${displayNames['interior-'+s.interior]}\nAtmosphere: ${displayNames['atmo-'+s.atmo]}\n\nPlease get in touch to discuss further.`;
-  window.location.href = `mailto:hello@continuumdesigns.com.au?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-});
+/* buy now button */
+function goToCheckout() {
+  localStorage.setItem('cd_order', JSON.stringify({
+    size: state.size,
+    wood: state.wood,
+    interior: state.interior,
+    price: getPrice(),
+    sizeLabel: displayNames['size-'+state.size],
+    woodLabel: displayNames['wood-'+state.wood],
+    interiorLabel: displayNames['interior-'+state.interior]
+  }));
+  window.location.href = 'checkout.html';
+}
+document.getElementById('enqBtn').addEventListener('click', e=>{ e.preventDefault(); goToCheckout(); });
 
 /* ════════════════════════════
    GLASS CANVAS
@@ -1864,16 +1876,10 @@ function handleMobileOpt(e){
   if(el) el.addEventListener('click', handleMobileOpt);
 });
 
-/* Mobile commission buttons */
+/* Mobile buy now buttons */
 ['mEnqBtn','mBarBtn'].forEach(id=>{
   const el = document.getElementById(id);
-  if(el) el.addEventListener('click', e=>{
-    e.preventDefault();
-    const s = state;
-    const subject = `Infinity Table Commission — ${displayNames['size-'+s.size]}, ${displayNames['wood-'+s.wood]}`;
-    const body = `Hi,\n\nI'd like to commission the following:\n\nSize: ${displayNames['size-'+s.size]}\nWood: ${displayNames['wood-'+s.wood]}\nInterior: ${displayNames['interior-'+s.interior]}\nAtmosphere: ${displayNames['atmo-'+s.atmo]}\n\nPlease get in touch to discuss further.`;
-    window.location.href = `mailto:hello@continuumdesigns.com.au?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-  });
+  if(el) el.addEventListener('click', e=>{ e.preventDefault(); goToCheckout(); });
 });
 
 /* Initial mobile summary */

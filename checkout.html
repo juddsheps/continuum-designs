@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Continuum Designs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#070608;--deep:#0b0a0d;--obsidian:#111018;--smoked:#1a1820;--veil:#2a2830;
+  --ash:#5c5a62;--silver:#9a9898;--linen:#d4cfc8;--cream:#ede8e0;--white:#f8f5f0;
+  --bronze:#b8936a;--bronze-l:#d4b08a;--bronze-d:#7a5f40;
+  --serif:'Cormorant Garamond',serif;--sans:'Jost',sans-serif;
+  --ease:cubic-bezier(.4,0,.2,1);
+}
+html{font-size:16px;scroll-behavior:smooth}
+body{background:var(--deep);color:var(--linen);font-family:var(--sans);font-weight:300;min-height:100vh;-webkit-font-smoothing:antialiased}
+
+/* GRAIN */
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:9000;opacity:.025;
+background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+animation:grain-d 9s steps(10) infinite}
+@keyframes grain-d{0%,100%{transform:translate(0,0)}20%{transform:translate(-2%,3%)}40%{transform:translate(3%,-1%)}60%{transform:translate(-1%,-3%)}80%{transform:translate(2%,2%)}}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 3rem;background:linear-gradient(to bottom,rgba(7,6,8,.9),transparent)}
+.nav-logo{text-decoration:none;display:flex;flex-direction:column}
+.nav-word{font-family:var(--serif);font-weight:300;font-size:1.15rem;letter-spacing:.08em;color:var(--white)}
+.nav-sub{font-size:.52rem;letter-spacing:.42em;text-transform:uppercase;color:var(--bronze);margin-top:.15rem}
+.nav-back{font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--silver);text-decoration:none;transition:color .3s}
+.nav-back:hover{color:var(--bronze)}
+
+/* PAGE */
+.checkout-page{min-height:100vh;padding:8rem 2rem 6rem;display:flex;justify-content:center}
+.checkout-wrap{width:100%;max-width:960px;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+
+/* ORDER SUMMARY */
+.summary-block{position:sticky;top:7rem}
+.section-lbl{font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:1.5rem}
+.summary-title{font-family:var(--serif);font-weight:300;font-size:clamp(1.6rem,3vw,2.4rem);color:var(--white);margin-bottom:.4rem;letter-spacing:.02em}
+.summary-sub{font-size:.72rem;letter-spacing:.2em;color:var(--silver);text-transform:uppercase;margin-bottom:2.5rem}
+.summary-rows{border-top:1px solid rgba(184,147,106,.12)}
+.sum-row{display:flex;justify-content:space-between;align-items:center;padding:.8rem 0;border-bottom:1px solid rgba(184,147,106,.07)}
+.sum-key{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+.sum-val{font-size:.75rem;color:var(--linen);text-align:right}
+.sum-total{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 0;margin-top:.5rem;border-top:1px solid rgba(184,147,106,.2)}
+.sum-total .sum-key{color:var(--bronze);letter-spacing:.25em}
+.sum-total-price{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--bronze)}
+.summary-note{margin-top:1.5rem;font-size:.65rem;line-height:1.8;color:var(--ash);letter-spacing:.05em}
+
+/* FORM */
+.form-block{}
+.form-title{font-family:var(--serif);font-weight:300;font-size:clamp(1.4rem,2.5vw,2rem);color:var(--white);margin-bottom:2rem;letter-spacing:.02em}
+.form-section{margin-bottom:2.5rem}
+.form-section-title{font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:var(--bronze);margin-bottom:1.25rem;display:block}
+.field{margin-bottom:1.25rem}
+.field label{display:block;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--silver);margin-bottom:.5rem}
+.field input,.field select,.field textarea{
+  width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(184,147,106,.18);
+  color:var(--linen);font-family:var(--sans);font-weight:300;font-size:.85rem;
+  padding:.85rem 1rem;outline:none;transition:border-color .3s;
+  -webkit-appearance:none;border-radius:0;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(184,147,106,.5)}
+.field input::placeholder,.field textarea::placeholder{color:var(--ash)}
+.field select option{background:var(--obsidian);color:var(--linen)}
+.field textarea{resize:vertical;min-height:80px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* PAYMENT PLACEHOLDER */
+.payment-box{background:rgba(184,147,106,.04);border:1px solid rgba(184,147,106,.15);padding:2rem;margin-bottom:2rem}
+.payment-box-title{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--bronze);margin-bottom:1.25rem;display:block}
+.stripe-placeholder{background:rgba(255,255,255,.03);border:1px solid rgba(184,147,106,.12);padding:1.5rem;text-align:center;color:var(--ash);font-size:.75rem;letter-spacing:.1em}
+.stripe-badge{font-size:.6rem;letter-spacing:.2em;color:var(--ash);margin-top:1rem;display:block;text-align:center}
+
+/* SUBMIT */
+.submit-btn{width:100%;background:transparent;border:1px solid rgba(184,147,106,.4);color:var(--bronze-l);font-family:var(--sans);font-weight:300;font-size:.68rem;letter-spacing:.45em;text-transform:uppercase;padding:1.25rem;cursor:pointer;transition:background .4s var(--ease),border-color .4s,color .4s,transform .3s var(--ease);display:flex;align-items:center;justify-content:center;gap:1rem}
+.submit-btn:hover{background:var(--bronze);border-color:var(--bronze);color:var(--ink);transform:translateY(-2px)}
+.submit-btn:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.submit-note{font-size:.6rem;letter-spacing:.12em;color:var(--ash);text-align:center;margin-top:1rem;line-height:1.7}
+
+/* SUCCESS */
+.success-screen{display:none;text-align:center;padding:4rem 2rem}
+.success-screen.active{display:block}
+.success-icon{width:60px;height:60px;border:1px solid rgba(184,147,106,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;font-size:1.5rem;color:var(--bronze)}
+.success-h{font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,4vw,3rem);color:var(--white);margin-bottom:1rem;letter-spacing:.02em}
+.success-p{font-size:.78rem;line-height:1.9;color:var(--silver);max-width:400px;margin:0 auto 2rem;letter-spacing:.05em}
+.success-ref{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bronze)}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  nav{padding:1.25rem 1.5rem}
+  .checkout-wrap{grid-template-columns:1fr;gap:3rem}
+  .summary-block{position:static}
+  .checkout-page{padding:6rem 1.5rem 4rem}
+  .field-row{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="images/Continuum Designs Logo - Full Horizontal - White.png" alt="Continuum Designs" style="height:32px;width:auto;display:block;">
+  </a>
+  <a href="configure.html" class="nav-back">← Back to Configurator</a>
+</nav>
+
+<main class="checkout-page">
+  <div class="checkout-wrap" id="checkoutWrap">
+
+    <!-- ORDER SUMMARY -->
+    <div class="summary-block">
+      <span class="section-lbl">Your Order</span>
+      <h2 class="summary-title" id="sumTitle">Luxe Edition</h2>
+      <p class="summary-sub" id="sumSub">Ebony Oak</p>
+      <div class="summary-rows">
+        <div class="sum-row"><span class="sum-key">Size</span><span class="sum-val" id="sum-size">Luxe Edition</span></div>
+        <div class="sum-row"><span class="sum-key">Wood</span><span class="sum-val" id="sum-wood">Ebony Oak</span></div>
+        <div class="sum-row"><span class="sum-key">Interior</span><span class="sum-val" id="sum-interior">Crimson Atelier</span></div>
+        <div class="sum-row"><span class="sum-key">Lead Time</span><span class="sum-val">2–3 weeks</span></div>
+        <div class="sum-total">
+          <span class="sum-key">Total</span>
+          <span class="sum-total-price" id="sum-price">$749 AUD</span>
+        </div>
+      </div>
+      <p class="summary-note">Handcrafted exclusively for you at our Osborne Park studio, Perth WA. A confirmation email will be sent once your order is placed.</p>
+    </div>
+
+    <!-- FORM -->
+    <div class="form-block" id="formBlock">
+      <h2 class="form-title">Complete Your Order</h2>
+
+      <form id="checkoutForm" novalidate>
+
+        <div class="form-section">
+          <span class="form-section-title">Your Details</span>
+          <div class="field-row">
+            <div class="field"><label>First Name</label><input type="text" id="firstName" placeholder="James" required></div>
+            <div class="field"><label>Last Name</label><input type="text" id="lastName" placeholder="Anderson" required></div>
+          </div>
+          <div class="field"><label>Email Address</label><input type="email" id="email" placeholder="james@example.com" required></div>
+          <div class="field"><label>Phone</label><input type="tel" id="phone" placeholder="+61 4xx xxx xxx"></div>
+        </div>
+
+        <div class="form-section">
+          <span class="form-section-title">Delivery Address</span>
+          <div class="field"><label>Street Address</label><input type="text" id="street" placeholder="12 Example Street" required></div>
+          <div class="field-row">
+            <div class="field"><label>Suburb</label><input type="text" id="suburb" placeholder="Claremont" required></div>
+            <div class="field"><label>State</label>
+              <select id="state">
+                <option>WA</option><option>NSW</option><option>VIC</option><option>QLD</option><option>SA</option><option>TAS</option><option>ACT</option><option>NT</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>Postcode</label><input type="text" id="postcode" placeholder="6010" required maxlength="4"></div>
+          <div class="field"><label>Special Instructions (optional)</label><textarea id="notes" placeholder="Gate code, delivery instructions..."></textarea></div>
+        </div>
+
+        <div class="form-section">
+          <div class="payment-box">
+            <span class="payment-box-title">Payment</span>
+            <div class="stripe-placeholder" id="stripePlaceholder">
+              Stripe payment form will load here.<br>Card details are encrypted and never stored.
+            </div>
+          </div>
+          <span class="stripe-badge">Secured by Stripe · SSL Encrypted</span>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">
+          <span id="submitText">Place Order</span>
+        </button>
+        <p class="submit-note">By placing your order you agree to our terms. Full payment is charged immediately. Refunds available within 48 hours of ordering if not yet in production.</p>
+
+      </form>
+    </div>
+
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-screen" id="successScreen">
+    <div class="success-icon">✓</div>
+    <h2 class="success-h">Order Confirmed.</h2>
+    <p class="success-p">Thank you for your order. We'll be in touch within 24 hours to confirm production details and estimated dispatch.</p>
+    <p class="success-ref" id="successRef">Order reference: CD-XXXXXX</p>
+    <br><br>
+    <a href="index.html" style="font-size:.65rem;letter-spacing:.35em;text-transform:uppercase;color:var(--bronze);text-decoration:none">Return Home →</a>
+  </div>
+</main>
+
+<footer style="background:var(--ink);border-top:1px solid rgba(184,147,106,.07);padding:2.5rem 3rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;">
+  <img src="images/Continuum Designs Logo - Full Horizontal - White.png" alt="Continuum Designs" style="height:32px;width:auto;opacity:.7;">
+  <span style="font-size:.6rem;letter-spacing:.15em;color:rgba(212,207,200,.2);">© 2025 Continuum Designs. All rights reserved.</span>
+</footer>
+
+<script>
+// Load order from localStorage
+const order = JSON.parse(localStorage.getItem('cd_order') || '{}');
+
+if(order.sizeLabel) {
+  document.getElementById('sumTitle').textContent = order.sizeLabel;
+  document.getElementById('sumSub').textContent = order.woodLabel||'';
+  document.getElementById('sum-size').textContent = order.sizeLabel;
+  document.getElementById('sum-wood').textContent = order.woodLabel;
+  document.getElementById('sum-interior').textContent = order.interiorLabel;
+  document.getElementById('sum-atmo').textContent = order.atmoLabel;
+  document.getElementById('sum-price').textContent = '$' + (order.price||749).toLocaleString() + ' AUD';
+}
+
+// Form submit — placeholder until Stripe is wired up
+document.getElementById('checkoutForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const street = document.getElementById('street').value.trim();
+  const suburb = document.getElementById('suburb').value.trim();
+  const postcode = document.getElementById('postcode').value.trim();
+
+  if(!firstName || !lastName || !email || !street || !suburb || !postcode) {
+    alert('Please fill in all required fields.');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('submitText').textContent = 'Processing...';
+
+  // Simulate processing — replace with Stripe payment intent call
+  setTimeout(() => {
+    const ref = 'CD-' + Math.random().toString(36).substring(2,8).toUpperCase();
+    document.getElementById('checkoutWrap').style.display = 'none';
+    const success = document.getElementById('successScreen');
+    success.classList.add('active');
+    document.getElementById('successRef').textContent = 'Order reference: ' + ref;
+    localStorage.removeItem('cd_order');
+  }, 1500);
+});
+</script>
+</body>
+</html>
