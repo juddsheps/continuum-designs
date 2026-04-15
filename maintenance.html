@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Continuum Designs — Back Soon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#070608;--deep:#0b0a0d;--obsidian:#111018;--smoked:#1a1820;
+  --ash:#5c5a62;--silver:#9a9898;--linen:#d4cfc8;--cream:#ede8e0;--white:#f8f5f0;
+  --bronze:#b8936a;--bronze-l:#d4b08a;
+  --serif:'Cormorant Garamond','Cormorant',Georgia,serif;
+  --sans:'Jost',sans-serif;
+  --ease:cubic-bezier(0.16,1,0.3,1);
+}
+html,body{height:100%;background:var(--obsidian);color:var(--white);}
+body{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  min-height:100vh;padding:2rem;text-align:center;
+  font-family:var(--sans);font-weight:300;
+}
+
+.wordmark{
+  font-family:var(--serif);font-size:clamp(1rem,3vw,1.3rem);
+  letter-spacing:0.25em;text-transform:uppercase;color:var(--bronze);
+  font-weight:300;margin-bottom:4rem;
+}
+
+.divider{
+  width:40px;height:1px;background:var(--bronze);opacity:0.5;
+  margin:2rem auto;
+}
+
+h1{
+  font-family:var(--serif);font-weight:300;font-style:italic;
+  font-size:clamp(2.4rem,7vw,4.5rem);
+  color:var(--cream);line-height:1.15;letter-spacing:0.01em;
+  margin-bottom:1.5rem;
+}
+
+p{
+  font-family:var(--sans);font-weight:200;
+  font-size:clamp(0.8rem,1.5vw,0.95rem);
+  letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--silver);line-height:1.8;max-width:380px;
+}
+
+.contact{
+  margin-top:3.5rem;
+  font-family:var(--sans);font-weight:300;
+  font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--ash);
+}
+.contact a{
+  color:var(--bronze-l);text-decoration:none;
+  border-bottom:1px solid transparent;
+  transition:border-color 0.3s;
+}
+.contact a:hover{border-color:var(--bronze-l);}
+</style>
+</head>
+<body>
+
+  <div class="wordmark">Continuum Designs</div>
+
+  <h1>We'll be back<br>shortly.</h1>
+
+  <div class="divider"></div>
+
+  <p>The site is currently undergoing maintenance.<br>We appreciate your patience.</p>
+
+  <div class="contact">
+    Questions? <a href="mailto:juddshepherd530@gmail.com">Get in touch</a>
+  </div>
+
+</body>
+</html>
