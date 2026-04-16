@@ -117,6 +117,15 @@ from{opacity:0;transform:translateY(18px)}}
 .opt-card.active .opt-card-check{background:var(--bronze);border-color:var(--bronze)}
 .opt-card.active .opt-card-check::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--ink)}
 
+/* Compact size toggle */
+.size-toggle{display:flex;flex-direction:column;gap:.5rem}
+.size-opt{display:flex;justify-content:space-between;align-items:center;padding:.6rem .9rem;border:1px solid rgba(184,147,106,.12);cursor:pointer;transition:border-color .3s,background .3s}
+.size-opt:hover{border-color:rgba(184,147,106,.28)}
+.size-opt.active{border-color:rgba(184,147,106,.45);background:rgba(184,147,106,.04)}
+.size-opt-name{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--linen);transition:color .3s}
+.size-opt.active .size-opt-name{color:var(--bronze-l)}
+.size-opt-dim{font-size:.58rem;letter-spacing:.04em;color:var(--fog)}
+
 /* Swatches row (for atmospheres) */
 .atmo-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
 .atmo-card{padding:1rem;border:1px solid rgba(184,147,106,.1);cursor:pointer;transition:border-color .35s,background .35s;position:relative;text-align:center}
@@ -729,11 +738,11 @@ from{opacity:0;transform:translateY(18px)}}
 <!-- CONFIGURATOR STICKY HEADER -->
 <div class="config-sticky-wrap" id="configSticky">
   <div class="config-step-track">
-    <span class="cst active" data-step="size">Size</span>
-    <span class="cst-sep">·</span>
-    <span class="cst" data-step="wood">Wood</span>
+    <span class="cst active" data-step="wood">Wood</span>
     <span class="cst-sep">·</span>
     <span class="cst" data-step="interior">Design Interior</span>
+    <span class="cst-sep">·</span>
+    <span class="cst" data-step="size">Size</span>
   </div>
   <span class="config-summary-chip" id="configChip">Luxe Edition · Ebony Oak</span>
 </div>
@@ -772,33 +781,6 @@ from{opacity:0;transform:translateY(18px)}}
 
     <!-- CONTROLS -->
     <div class="controls-col" id="controlsCol">
-
-      <!-- SIZE -->
-      <div class="ctrl-section" id="step-size">
-        <div class="ctrl-title" data-step="size">Size</div>
-        <div class="opt-list" id="sizeOpts">
-          <div class="opt-card active" data-group="size" data-val="luxe">
-            <div class="opt-swatch" style="background:linear-gradient(135deg,#1a1208,#2e2010);">
-              <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 32 32"><rect x="4" y="14" width="24" height="5" rx="1" fill="rgba(184,147,106,.3)"/><rect x="4" y="19" width="24" height="8" rx="0" fill="rgba(184,147,106,.1)"/><line x1="7" y1="27" x2="7" y2="32" stroke="rgba(184,147,106,.4)" stroke-width="1.5"/><line x1="25" y1="27" x2="25" y2="32" stroke="rgba(184,147,106,.4)" stroke-width="1.5"/></svg>
-            </div>
-            <div class="opt-card-text">
-              <div class="opt-card-name">Luxe Edition</div>
-              <div class="opt-card-hint">50 × 50 × 43.5 cm · 24 kg</div>
-            </div>
-            <div class="opt-card-check"></div>
-          </div>
-          <div class="opt-card" data-group="size" data-val="luxe-grand">
-            <div class="opt-swatch" style="background:linear-gradient(135deg,#1a1208,#2e2010);">
-              <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 32 32"><rect x="2" y="14" width="28" height="6" rx="1" fill="rgba(184,147,106,.3)"/><rect x="2" y="20" width="28" height="8" rx="0" fill="rgba(184,147,106,.1)"/><line x1="5" y1="28" x2="5" y2="32" stroke="rgba(184,147,106,.4)" stroke-width="1.5"/><line x1="27" y1="28" x2="27" y2="32" stroke="rgba(184,147,106,.4)" stroke-width="1.5"/></svg>
-            </div>
-            <div class="opt-card-text">
-              <div class="opt-card-name">Luxe Grand Edition</div>
-              <div class="opt-card-hint">96 × 50 × 43.5 cm · 42 kg</div>
-            </div>
-            <div class="opt-card-check"></div>
-          </div>
-        </div>
-      </div>
 
       <!-- WOOD -->
       <div class="ctrl-section" id="step-wood">
@@ -846,6 +828,21 @@ from{opacity:0;transform:translateY(18px)}}
         </div>
       </div>
 
+      <!-- SIZE -->
+      <div class="ctrl-section" id="step-size">
+        <div class="ctrl-title" data-step="size">Size</div>
+        <div class="size-toggle" id="sizeOpts">
+          <div class="size-opt active" data-group="size" data-val="luxe">
+            <span class="size-opt-name">Luxe Edition</span>
+            <span class="size-opt-dim">50 × 50 × 43.5 cm · 24 kg</span>
+          </div>
+          <div class="size-opt" data-group="size" data-val="luxe-grand">
+            <span class="size-opt-name">Luxe Grand</span>
+            <span class="size-opt-dim">96 × 50 × 43.5 cm · 42 kg</span>
+          </div>
+        </div>
+      </div>
+
       <!-- PORTFOLIO TRIGGER -->
       <div class="portfolio-trigger" id="portfolioTrigger">
         <button class="portfolio-btn" id="portfolioBtn">
@@ -885,34 +882,14 @@ from{opacity:0;transform:translateY(18px)}}
 
   <!-- TAB BAR -->
   <div class="m-tab-bar">
-    <div class="m-tab active" data-tab="size">Size<div class="m-tab-dot"></div></div>
-    <div class="m-tab" data-tab="wood">Wood<div class="m-tab-dot"></div></div>
+    <div class="m-tab active" data-tab="wood">Wood<div class="m-tab-dot"></div></div>
     <div class="m-tab" data-tab="interior">Design Interior<div class="m-tab-dot"></div></div>
+    <div class="m-tab" data-tab="size">Size<div class="m-tab-dot"></div></div>
     <div class="m-tab" data-tab="order">Order<div class="m-tab-dot"></div></div>
   </div>
 
-  <!-- SIZE PANEL -->
-  <div class="m-panel active" id="m-panel-size">
-    <div class="m-opt-row" id="mSizeOpts">
-      <div class="m-opt active" data-group="size" data-val="luxe">
-        <div class="m-opt-sw" style="background:linear-gradient(135deg,#1a1208,#2e2010);border:1px solid rgba(184,147,106,.2)">
-          <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 22 22"><rect x="3" y="9" width="16" height="4" rx="1" fill="rgba(184,147,106,.35)"/><line x1="5" y1="13" x2="5" y2="20" stroke="rgba(184,147,106,.45)" stroke-width="1.2"/><line x1="17" y1="13" x2="17" y2="20" stroke="rgba(184,147,106,.45)" stroke-width="1.2"/></svg>
-        </div>
-        <div><div class="m-opt-name">Luxe Edition</div><div class="m-opt-hint">50 × 50 × 43.5 cm · 24 kg</div></div>
-        <div class="m-opt-check"></div>
-      </div>
-      <div class="m-opt" data-group="size" data-val="luxe-grand">
-        <div class="m-opt-sw" style="background:linear-gradient(135deg,#1a1208,#2e2010);border:1px solid rgba(184,147,106,.2)">
-          <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 22 22"><rect x="1" y="9" width="20" height="4" rx="1" fill="rgba(184,147,106,.35)"/><line x1="3" y1="13" x2="3" y2="20" stroke="rgba(184,147,106,.45)" stroke-width="1.2"/><line x1="19" y1="13" x2="19" y2="20" stroke="rgba(184,147,106,.45)" stroke-width="1.2"/></svg>
-        </div>
-        <div><div class="m-opt-name">Luxe Grand</div><div class="m-opt-hint">96 × 50 × 43.5 cm · 42 kg</div></div>
-        <div class="m-opt-check"></div>
-      </div>
-    </div>
-  </div>
-
   <!-- WOOD PANEL -->
-  <div class="m-panel" id="m-panel-wood">
+  <div class="m-panel active" id="m-panel-wood">
     <div class="m-opt-row" id="mWoodOpts">
       <div class="m-opt active" data-group="wood" data-val="ebony">
         <div class="m-opt-sw" style="background:linear-gradient(135deg,#120e06,#1e1808);border:1px solid rgba(184,147,106,.25)"></div>
@@ -939,6 +916,20 @@ from{opacity:0;transform:translateY(18px)}}
         <div class="m-opt-sw" style="background:linear-gradient(135deg,#1e2028,#282830);border:1px solid rgba(120,130,150,.25)"></div>
         <div><div class="m-opt-name">Grey Bricks / Ladder</div><div class="m-opt-hint">Grey brick · architectural, minimal</div></div>
         <div class="m-opt-check"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIZE PANEL -->
+  <div class="m-panel" id="m-panel-size" style="padding:0 0 .5rem">
+    <div class="size-toggle" id="mSizeOpts" style="gap:.4rem">
+      <div class="size-opt active" data-group="size" data-val="luxe">
+        <span class="size-opt-name">Luxe Edition</span>
+        <span class="size-opt-dim">50 × 50 × 43.5 cm · 24 kg</span>
+      </div>
+      <div class="size-opt" data-group="size" data-val="luxe-grand">
+        <span class="size-opt-name">Luxe Grand</span>
+        <span class="size-opt-dim">96 × 50 × 43.5 cm · 42 kg</span>
       </div>
     </div>
   </div>
@@ -1113,7 +1104,7 @@ const cRing = document.getElementById('cRing');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; cDot.style.left=mx+'px'; cDot.style.top=my+'px'; });
 (function raf(){ rx+=(mx-rx)*.13; ry+=(my-ry)*.13; cRing.style.left=rx+'px'; cRing.style.top=ry+'px'; requestAnimationFrame(raf); })();
-document.querySelectorAll('a,button,.opt-card').forEach(el=>{ el.addEventListener('mouseenter',()=>cRing.classList.add('hov')); el.addEventListener('mouseleave',()=>cRing.classList.remove('hov')); });
+document.querySelectorAll('a,button,.opt-card,.size-opt').forEach(el=>{ el.addEventListener('mouseenter',()=>cRing.classList.add('hov')); el.addEventListener('mouseleave',()=>cRing.classList.remove('hov')); });
 if('ontouchstart' in window){ cDot.style.display='none'; cRing.style.display='none'; document.body.style.cursor='auto'; }
 
 /* ════════════════════════════
@@ -1865,7 +1856,7 @@ function handleMobileOpt(e){
   const tabEl = document.querySelector(`.m-tab[data-tab="${group==='atmo'?'atmo':group}"]`);
   if(tabEl) tabEl.classList.add('done');
   // auto advance to next tab after selection (size→wood, wood→interior, interior→atmo)
-  const flow = ['size','wood','interior','atmo'];
+  const flow = ['wood','interior','size'];
   const idx = flow.indexOf(group);
   if(idx >= 0 && idx < flow.length-1){
     setTimeout(()=>{
