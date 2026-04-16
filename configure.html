@@ -571,7 +571,8 @@ from{opacity:0;transform:translateY(18px)}}
 .m-tabs{display:none}
 .m-tab-bar{display:flex;background:var(--obsidian);border-bottom:1px solid rgba(184,147,106,.1);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .m-tab-bar::-webkit-scrollbar{display:none}
-.m-tab{flex:1;min-width:0;padding:.9rem .5rem;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:var(--fog);text-align:center;cursor:pointer;border-bottom:2px solid transparent;transition:color .25s,border-color .25s;white-space:normal;line-height:1.4;position:relative;user-select:none;-webkit-user-select:none;border-right:1px solid rgba(184,147,106,.07);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.m-tab{flex:1;min-width:0;padding:.9rem .5rem;font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:var(--fog);text-align:center;cursor:pointer;border-bottom:2px solid transparent;transition:color .25s,border-color .25s;white-space:normal;line-height:1.4;position:relative;user-select:none;-webkit-user-select:none;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.m-tab-sep{display:flex;align-items:center;justify-content:center;padding:0 .1rem;color:rgba(184,147,106,.4);font-size:.9rem;pointer-events:none;flex-shrink:0;align-self:center}
 .m-tab:last-child{border-right:none}
 .m-tab.active{color:var(--bronze-l);border-bottom-color:var(--bronze)}
 .m-tab-dot{position:absolute;top:.5rem;right:.5rem;width:5px;height:5px;border-radius:50%;background:var(--bronze);opacity:0;transition:opacity .3s}
@@ -851,6 +852,7 @@ from{opacity:0;transform:translateY(18px)}}
   <!-- TAB BAR -->
   <div class="m-tab-bar">
     <div class="m-tab active" data-tab="wood">Wood<br>Exterior<div class="m-tab-dot"></div></div>
+    <div class="m-tab-sep">›</div>
     <div class="m-tab" data-tab="interior">Design<br>Interior<div class="m-tab-dot"></div></div>
     <div class="m-tab" data-tab="size">Size<div class="m-tab-dot"></div></div>
     <div class="m-tab" data-tab="order">Order<div class="m-tab-dot"></div></div>
@@ -881,7 +883,6 @@ from{opacity:0;transform:translateY(18px)}}
         <div><div class="m-opt-name">Imperium Red Brick</div><div class="m-opt-hint">Red brick · warm, urban, atmospheric</div></div>
         <div class="m-opt-check"></div>
       </div>
-      <div class="m-opt-arrow">∨</div>
       <div class="m-opt" data-group="interior" data-val="grey">
         <div class="m-opt-sw" style="background:#54545A;"></div>
         <div><div class="m-opt-name">Charcoal Grey Brick</div><div class="m-opt-hint">Grey brick · architectural, minimal</div></div>
