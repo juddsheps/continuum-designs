@@ -1,5 +1,2 @@
-/*  /maintenance.html  200
-
-# Uncomment below and remove the line above to go live again
-# /buildinfinitytable    /configure.html    200
-# /checkout              /checkout.html     200
+/buildinfinitytable    /configure.html    200
+/checkout              /checkout.html     200
