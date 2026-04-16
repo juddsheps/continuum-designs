@@ -48,46 +48,51 @@ body{background:var(--ink);color:var(--linen);font-family:var(--sans);font-weigh
 }
 .md-layer{
   position:absolute;
-  width:72%;
-  height:48px;
+  width:78%;
+  height:1px;
   will-change:transform,opacity,filter;
   transform-origin:center center;
   transform-style:preserve-3d;
 }
-/* smoked glass face */
+/* thin reflection line */
 .md-layer::before{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(162deg,
-    rgba(20,18,28,.97) 0%,
-    rgba(13,11,19,.99) 50%,
-    rgba(17,15,24,.97) 100%);
-  border:1px solid rgba(184,147,106,.07);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.04), inset 0 -1px 0 rgba(0,0,0,.4);
+  background:linear-gradient(90deg,
+    transparent 0%,
+    rgba(184,147,106,.12) 15%,
+    rgba(255,255,255,.22) 35%,
+    rgba(212,190,160,.35) 50%,
+    rgba(255,255,255,.22) 65%,
+    rgba(184,147,106,.12) 85%,
+    transparent 100%);
 }
-/* diagonal soft reflection */
+/* second glow layer — soft bloom above/below the line */
 .md-layer::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(108deg,
-    transparent 15%,
-    rgba(255,255,255,.018) 35%,
-    rgba(184,147,106,.055) 50%,
-    rgba(255,255,255,.018) 65%,
-    transparent 85%);
+  content:'';
+  position:absolute;
+  left:0;right:0;
+  top:-4px;height:9px;
+  background:linear-gradient(180deg,
+    transparent 0%,
+    rgba(184,147,106,.06) 40%,
+    rgba(184,147,106,.10) 50%,
+    rgba(184,147,106,.06) 60%,
+    transparent 100%);
 }
-/* shimmer sweep on center layer */
+/* shimmer sweep on center line */
 .md-layer[data-layer="2"] .md-shimmer{
-  position:absolute;inset:0;overflow:hidden;
+  position:absolute;left:0;right:0;top:-2px;height:5px;overflow:hidden;
 }
 .md-layer[data-layer="2"] .md-shimmer::after{
   content:'';
-  position:absolute;top:0;bottom:0;width:40%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.06),rgba(184,147,106,.08),rgba(255,255,255,.06),transparent);
-  animation:shimmer-sweep 5s ease-in-out infinite;
+  position:absolute;top:0;bottom:0;width:25%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.55),rgba(255,248,230,.7),rgba(255,255,255,.55),transparent);
+  animation:shimmer-sweep 6s ease-in-out infinite;
   transform:translateX(-100%);
 }
 @keyframes shimmer-sweep{
-  0%,30%{transform:translateX(-100%)}
-  60%,100%{transform:translateX(350%)}
+  0%,20%{transform:translateX(-100%)}
+  65%,100%{transform:translateX(500%)}
 }
 @media(max-width:600px){
   .mirror-divider{height:200px}
@@ -545,18 +550,18 @@ function buildPortfolio(){
 
   // [translateY, rotateZ, rotateX, scale, opacity, blur]
   const open = [
-    [-148, -1.1, 4.0, 0.80, 0.22, 5.0],
-    [ -72, -0.4, 1.8, 0.91, 0.48, 2.0],
-    [   0,  0.0, 0.0, 1.00, 0.92, 0.0],
-    [  72,  0.4,-1.8, 0.91, 0.48, 2.0],
-    [ 148,  1.1,-4.0, 0.80, 0.22, 5.0],
+    [-110, -1.4, 5.0, 0.78, 0.18, 3.5],
+    [ -52, -0.5, 2.2, 0.90, 0.42, 1.2],
+    [   0,  0.0, 0.0, 1.00, 0.90, 0.0],
+    [  52,  0.5,-2.2, 0.90, 0.42, 1.2],
+    [ 110,  1.4,-5.0, 0.78, 0.18, 3.5],
   ];
   const shut = [
-    [-10, -0.35, 0.8, 0.93, 0.55, 1.2],
-    [ -5, -0.12, 0.3, 0.97, 0.75, 0.4],
+    [ -6, -0.4, 0.9, 0.94, 0.50, 0.8],
+    [ -3, -0.15,0.4, 0.97, 0.72, 0.0],
     [  0,  0.00, 0.0, 1.00, 1.00, 0.0],
-    [  5,  0.12,-0.3, 0.97, 0.75, 0.4],
-    [ 10,  0.35,-0.8, 0.93, 0.55, 1.2],
+    [  3,  0.15,-0.4,0.97, 0.72, 0.0],
+    [  6,  0.4,-0.9, 0.94, 0.50, 0.8],
   ];
 
   function lerp(a,b,t){ return a+(b-a)*t; }
