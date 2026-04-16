@@ -83,7 +83,7 @@ from{opacity:0;transform:translateY(18px)}}
 .config-main{display:grid;grid-template-columns:1fr 420px;min-height:90vh;align-items:start}
 
 /* ─ PREVIEW ─ */
-.preview-col{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:var(--deep)}
+.preview-col{display:flex;flex-direction:column;align-items:center;padding:3rem 2.5rem 4rem;background:var(--deep)}
 .preview-wrap{position:relative;width:min(560px,90%);aspect-ratio:4/3}
 #previewCanvas{width:100%;height:100%;display:block;border-radius:2px}
 #prevOverlay{position:absolute;inset:0;border-radius:2px;pointer-events:none;transition:opacity .6s var(--ease)}
@@ -501,6 +501,7 @@ from{opacity:0;transform:translateY(18px)}}
 /* ═══════════════════════════════
    PORTFOLIO TRIGGER + MODAL
 ═══════════════════════════════ */
+/* Portfolio trigger button (kept for mobile panel) */
 .portfolio-trigger{margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid rgba(184,147,106,.07)}
 .portfolio-btn{
   display:inline-flex;align-items:center;gap:1.1rem;
@@ -509,68 +510,36 @@ from{opacity:0;transform:translateY(18px)}}
   background:none;cursor:none;transition:background .4s,color .4s,gap .35s var(--ease);
 }
 .portfolio-btn:hover{background:var(--bronze);color:var(--ink);gap:1.5rem}
-.portfolio-btn-arrow{display:inline-block;width:20px;height:1px;background:currentColor;position:relative;flex-shrink:0;transition:width .35s var(--ease)}
+.portfolio-btn-arrow{display:inline-block;width:20px;height:1px;background:currentColor;position:relative;flex-shrink:0}
 .portfolio-btn-arrow::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%) rotate(45deg) translate(-2px,-2px);width:5px;height:5px;border-right:1px solid currentColor;border-top:1px solid currentColor}
 
-.portfolio-modal{
-  position:fixed;inset:0;z-index:800;
-  background:rgba(6,5,10,.96);backdrop-filter:blur(24px);
-  display:flex;align-items:flex-start;justify-content:center;
-  overflow-y:auto;padding:4rem 2rem;
-  opacity:0;pointer-events:none;
-  transition:opacity .45s var(--ease);
+/* ── INLINE GALLERY (below canvas) ── */
+.preview-gallery{
+  width:100%;margin-top:2.5rem;
+  padding-top:2rem;border-top:1px solid rgba(184,147,106,.08);
 }
-.portfolio-modal.open{opacity:1;pointer-events:all}
-.portfolio-modal-inner{width:100%;max-width:1100px}
-.portfolio-modal-header{
-  display:flex;align-items:flex-start;justify-content:space-between;
-  margin-bottom:3rem;padding-bottom:2rem;
-  border-bottom:1px solid rgba(184,147,106,.1);
+.preview-gallery-label{
+  font-size:.52rem;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--bronze);margin-bottom:1.25rem;display:block;
 }
-.portfolio-modal-label{
-  font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;
-  color:var(--bronze);display:block;margin-bottom:.6rem;
-}
-.portfolio-modal-title{
-  font-family:var(--serif);font-weight:300;font-style:italic;
-  font-size:clamp(2rem,4vw,3.2rem);color:var(--white);line-height:1;
-}
-.portfolio-close{
-  background:none;border:1px solid rgba(184,147,106,.2);
-  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
-  color:rgba(184,147,106,.6);cursor:none;flex-shrink:0;margin-top:.25rem;
-  transition:border-color .3s,color .3s;
-}
-.portfolio-close:hover{border-color:rgba(184,147,106,.6);color:var(--bronze-l)}
-.portfolio-close svg{width:14px;height:14px}
-.portfolio-grid{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;
+.preview-gallery-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;
 }
 .portfolio-item{
   aspect-ratio:4/3;overflow:hidden;background:var(--surface);
   position:relative;cursor:pointer;
-  transition:transform .5s var(--ease);
+  transition:opacity .4s var(--ease),transform .5s var(--ease);
 }
-.portfolio-item:hover{transform:scale(1.01)}
 .portfolio-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
-.portfolio-item:hover img{transform:scale(1.04)}
+.portfolio-item:hover img{transform:scale(1.06)}
 .portfolio-item.placeholder::after{
   content:'Photo coming soon';
   position:absolute;inset:0;
   display:flex;align-items:center;justify-content:center;
-  font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;
+  font-size:.5rem;letter-spacing:.25em;text-transform:uppercase;
   color:rgba(184,147,106,.3);
 }
 .portfolio-item.hidden{display:none}
-
-@media(max-width:960px){
-  .portfolio-modal{padding:2rem 1rem}
-  .portfolio-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:600px){
-  .portfolio-grid{grid-template-columns:1fr 1fr}
-  .portfolio-modal-title{font-size:1.8rem}
-}
 
 /* ═══════════════════════════════
    SCROLL REVEAL
@@ -784,7 +753,23 @@ from{opacity:0;transform:translateY(18px)}}
       <div class="preview-label">
         <p class="pl-config">Your Configuration</p>
         <p class="pl-name" id="previewName">Luxe Edition</p>
-        <p class="pl-size" id="previewSub">Ebony Oak · Penthouse</p>
+        <p class="pl-size" id="previewSub">Ebony Oak · Red Bricks / Ladder</p>
+      </div>
+
+      <!-- INLINE PORTFOLIO GALLERY -->
+      <div class="preview-gallery">
+        <span class="preview-gallery-label" id="galleryLabel">Red Bricks / Ladder — In Real Spaces</span>
+        <div class="preview-gallery-grid" id="portfolioGrid">
+          <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-1.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
+          <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-2.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
+          <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-3.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
+          <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-1.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
+          <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-2.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
+          <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-3.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
+          <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-1.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
+          <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-2.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
+          <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-3.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
+        </div>
       </div>
     </div>
 
@@ -1011,32 +996,6 @@ from{opacity:0;transform:translateY(18px)}}
   </div>
 
 </div><!-- /m-tabs -->
-
-<!-- PORTFOLIO MODAL -->
-<div class="portfolio-modal" id="portfolioModal" aria-hidden="true">
-  <div class="portfolio-modal-inner">
-    <div class="portfolio-modal-header">
-      <div>
-        <span class="portfolio-modal-label" id="portfolioLabel">Red Bricks / Ladder</span>
-        <h2 class="portfolio-modal-title">In Real Spaces</h2>
-      </div>
-      <button class="portfolio-close" id="portfolioClose" aria-label="Close">
-        <svg viewBox="0 0 20 20" fill="none"><line x1="2" y1="2" x2="18" y2="18" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="18" y1="2" x2="2" y2="18" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
-      </button>
-    </div>
-    <div class="portfolio-grid" id="portfolioGrid">
-      <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-1.jpg" alt="Red Bricks / Ladder interior 1" onerror="this.parentElement.classList.add('placeholder')"></div>
-      <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-2.jpg" alt="Red Bricks / Ladder interior 2" onerror="this.parentElement.classList.add('placeholder')"></div>
-      <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-3.jpg" alt="Red Bricks / Ladder interior 3" onerror="this.parentElement.classList.add('placeholder')"></div>
-      <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-1.jpg" alt="Grey Bricks / Ladder interior 1" onerror="this.parentElement.classList.add('placeholder')"></div>
-      <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-2.jpg" alt="Grey Bricks / Ladder interior 2" onerror="this.parentElement.classList.add('placeholder')"></div>
-      <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-3.jpg" alt="Grey Bricks / Ladder interior 3" onerror="this.parentElement.classList.add('placeholder')"></div>
-      <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-1.jpg" alt="Jungle interior 1" onerror="this.parentElement.classList.add('placeholder')"></div>
-      <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-2.jpg" alt="Jungle interior 2" onerror="this.parentElement.classList.add('placeholder')"></div>
-      <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-3.jpg" alt="Jungle interior 3" onerror="this.parentElement.classList.add('placeholder')"></div>
-    </div>
-  </div>
-</div>
 
 <!-- GLASS SECTION -->
 <section class="glass-section" id="glass">
@@ -1484,7 +1443,7 @@ function handleOptClick(e) {
   let key, label;
   if(group==='size'){ state.size=val; key='size-'+val; label='Size'; }
   if(group==='wood'){ state.wood=val; key='wood-'+val; label='Wood'; }
-  if(group==='interior'){ state.interior=val; key='interior-'+val; label='Interior'; }
+  if(group==='interior'){ state.interior=val; key='interior-'+val; label='Interior'; updateGallery(); }
   // atmo removed from UI
   setDescription(key, label);
   updateSummary();
@@ -1498,37 +1457,18 @@ document.getElementById('woodOpts').addEventListener('click', handleOptClick);
 document.getElementById('interiorOpts').addEventListener('click', handleOptClick);
 
 /* ════════════════════════════
-   PORTFOLIO MODAL
+   INLINE PORTFOLIO GALLERY
 ════════════════════════════ */
-const portfolioModal = document.getElementById('portfolioModal');
-const portfolioLabel = document.getElementById('portfolioLabel');
-
-function openPortfolio() {
-  // Filter items to show only the selected interior, or all if no match
+function updateGallery() {
   const interior = state.interior;
   document.querySelectorAll('.portfolio-item').forEach(item => {
-    const match = item.dataset.interiors === interior;
-    item.classList.toggle('hidden', !match);
+    item.classList.toggle('hidden', item.dataset.interiors !== interior);
   });
-  // Update label
-  portfolioLabel.textContent = displayNames['interior-' + interior] || 'All Interiors';
-  portfolioModal.classList.add('open');
-  portfolioModal.setAttribute('aria-hidden','false');
-  document.body.style.overflow = 'hidden';
+  const label = document.getElementById('galleryLabel');
+  if(label) label.textContent = (displayNames['interior-'+interior] || interior) + ' — In Real Spaces';
 }
-
-function closePortfolio() {
-  portfolioModal.classList.remove('open');
-  portfolioModal.setAttribute('aria-hidden','true');
-  document.body.style.overflow = '';
-}
-
-document.getElementById('portfolioBtn').addEventListener('click', openPortfolio);
-const mPortfolioBtn = document.getElementById('mPortfolioBtn');
-if(mPortfolioBtn) mPortfolioBtn.addEventListener('click', openPortfolio);
-document.getElementById('portfolioClose').addEventListener('click', closePortfolio);
-portfolioModal.addEventListener('click', e => { if(e.target === portfolioModal) closePortfolio(); });
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closePortfolio(); });
+// Initial filter
+updateGallery();
 
 /* buy now button */
 function goToCheckout() {
