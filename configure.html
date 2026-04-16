@@ -93,7 +93,7 @@ from{opacity:0;transform:translateY(18px)}}
 .combo-thumb img{width:100%;height:90px;object-fit:cover;display:block;transition:transform .4s ease,opacity .3s}
 .combo-thumb:hover img{transform:scale(1.04)}
 .combo-thumb.active::after{content:'';position:absolute;inset:0;border:2px solid var(--bronze);pointer-events:none}
-.preview-label{padding:1.5rem 2.5rem 0;text-align:left}
+.preview-label{padding:2rem 2.5rem 1.5rem;text-align:left}
 .pl-config{font-size:.56rem;letter-spacing:.4em;text-transform:uppercase;color:var(--bronze);margin-bottom:.4rem}
 .pl-name{font-family:var(--serif);font-size:1.5rem;font-weight:300;color:var(--cream);letter-spacing:.06em}
 .pl-size{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(184,147,106,.45);margin-top:.25rem}
@@ -649,7 +649,7 @@ from{opacity:0;transform:translateY(18px)}}
   .combo-thumbs{grid-template-columns:repeat(4,1fr)}
   .combo-thumb img{height:70px}
   .preview-label{
-    padding:.75rem 1rem .6rem;
+    padding:1.25rem 1.25rem .75rem;
     display:flex;gap:.75rem;align-items:center;
   }
   .pl-config{display:none}
@@ -734,15 +734,15 @@ from{opacity:0;transform:translateY(18px)}}
 
     <!-- PREVIEW -->
     <div class="preview-col">
-      <div class="combo-hero">
-        <img id="comboHeroImg" src="images/configure/ebony-red/1.jpg" alt="Smoked Ebony Oak · Imperium Red Brick">
-      </div>
-      <div class="combo-thumbs" id="comboThumbs"></div>
       <div class="preview-label">
         <p class="pl-config">Your Configuration</p>
         <p class="pl-name" id="previewName">Luxe Edition</p>
         <p class="pl-size" id="previewSub">Smoked Ebony Oak · Imperium Red Brick</p>
       </div>
+      <div class="combo-hero">
+        <img id="comboHeroImg" src="images/configure/ebony-red/1.jpg" alt="Smoked Ebony Oak · Imperium Red Brick">
+      </div>
+      <div class="combo-thumbs" id="comboThumbs"></div>
     </div>
 
     <!-- CONTROLS -->
