@@ -1353,8 +1353,38 @@ comboThumbsEl.addEventListener('click', e => {
 /* Initial load */
 updateComboGallery();
 
-function transitionPreview() {
+const finalPhotos = {
+  'ebony-red-luxe':       'images/configure/ebony-red/5.jpg',
+  'ebony-red-luxe-grand': 'images/configure/ebony-red/8.jpg',
+  'ebony-grey-luxe':      'images/configure/ebony-grey/10.jpg',
+  'ebony-grey-luxe-grand':'images/configure/ebony-grey/13.jpg',
+  'light-red-luxe':       'images/configure/light-red/10.jpg',
+  'light-red-luxe-grand': 'images/configure/light-red/12.jpg',
+  'light-grey-luxe':      'images/configure/light-grey/7.jpg',
+  'light-grey-luxe-grand':'images/configure/light-grey/3.jpg',
+};
+
+function getFinalPhoto() {
+  return finalPhotos[state.wood+'-'+state.interior+'-'+state.size] || null;
+}
+
+function showFinalPhoto() {
+  const src = getFinalPhoto();
+  if (!src) return;
+  comboHero.classList.add('fading');
+  setTimeout(() => {
+    comboHero.src = src;
+    comboHero.classList.remove('fading');
+    // deselect thumbs so none looks active
+    comboThumbsEl.querySelectorAll('.combo-thumb').forEach(t => t.classList.remove('active'));
+  }, 250);
+}
+
+function transitionPreview(group) {
   updateComboGallery();
+  if (group === 'size' && getFinalPhoto()) {
+    setTimeout(showFinalPhoto, 400);
+  }
 }
 
 /* ════════════════════════════
@@ -1429,7 +1459,7 @@ function handleOptClick(e) {
   // atmo removed from UI
   setDescription(key, label);
   updateSummary();
-  transitionPreview();
+  transitionPreview(group);
   // highlight step
   document.querySelectorAll('.cst').forEach(c=>c.classList.toggle('active', c.dataset.step===group));
 }
@@ -1869,7 +1899,7 @@ function handleMobileOpt(e){
   setDescription(key, label); // also update desktop desc
   updateSummary();
   mUpdateSummary();
-  transitionPreview();
+  transitionPreview(group);
   flashPreview();
   // mark tab done
   const tabEl = document.querySelector(`.m-tab[data-tab="${group==='atmo'?'atmo':group}"]`);
