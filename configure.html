@@ -499,6 +499,80 @@ from{opacity:0;transform:translateY(18px)}}
 .fs-copy{font-size:.6rem;letter-spacing:.1em;color:rgba(212,207,200,.2)}
 
 /* ═══════════════════════════════
+   PORTFOLIO TRIGGER + MODAL
+═══════════════════════════════ */
+.portfolio-trigger{margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid rgba(184,147,106,.07)}
+.portfolio-btn{
+  display:inline-flex;align-items:center;gap:1.1rem;
+  font-family:var(--sans);font-size:.62rem;font-weight:300;letter-spacing:.38em;text-transform:uppercase;
+  color:var(--bronze);border:1px solid rgba(184,147,106,.35);padding:.9rem 1.75rem;
+  background:none;cursor:none;transition:background .4s,color .4s,gap .35s var(--ease);
+}
+.portfolio-btn:hover{background:var(--bronze);color:var(--ink);gap:1.5rem}
+.portfolio-btn-arrow{display:inline-block;width:20px;height:1px;background:currentColor;position:relative;flex-shrink:0;transition:width .35s var(--ease)}
+.portfolio-btn-arrow::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%) rotate(45deg) translate(-2px,-2px);width:5px;height:5px;border-right:1px solid currentColor;border-top:1px solid currentColor}
+
+.portfolio-modal{
+  position:fixed;inset:0;z-index:800;
+  background:rgba(6,5,10,.96);backdrop-filter:blur(24px);
+  display:flex;align-items:flex-start;justify-content:center;
+  overflow-y:auto;padding:4rem 2rem;
+  opacity:0;pointer-events:none;
+  transition:opacity .45s var(--ease);
+}
+.portfolio-modal.open{opacity:1;pointer-events:all}
+.portfolio-modal-inner{width:100%;max-width:1100px}
+.portfolio-modal-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  margin-bottom:3rem;padding-bottom:2rem;
+  border-bottom:1px solid rgba(184,147,106,.1);
+}
+.portfolio-modal-label{
+  font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;
+  color:var(--bronze);display:block;margin-bottom:.6rem;
+}
+.portfolio-modal-title{
+  font-family:var(--serif);font-weight:300;font-style:italic;
+  font-size:clamp(2rem,4vw,3.2rem);color:var(--white);line-height:1;
+}
+.portfolio-close{
+  background:none;border:1px solid rgba(184,147,106,.2);
+  width:40px;height:40px;display:flex;align-items:center;justify-content:center;
+  color:rgba(184,147,106,.6);cursor:none;flex-shrink:0;margin-top:.25rem;
+  transition:border-color .3s,color .3s;
+}
+.portfolio-close:hover{border-color:rgba(184,147,106,.6);color:var(--bronze-l)}
+.portfolio-close svg{width:14px;height:14px}
+.portfolio-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;
+}
+.portfolio-item{
+  aspect-ratio:4/3;overflow:hidden;background:var(--surface);
+  position:relative;cursor:pointer;
+  transition:transform .5s var(--ease);
+}
+.portfolio-item:hover{transform:scale(1.01)}
+.portfolio-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s var(--ease)}
+.portfolio-item:hover img{transform:scale(1.04)}
+.portfolio-item.placeholder::after{
+  content:'Photo coming soon';
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;
+  color:rgba(184,147,106,.3);
+}
+.portfolio-item.hidden{display:none}
+
+@media(max-width:960px){
+  .portfolio-modal{padding:2rem 1rem}
+  .portfolio-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:600px){
+  .portfolio-grid{grid-template-columns:1fr 1fr}
+  .portfolio-modal-title{font-size:1.8rem}
+}
+
+/* ═══════════════════════════════
    SCROLL REVEAL
 ═══════════════════════════════ */
 .reveal{opacity:0;transform:translateY(20px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
@@ -690,9 +764,7 @@ from{opacity:0;transform:translateY(18px)}}
     <span class="cst-sep">·</span>
     <span class="cst" data-step="wood">Wood</span>
     <span class="cst-sep">·</span>
-    <span class="cst" data-step="interior">Interior</span>
-    <span class="cst-sep">·</span>
-    <span class="cst" data-step="atmosphere">Atmosphere</span>
+    <span class="cst" data-step="interior">Design Interior</span>
   </div>
   <span class="config-summary-chip" id="configChip">Luxe Edition · Ebony Oak</span>
 </div>
@@ -771,7 +843,7 @@ from{opacity:0;transform:translateY(18px)}}
 
       <!-- INTERIOR -->
       <div class="ctrl-section" id="step-interior">
-        <div class="ctrl-title" data-step="interior">Interior Design</div>
+        <div class="ctrl-title" data-step="interior">Design Interior</div>
         <div class="opt-list" id="interiorOpts">
           <div class="opt-card active" data-group="interior" data-val="crimson">
             <div class="opt-swatch" style="background:linear-gradient(135deg,#3a1008,#5a1c0a);border:1px solid rgba(180,80,40,.25)"></div>
@@ -800,31 +872,12 @@ from{opacity:0;transform:translateY(18px)}}
         </div>
       </div>
 
-      <!-- ATMOSPHERE -->
-      <div class="ctrl-section" id="step-atmosphere">
-        <div class="ctrl-title" data-step="atmosphere">Atmosphere</div>
-        <div class="atmo-grid" id="atmoOpts">
-          <div class="atmo-card active" data-group="atmo" data-val="penthouse">
-            <canvas class="atmo-thumb" width="160" height="44" data-atmo="penthouse"></canvas>
-            <div class="atmo-name">Penthouse</div>
-          </div>
-          <div class="atmo-card" data-group="atmo" data-val="gallery">
-            <canvas class="atmo-thumb" width="160" height="44" data-atmo="gallery"></canvas>
-            <div class="atmo-name">Gallery Quiet</div>
-          </div>
-          <div class="atmo-card" data-group="atmo" data-val="boutique">
-            <canvas class="atmo-thumb" width="160" height="44" data-atmo="boutique"></canvas>
-            <div class="atmo-name">Boutique Suite</div>
-          </div>
-          <div class="atmo-card" data-group="atmo" data-val="evening">
-            <canvas class="atmo-thumb" width="160" height="44" data-atmo="evening"></canvas>
-            <div class="atmo-name">Evening Mood</div>
-          </div>
-          <div class="atmo-card" data-group="atmo" data-val="warm">
-            <canvas class="atmo-thumb" width="160" height="44" data-atmo="warm"></canvas>
-            <div class="atmo-name">Warm Residence</div>
-          </div>
-        </div>
+      <!-- PORTFOLIO TRIGGER -->
+      <div class="portfolio-trigger" id="portfolioTrigger">
+        <button class="portfolio-btn" id="portfolioBtn">
+          <span>View in Real Spaces</span>
+          <span class="portfolio-btn-arrow"></span>
+        </button>
       </div>
 
       <!-- DESCRIPTION PANEL -->
@@ -860,8 +913,7 @@ from{opacity:0;transform:translateY(18px)}}
   <div class="m-tab-bar">
     <div class="m-tab active" data-tab="size">Size<div class="m-tab-dot"></div></div>
     <div class="m-tab" data-tab="wood">Wood<div class="m-tab-dot"></div></div>
-    <div class="m-tab" data-tab="interior">Interior<div class="m-tab-dot"></div></div>
-    <div class="m-tab" data-tab="atmo">Atmosphere<div class="m-tab-dot"></div></div>
+    <div class="m-tab" data-tab="interior">Design Interior<div class="m-tab-dot"></div></div>
     <div class="m-tab" data-tab="order">Order<div class="m-tab-dot"></div></div>
   </div>
 
@@ -922,30 +974,12 @@ from{opacity:0;transform:translateY(18px)}}
     </div>
   </div>
 
-  <!-- ATMOSPHERE PANEL -->
-  <div class="m-panel" id="m-panel-atmo">
-    <div class="m-atmo-grid" id="mAtmoOpts">
-      <div class="m-atmo active" data-group="atmo" data-val="penthouse">
-        <canvas class="m-atmo-thumb" width="80" height="28" data-atmo="penthouse"></canvas>
-        <div class="m-atmo-name">Penthouse</div>
-      </div>
-      <div class="m-atmo" data-group="atmo" data-val="gallery">
-        <canvas class="m-atmo-thumb" width="80" height="28" data-atmo="gallery"></canvas>
-        <div class="m-atmo-name">Gallery</div>
-      </div>
-      <div class="m-atmo" data-group="atmo" data-val="boutique">
-        <canvas class="m-atmo-thumb" width="80" height="28" data-atmo="boutique"></canvas>
-        <div class="m-atmo-name">Boutique</div>
-      </div>
-      <div class="m-atmo" data-group="atmo" data-val="evening">
-        <canvas class="m-atmo-thumb" width="80" height="28" data-atmo="evening"></canvas>
-        <div class="m-atmo-name">Evening</div>
-      </div>
-      <div class="m-atmo" data-group="atmo" data-val="warm">
-        <canvas class="m-atmo-thumb" width="80" height="28" data-atmo="warm"></canvas>
-        <div class="m-atmo-name">Warm</div>
-      </div>
-    </div>
+  <!-- MOBILE PORTFOLIO TRIGGER -->
+  <div class="m-panel" id="m-panel-portfolio" style="padding:.75rem 1.25rem">
+    <button class="portfolio-btn" id="mPortfolioBtn" style="width:100%;justify-content:center">
+      <span>View in Real Spaces</span>
+      <span class="portfolio-btn-arrow"></span>
+    </button>
   </div>
 
   <!-- ORDER PANEL -->
@@ -971,12 +1005,38 @@ from{opacity:0;transform:translateY(18px)}}
   <div class="m-enq-bar">
     <div class="m-enq-summary">
       <div class="m-enq-name" id="mBarName">Luxe Edition</div>
-      <div class="m-enq-detail" id="mBarDetail">Ebony Oak · Penthouse</div>
+      <div class="m-enq-detail" id="mBarDetail">Ebony Oak · Red Bricks / Ladder</div>
     </div>
     <a href="#" class="m-enq-btn" id="mBarBtn">Buy Now →</a>
   </div>
 
 </div><!-- /m-tabs -->
+
+<!-- PORTFOLIO MODAL -->
+<div class="portfolio-modal" id="portfolioModal" aria-hidden="true">
+  <div class="portfolio-modal-inner">
+    <div class="portfolio-modal-header">
+      <div>
+        <span class="portfolio-modal-label" id="portfolioLabel">Red Bricks / Ladder</span>
+        <h2 class="portfolio-modal-title">In Real Spaces</h2>
+      </div>
+      <button class="portfolio-close" id="portfolioClose" aria-label="Close">
+        <svg viewBox="0 0 20 20" fill="none"><line x1="2" y1="2" x2="18" y2="18" stroke="currentColor" stroke-width="1" stroke-linecap="round"/><line x1="18" y1="2" x2="2" y2="18" stroke="currentColor" stroke-width="1" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+    <div class="portfolio-grid" id="portfolioGrid">
+      <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-1.jpg" alt="Red Bricks / Ladder interior 1" onerror="this.parentElement.classList.add('placeholder')"></div>
+      <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-2.jpg" alt="Red Bricks / Ladder interior 2" onerror="this.parentElement.classList.add('placeholder')"></div>
+      <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-3.jpg" alt="Red Bricks / Ladder interior 3" onerror="this.parentElement.classList.add('placeholder')"></div>
+      <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-1.jpg" alt="Grey Bricks / Ladder interior 1" onerror="this.parentElement.classList.add('placeholder')"></div>
+      <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-2.jpg" alt="Grey Bricks / Ladder interior 2" onerror="this.parentElement.classList.add('placeholder')"></div>
+      <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-3.jpg" alt="Grey Bricks / Ladder interior 3" onerror="this.parentElement.classList.add('placeholder')"></div>
+      <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-1.jpg" alt="Jungle interior 1" onerror="this.parentElement.classList.add('placeholder')"></div>
+      <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-2.jpg" alt="Jungle interior 2" onerror="this.parentElement.classList.add('placeholder')"></div>
+      <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-3.jpg" alt="Jungle interior 3" onerror="this.parentElement.classList.add('placeholder')"></div>
+    </div>
+  </div>
+</div>
 
 <!-- GLASS SECTION -->
 <section class="glass-section" id="glass">
@@ -1110,7 +1170,7 @@ const cRing = document.getElementById('cRing');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove', e=>{ mx=e.clientX; my=e.clientY; cDot.style.left=mx+'px'; cDot.style.top=my+'px'; });
 (function raf(){ rx+=(mx-rx)*.13; ry+=(my-ry)*.13; cRing.style.left=rx+'px'; cRing.style.top=ry+'px'; requestAnimationFrame(raf); })();
-document.querySelectorAll('a,button,.opt-card,.atmo-card').forEach(el=>{ el.addEventListener('mouseenter',()=>cRing.classList.add('hov')); el.addEventListener('mouseleave',()=>cRing.classList.remove('hov')); });
+document.querySelectorAll('a,button,.opt-card').forEach(el=>{ el.addEventListener('mouseenter',()=>cRing.classList.add('hov')); el.addEventListener('mouseleave',()=>cRing.classList.remove('hov')); });
 if('ontouchstart' in window){ cDot.style.display='none'; cRing.style.display='none'; document.body.style.cursor='auto'; }
 
 /* ════════════════════════════
@@ -1148,7 +1208,7 @@ document.querySelectorAll('.gl-feat').forEach(el => glFeatObs.observe(el));
 /* ════════════════════════════
    CONFIGURATOR STATE
 ════════════════════════════ */
-const state = { size:'luxe', wood:'ebony', interior:'crimson', atmo:'penthouse' };
+const state = { size:'luxe', wood:'ebony', interior:'crimson', atmo:'penthouse' }; // atmo fixed, not user-selectable
 
 const descriptions = {
   'size-luxe':'A refined, versatile size designed for everyday living spaces. Balanced in proportion, it delivers the full depth experience without overwhelming the room.',
@@ -1405,7 +1465,7 @@ function getPrice() { return prices[state.size] || 749; }
 
 function updateSummary() {
   document.getElementById('previewName').textContent = displayNames['size-'+state.size];
-  document.getElementById('previewSub').textContent = displayNames['wood-'+state.wood]+' · '+displayNames['atmo-'+state.atmo];
+  document.getElementById('previewSub').textContent = displayNames['wood-'+state.wood]+' · '+displayNames['interior-'+state.interior];
   document.getElementById('configChip').textContent = displayNames['size-'+state.size]+' · '+displayNames['wood-'+state.wood];
   document.getElementById('eq-size').textContent = displayNames['size-'+state.size];
   document.getElementById('eq-wood').textContent = displayNames['wood-'+state.wood];
@@ -1425,7 +1485,7 @@ function handleOptClick(e) {
   if(group==='size'){ state.size=val; key='size-'+val; label='Size'; }
   if(group==='wood'){ state.wood=val; key='wood-'+val; label='Wood'; }
   if(group==='interior'){ state.interior=val; key='interior-'+val; label='Interior'; }
-  if(group==='atmo'){ state.atmo=val; key='atmo-'+val; label='Atmosphere'; }
+  // atmo removed from UI
   setDescription(key, label);
   updateSummary();
   transitionPreview();
@@ -1436,7 +1496,39 @@ function handleOptClick(e) {
 document.getElementById('sizeOpts').addEventListener('click', handleOptClick);
 document.getElementById('woodOpts').addEventListener('click', handleOptClick);
 document.getElementById('interiorOpts').addEventListener('click', handleOptClick);
-document.getElementById('atmoOpts').addEventListener('click', handleOptClick);
+
+/* ════════════════════════════
+   PORTFOLIO MODAL
+════════════════════════════ */
+const portfolioModal = document.getElementById('portfolioModal');
+const portfolioLabel = document.getElementById('portfolioLabel');
+
+function openPortfolio() {
+  // Filter items to show only the selected interior, or all if no match
+  const interior = state.interior;
+  document.querySelectorAll('.portfolio-item').forEach(item => {
+    const match = item.dataset.interiors === interior;
+    item.classList.toggle('hidden', !match);
+  });
+  // Update label
+  portfolioLabel.textContent = displayNames['interior-' + interior] || 'All Interiors';
+  portfolioModal.classList.add('open');
+  portfolioModal.setAttribute('aria-hidden','false');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePortfolio() {
+  portfolioModal.classList.remove('open');
+  portfolioModal.setAttribute('aria-hidden','true');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('portfolioBtn').addEventListener('click', openPortfolio);
+const mPortfolioBtn = document.getElementById('mPortfolioBtn');
+if(mPortfolioBtn) mPortfolioBtn.addEventListener('click', openPortfolio);
+document.getElementById('portfolioClose').addEventListener('click', closePortfolio);
+portfolioModal.addEventListener('click', e => { if(e.target === portfolioModal) closePortfolio(); });
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closePortfolio(); });
 
 /* buy now button */
 function goToCheckout() {
@@ -1850,7 +1942,7 @@ function handleMobileOpt(e){
   if(group==='size'){ state.size=val; key='size-'+val; label='Size'; }
   if(group==='wood'){ state.wood=val; key='wood-'+val; label='Wood'; }
   if(group==='interior'){ state.interior=val; key='interior-'+val; label='Interior'; }
-  if(group==='atmo'){ state.atmo=val; key='atmo-'+val; label='Atmosphere'; }
+  // atmo removed from UI
   mSetDescription(key, label);
   setDescription(key, label); // also update desktop desc
   updateSummary();
