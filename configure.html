@@ -128,7 +128,7 @@ from{opacity:0;transform:translateY(18px)}}
 .size-opt.active{border-color:rgba(184,147,106,.45);background:rgba(184,147,106,.04)}
 .size-opt-name{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--linen);transition:color .3s}
 .size-opt.active .size-opt-name{color:var(--bronze-l)}
-.size-opt-dim{font-size:.58rem;letter-spacing:.04em;color:var(--fog)}
+.size-opt-dim{font-size:.72rem;letter-spacing:.04em;color:var(--silver)}
 
 /* Swatches row (for atmospheres) */
 .atmo-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
@@ -141,7 +141,7 @@ from{opacity:0;transform:translateY(18px)}}
 .atmo-card.active .atmo-name{color:var(--bronze-l)}
 
 /* ─ DESCRIPTION PANEL ─ */
-.desc-panel{margin-top:2.5rem;padding:1.5rem;background:rgba(184,147,106,.04);border:1px solid rgba(184,147,106,.1);min-height:90px;position:relative}
+.desc-panel{display:none}
 .desc-panel-label{font-size:.52rem;letter-spacing:.4em;text-transform:uppercase;color:var(--bronze);margin-bottom:.6rem}
 .desc-panel-text{font-family:var(--serif);font-style:italic;font-size:1rem;font-weight:300;color:rgba(212,207,200,.7);line-height:1.7;transition:opacity .4s var(--ease);min-height:3.5rem}
 .desc-panel-text.fading{opacity:0}
@@ -515,7 +515,8 @@ from{opacity:0;transform:translateY(18px)}}
    PORTFOLIO TRIGGER + MODAL
 ═══════════════════════════════ */
 /* Portfolio trigger button (kept for mobile panel) */
-.portfolio-trigger{margin-top:2.5rem;padding-top:2.5rem;border-top:1px solid rgba(184,147,106,.07)}
+.portfolio-trigger{display:none}
+
 .portfolio-btn{
   display:inline-flex;align-items:center;gap:1.1rem;
   font-family:var(--sans);font-size:.62rem;font-weight:300;letter-spacing:.38em;text-transform:uppercase;
