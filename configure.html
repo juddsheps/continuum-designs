@@ -641,15 +641,13 @@ from{opacity:0;transform:translateY(18px)}}
 
   /* ── MOBILE CONFIGURATOR LAYOUT ── */
   .preview-col{
-    position:sticky;
-    top:0;
-    z-index:50;
+    position:static;
     background:var(--deep);
     border-bottom:1px solid rgba(184,147,106,.1);
   }
   .combo-hero img{height:auto}
   .combo-thumbs{grid-template-columns:repeat(4,1fr)}
-  .combo-thumb img{height:55px}
+  .combo-thumb img{height:70px}
   .preview-label{
     padding:.75rem 1rem .6rem;
     display:flex;gap:.75rem;align-items:center;
@@ -669,13 +667,6 @@ from{opacity:0;transform:translateY(18px)}}
   nav{padding:1.25rem 1.5rem}
   .intro{min-height:0;padding:4.5rem 1.5rem 2.5rem}
   .intro-h1{font-size:clamp(2.4rem,11vw,3.8rem)}
-  .preview-col{
-    top:0;
-    height:42svh;
-    min-height:220px;
-    max-height:300px;
-    padding:1rem 1rem 0.6rem;
-  }
   .preview-wrap{width:min(280px,90vw)}
   .gl-safety{grid-template-columns:1fr 1fr}
   .sh-stats{grid-template-columns:1fr 1fr}
