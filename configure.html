@@ -83,16 +83,19 @@ from{opacity:0;transform:translateY(18px)}}
 .config-main{display:grid;grid-template-columns:1fr 420px;min-height:90vh;align-items:start}
 
 /* ─ PREVIEW ─ */
-.preview-col{display:flex;flex-direction:column;align-items:center;padding:3rem 2.5rem 4rem;background:var(--deep)}
-.preview-wrap{position:relative;width:min(560px,90%);aspect-ratio:4/3}
-#previewCanvas{width:100%;height:100%;display:block;border-radius:2px}
-#prevOverlay{position:absolute;inset:0;border-radius:2px;pointer-events:none;transition:opacity .6s var(--ease)}
-.preview-label{margin-top:1.75rem;text-align:center}
+.preview-col{display:flex;flex-direction:column;align-items:stretch;padding:0;background:var(--deep)}
+.combo-hero{position:relative;width:100%;overflow:hidden;background:#0a0910}
+.combo-hero img{width:100%;height:460px;object-fit:cover;display:block;transition:opacity .5s ease}
+.combo-hero img.fading{opacity:0}
+.combo-thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;padding:2px 0 0}
+.combo-thumb{position:relative;overflow:hidden;cursor:pointer;background:#0a0910}
+.combo-thumb img{width:100%;height:90px;object-fit:cover;display:block;transition:transform .4s ease,opacity .3s}
+.combo-thumb:hover img{transform:scale(1.04)}
+.combo-thumb.active::after{content:'';position:absolute;inset:0;border:2px solid var(--bronze);pointer-events:none}
+.preview-label{padding:1.5rem 2.5rem 0;text-align:left}
 .pl-config{font-size:.56rem;letter-spacing:.4em;text-transform:uppercase;color:var(--bronze);margin-bottom:.4rem}
 .pl-name{font-family:var(--serif);font-size:1.5rem;font-weight:300;color:var(--cream);letter-spacing:.06em}
 .pl-size{font-size:.6rem;letter-spacing:.28em;text-transform:uppercase;color:rgba(184,147,106,.45);margin-top:.25rem}
-/* crossfade canvas */
-#prevFade{position:absolute;inset:0;border-radius:2px;pointer-events:none;opacity:0;transition:opacity .0s}
 
 /* ─ CONTROLS ─ */
 .controls-col{padding:4rem 3rem 8rem;background:var(--obsidian);border-left:1px solid rgba(184,147,106,.07)}
@@ -640,29 +643,15 @@ from{opacity:0;transform:translateY(18px)}}
     position:sticky;
     top:0;
     z-index:50;
-    height:44svh;
-    min-height:240px;
-    max-height:340px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
     background:var(--deep);
-    padding:1.25rem 1rem 0.75rem;
     border-bottom:1px solid rgba(184,147,106,.1);
   }
-  .preview-wrap{
-    width:min(320px,88vw);
-    aspect-ratio:unset;
-    height:calc(100% - 52px);
-    position:relative;
-  }
-  #previewCanvas,#prevFade{width:100%;height:100%;position:absolute;inset:0}
+  .combo-hero img{height:220px}
+  .combo-thumbs{grid-template-columns:repeat(4,1fr)}
+  .combo-thumb img{height:55px}
   .preview-label{
-    margin-top:.6rem;
-    display:flex;gap:.75rem;align-items:center;justify-content:center;
-    width:100%;
-    padding-bottom:.25rem;
+    padding:.75rem 1rem .6rem;
+    display:flex;gap:.75rem;align-items:center;
   }
   .pl-config{display:none}
   .pl-name{font-size:1rem;letter-spacing:.08em;margin-bottom:0}
@@ -744,7 +733,7 @@ from{opacity:0;transform:translateY(18px)}}
     <span class="cst-sep">·</span>
     <span class="cst" data-step="size">Size</span>
   </div>
-  <span class="config-summary-chip" id="configChip">Luxe Edition · Ebony Oak</span>
+  <span class="config-summary-chip" id="configChip">Luxe Edition · Smoked Ebony Oak</span>
 </div>
 
 <!-- CONFIGURATOR MAIN -->
@@ -753,29 +742,19 @@ from{opacity:0;transform:translateY(18px)}}
 
     <!-- PREVIEW -->
     <div class="preview-col">
-      <div class="preview-wrap">
-        <canvas id="previewCanvas" width="560" height="420"></canvas>
-        <canvas id="prevFade" width="560" height="420"></canvas>
-        <div id="prevOverlay"></div>
-        <div class="preview-flash-ring" id="flashRing"></div>
+      <div class="combo-hero">
+        <img id="comboHeroImg" src="images/configure/ebony-crimson/1.jpg" alt="Smoked Ebony Oak · Imperium Red Brick">
+      </div>
+      <div class="combo-thumbs" id="comboThumbs">
+        <div class="combo-thumb active" data-idx="0"><img src="images/configure/ebony-crimson/1.jpg" alt=""></div>
+        <div class="combo-thumb" data-idx="1"><img src="images/configure/ebony-crimson/2.jpg" alt=""></div>
+        <div class="combo-thumb" data-idx="2"><img src="images/configure/ebony-crimson/3.jpg" alt=""></div>
+        <div class="combo-thumb" data-idx="3"><img src="images/configure/ebony-crimson/4.jpg" alt=""></div>
       </div>
       <div class="preview-label">
         <p class="pl-config">Your Configuration</p>
         <p class="pl-name" id="previewName">Luxe Edition</p>
-        <p class="pl-size" id="previewSub">Ebony Oak · Red Bricks / Ladder</p>
-      </div>
-
-      <!-- INLINE PORTFOLIO GALLERY -->
-      <div class="preview-gallery">
-        <span class="preview-gallery-label" id="galleryLabel">Red Bricks / Ladder — In Real Spaces</span>
-        <div class="preview-gallery-grid" id="portfolioGrid">
-          <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-1.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
-          <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-2.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
-          <div class="portfolio-item" data-interiors="crimson"><img src="images/portfolio/crimson-3.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
-          <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-1.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
-          <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-2.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
-          <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-3.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
-        </div>
+        <p class="pl-size" id="previewSub">Smoked Ebony Oak · Imperium Red Brick</p>
       </div>
     </div>
 
@@ -789,7 +768,7 @@ from{opacity:0;transform:translateY(18px)}}
           <div class="opt-card active" data-group="wood" data-val="ebony">
             <div class="opt-swatch" style="background:linear-gradient(135deg,#120e06,#1e1808);border:1px solid rgba(184,147,106,.2)"></div>
             <div class="opt-card-text">
-              <div class="opt-card-name">Ebony Oak</div>
+              <div class="opt-card-name">Smoked Ebony Oak</div>
               <div class="opt-card-hint">Deep, rich &amp; architectural</div>
             </div>
             <div class="opt-card-check"></div>
@@ -797,7 +776,7 @@ from{opacity:0;transform:translateY(18px)}}
           <div class="opt-card" data-group="wood" data-val="light">
             <div class="opt-swatch" style="background:linear-gradient(135deg,#c8902a,#a87020);"></div>
             <div class="opt-card-text">
-              <div class="opt-card-name">Light Oak</div>
+              <div class="opt-card-name">Light Dune Oak</div>
               <div class="opt-card-hint">Warm honey tones, natural grain</div>
             </div>
             <div class="opt-card-check"></div>
@@ -812,7 +791,7 @@ from{opacity:0;transform:translateY(18px)}}
           <div class="opt-card active" data-group="interior" data-val="crimson">
             <div class="opt-swatch" style="background:linear-gradient(135deg,#3a1008,#5a1c0a);border:1px solid rgba(180,80,40,.25)"></div>
             <div class="opt-card-text">
-              <div class="opt-card-name">Red Bricks / Ladder</div>
+              <div class="opt-card-name">Imperium Red Brick</div>
               <div class="opt-card-hint">Red brick · warm, urban, atmospheric</div>
             </div>
             <div class="opt-card-check"></div>
@@ -820,7 +799,7 @@ from{opacity:0;transform:translateY(18px)}}
           <div class="opt-card" data-group="interior" data-val="slate">
             <div class="opt-swatch" style="background:linear-gradient(135deg,#1e2028,#282830);border:1px solid rgba(120,130,150,.2)"></div>
             <div class="opt-card-text">
-              <div class="opt-card-name">Grey Bricks / Ladder</div>
+              <div class="opt-card-name">Charcoal Grey Brick</div>
               <div class="opt-card-hint">Grey brick · cooler, architectural, minimal</div>
             </div>
             <div class="opt-card-check"></div>
@@ -861,8 +840,8 @@ from{opacity:0;transform:translateY(18px)}}
       <div class="enquire-block" id="enquire">
         <div class="enq-summary" id="enqSummary">
           <div class="enq-row"><span class="enq-key">Size</span><span class="enq-val" id="eq-size">Luxe Edition</span></div>
-          <div class="enq-row"><span class="enq-key">Wood</span><span class="enq-val" id="eq-wood">Ebony Oak</span></div>
-          <div class="enq-row"><span class="enq-key">Interior</span><span class="enq-val" id="eq-interior">Red Bricks / Ladder</span></div>
+          <div class="enq-row"><span class="enq-key">Wood</span><span class="enq-val" id="eq-wood">Smoked Ebony Oak</span></div>
+          <div class="enq-row"><span class="enq-key">Interior</span><span class="enq-val" id="eq-interior">Imperium Red Brick</span></div>
           <div class="enq-row"><span class="enq-key">Lead Time</span><span class="enq-val">2–3 weeks</span></div>
           <div class="enq-row" style="border-bottom:none;padding-top:1rem"><span class="enq-key" style="color:var(--bronze)">Total</span><span class="enq-val" id="eq-price" style="color:var(--bronze);font-size:1.1rem">$749 AUD</span></div>
         </div>
@@ -893,12 +872,12 @@ from{opacity:0;transform:translateY(18px)}}
     <div class="m-opt-row" id="mWoodOpts">
       <div class="m-opt active" data-group="wood" data-val="ebony">
         <div class="m-opt-sw" style="background:linear-gradient(135deg,#120e06,#1e1808);border:1px solid rgba(184,147,106,.25)"></div>
-        <div><div class="m-opt-name">Ebony Oak</div><div class="m-opt-hint">Deep, rich &amp; architectural</div></div>
+        <div><div class="m-opt-name">Smoked Ebony Oak</div><div class="m-opt-hint">Deep, rich &amp; architectural</div></div>
         <div class="m-opt-check"></div>
       </div>
       <div class="m-opt" data-group="wood" data-val="light">
         <div class="m-opt-sw" style="background:linear-gradient(135deg,#c8902a,#a87020)"></div>
-        <div><div class="m-opt-name">Light Oak</div><div class="m-opt-hint">Warm honey tones</div></div>
+        <div><div class="m-opt-name">Light Dune Oak</div><div class="m-opt-hint">Warm honey tones</div></div>
         <div class="m-opt-check"></div>
       </div>
     </div>
@@ -909,12 +888,12 @@ from{opacity:0;transform:translateY(18px)}}
     <div class="m-opt-row" id="mInteriorOpts" style="flex-direction:column;gap:.45rem">
       <div class="m-opt active" data-group="interior" data-val="crimson">
         <div class="m-opt-sw" style="background:linear-gradient(135deg,#3a1008,#5a1c0a);border:1px solid rgba(180,80,40,.3)"></div>
-        <div><div class="m-opt-name">Red Bricks / Ladder</div><div class="m-opt-hint">Red brick · warm, urban, atmospheric</div></div>
+        <div><div class="m-opt-name">Imperium Red Brick</div><div class="m-opt-hint">Red brick · warm, urban, atmospheric</div></div>
         <div class="m-opt-check"></div>
       </div>
       <div class="m-opt" data-group="interior" data-val="slate">
         <div class="m-opt-sw" style="background:linear-gradient(135deg,#1e2028,#282830);border:1px solid rgba(120,130,150,.25)"></div>
-        <div><div class="m-opt-name">Grey Bricks / Ladder</div><div class="m-opt-hint">Grey brick · architectural, minimal</div></div>
+        <div><div class="m-opt-name">Charcoal Grey Brick</div><div class="m-opt-hint">Grey brick · architectural, minimal</div></div>
         <div class="m-opt-check"></div>
       </div>
     </div>
@@ -946,8 +925,8 @@ from{opacity:0;transform:translateY(18px)}}
   <div class="m-panel" id="m-panel-order" style="padding-bottom:.75rem">
     <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:1rem">
       <div class="enq-row"><span class="enq-key">Size</span><span class="enq-val" id="meq-size">Luxe Edition</span></div>
-      <div class="enq-row"><span class="enq-key">Wood</span><span class="enq-val" id="meq-wood">Ebony Oak</span></div>
-      <div class="enq-row"><span class="enq-key">Interior</span><span class="enq-val" id="meq-interior">Red Bricks / Ladder</span></div>
+      <div class="enq-row"><span class="enq-key">Wood</span><span class="enq-val" id="meq-wood">Smoked Ebony Oak</span></div>
+      <div class="enq-row"><span class="enq-key">Interior</span><span class="enq-val" id="meq-interior">Imperium Red Brick</span></div>
       <div class="enq-row"><span class="enq-key">Lead Time</span><span class="enq-val">2–3 weeks</span></div>
       <div class="enq-row" style="border-bottom:none;padding-top:1rem"><span class="enq-key" style="color:var(--bronze)">Total</span><span class="enq-val" id="meq-price" style="color:var(--bronze);font-size:1.1rem">$749 AUD</span></div>
     </div>
@@ -965,7 +944,7 @@ from{opacity:0;transform:translateY(18px)}}
   <div class="m-enq-bar">
     <div class="m-enq-summary">
       <div class="m-enq-name" id="mBarName">Luxe Edition</div>
-      <div class="m-enq-detail" id="mBarDetail">Ebony Oak · Red Bricks / Ladder</div>
+      <div class="m-enq-detail" id="mBarDetail">Smoked Ebony Oak · Imperium Red Brick</div>
     </div>
     <a href="#" class="m-enq-btn" id="mBarBtn">Buy Now →</a>
   </div>
@@ -1147,10 +1126,10 @@ const state = { size:'luxe', wood:'ebony', interior:'crimson', atmo:'penthouse' 
 const descriptions = {
   'size-luxe':'A refined, versatile size designed for everyday living spaces. Balanced in proportion, it delivers the full depth experience without overwhelming the room.',
   'size-luxe-grand':'A larger, more commanding presence. Designed for open spaces and statement interiors, where scale and impact become part of the experience.',
-  'wood-ebony':'The deep, rich tones of Ebony Oak add a sense of weight and luxury, pairing beautifully with both contemporary and classic interiors.',
-  'wood-light':'For a brighter, more natural presence, Light Oak brings warm honey tones and subtle grain detail, creating a softer, more relaxed feel.',
-  'interior-crimson':'Warm red brick framing with a handcrafted vine ladder — bold, atmospheric, and full of character. Urban energy made intimate.',
-  'interior-slate':'Cooler grey brick surrounds with architectural rigour. Composed, minimal, and quietly powerful. A gallery within a table.',
+  'wood-ebony':'The deep, rich tones of Smoked Ebony Oak add a sense of weight and luxury, pairing beautifully with both contemporary and classic interiors.',
+  'wood-light':'For a brighter, more natural presence, Light Dune Oak brings warm honey tones and subtle grain detail, creating a softer, more relaxed feel.',
+  'interior-crimson':'Warm Imperium Red Brick framing — bold, atmospheric, and full of character. Urban energy made intimate.',
+  'interior-slate':'Charcoal Grey Brick surrounds with architectural rigour. Composed, minimal, and quietly powerful. A gallery within a table.',
   'atmo-penthouse':'Floor-to-ceiling city light. Hard surfaces, deep shadows, restrained luxury. The table as centrepiece of something exceptional.',
   'atmo-gallery':'White cube silence. Soft, diffused light. The kind of room where nothing is superfluous — and this table still commands attention.',
   'atmo-boutique':'Warm low lighting, textured walls, a space that exists only at night. The table glows like a found artefact.',
@@ -1160,8 +1139,8 @@ const descriptions = {
 
 const displayNames = {
   'size-luxe':'Luxe Edition','size-luxe-grand':'Luxe Grand Edition',
-  'wood-ebony':'Ebony Oak','wood-light':'Light Oak',
-  'interior-crimson':'Red Bricks / Ladder','interior-slate':'Grey Bricks / Ladder',
+  'wood-ebony':'Smoked Ebony Oak','wood-light':'Light Dune Oak',
+  'interior-crimson':'Imperium Red Brick','interior-slate':'Charcoal Grey Brick',
   'atmo-penthouse':'Penthouse','atmo-gallery':'Gallery Quiet','atmo-boutique':'Boutique Suite','atmo-evening':'Evening Mood','atmo-warm':'Warm Residence'
 };
 
@@ -1312,31 +1291,51 @@ function drawPreview(canvas, s) {
 /* ════════════════════════════
    SMOOTH CROSSFADE TRANSITION
 ════════════════════════════ */
-const mainCanvas = document.getElementById('previewCanvas');
-const fadeCanvas = document.getElementById('prevFade');
-let transitioning = false;
+/* ════════════════════════════
+   COMBO PHOTO GALLERY
+════════════════════════════ */
+const comboHero = document.getElementById('comboHeroImg');
+const comboThumbs = document.getElementById('comboThumbs');
 
-function transitionPreview() {
-  if(transitioning) { drawPreview(mainCanvas, state); return; }
-  transitioning = true;
-  // Snapshot current into fade canvas
-  const fCtx = fadeCanvas.getContext('2d');
-  fCtx.clearRect(0,0,fadeCanvas.width,fadeCanvas.height);
-  fCtx.drawImage(mainCanvas, 0, 0);
-  // Draw new state on main
-  drawPreview(mainCanvas, state);
-  // Fade out overlay
-  fadeCanvas.style.transition = 'none';
-  fadeCanvas.style.opacity = '1';
-  requestAnimationFrame(()=>{
-    fadeCanvas.style.transition = 'opacity .55s cubic-bezier(0.16,1,0.3,1)';
-    fadeCanvas.style.opacity = '0';
-    setTimeout(()=>{ transitioning = false; }, 600);
-  });
+function getComboKey() {
+  return state.wood + '-' + state.interior;
 }
 
-/* Initial draw */
-drawPreview(mainCanvas, state);
+function getComboImgPath(combo, idx) {
+  return 'images/configure/' + combo + '/' + (idx+1) + '.jpg';
+}
+
+function updateComboGallery() {
+  const combo = getComboKey();
+  const thumbEls = comboThumbs.querySelectorAll('.combo-thumb');
+  thumbEls.forEach((th, i) => {
+    const img = th.querySelector('img');
+    img.src = getComboImgPath(combo, i);
+    th.classList.toggle('active', i === 0);
+  });
+  comboHero.classList.add('fading');
+  setTimeout(() => {
+    comboHero.src = getComboImgPath(combo, 0);
+    comboHero.classList.remove('fading');
+  }, 250);
+}
+
+comboThumbs.addEventListener('click', e => {
+  const thumb = e.target.closest('.combo-thumb');
+  if (!thumb) return;
+  const img = thumb.querySelector('img');
+  comboThumbs.querySelectorAll('.combo-thumb').forEach(t => t.classList.remove('active'));
+  thumb.classList.add('active');
+  comboHero.classList.add('fading');
+  setTimeout(() => {
+    comboHero.src = img.src;
+    comboHero.classList.remove('fading');
+  }, 200);
+});
+
+function transitionPreview() {
+  updateComboGallery();
+}
 
 /* ════════════════════════════
    ATMOSPHERE THUMBNAILS (desktop + mobile)
