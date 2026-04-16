@@ -743,7 +743,7 @@ from{opacity:0;transform:translateY(18px)}}
     <!-- PREVIEW -->
     <div class="preview-col">
       <div class="combo-hero">
-        <img id="comboHeroImg" src="images/configure/ebony-crimson/1.jpg" alt="Smoked Ebony Oak · Imperium Red Brick">
+        <img id="comboHeroImg" src="images/configure/ebony-red/1.jpg" alt="Smoked Ebony Oak · Imperium Red Brick">
       </div>
       <div class="combo-thumbs" id="comboThumbs"></div>
       <div class="preview-label">
@@ -783,7 +783,7 @@ from{opacity:0;transform:translateY(18px)}}
       <div class="ctrl-section" id="step-interior">
         <div class="ctrl-title" data-step="interior">Design Interior</div>
         <div class="opt-list" id="interiorOpts">
-          <div class="opt-card active" data-group="interior" data-val="crimson">
+          <div class="opt-card active" data-group="interior" data-val="red">
             <div class="opt-swatch" style="background:linear-gradient(135deg,#3a1008,#5a1c0a);border:1px solid rgba(180,80,40,.25)"></div>
             <div class="opt-card-text">
               <div class="opt-card-name">Imperium Red Brick</div>
@@ -791,7 +791,7 @@ from{opacity:0;transform:translateY(18px)}}
             </div>
             <div class="opt-card-check"></div>
           </div>
-          <div class="opt-card" data-group="interior" data-val="slate">
+          <div class="opt-card" data-group="interior" data-val="grey">
             <div class="opt-swatch" style="background:linear-gradient(135deg,#1e2028,#282830);border:1px solid rgba(120,130,150,.2)"></div>
             <div class="opt-card-text">
               <div class="opt-card-name">Charcoal Grey Brick</div>
@@ -881,12 +881,12 @@ from{opacity:0;transform:translateY(18px)}}
   <!-- INTERIOR PANEL -->
   <div class="m-panel" id="m-panel-interior">
     <div class="m-opt-row" id="mInteriorOpts" style="flex-direction:column;gap:.45rem">
-      <div class="m-opt active" data-group="interior" data-val="crimson">
+      <div class="m-opt active" data-group="interior" data-val="red">
         <div class="m-opt-sw" style="background:linear-gradient(135deg,#3a1008,#5a1c0a);border:1px solid rgba(180,80,40,.3)"></div>
         <div><div class="m-opt-name">Imperium Red Brick</div><div class="m-opt-hint">Red brick · warm, urban, atmospheric</div></div>
         <div class="m-opt-check"></div>
       </div>
-      <div class="m-opt" data-group="interior" data-val="slate">
+      <div class="m-opt" data-group="interior" data-val="grey">
         <div class="m-opt-sw" style="background:linear-gradient(135deg,#1e2028,#282830);border:1px solid rgba(120,130,150,.25)"></div>
         <div><div class="m-opt-name">Charcoal Grey Brick</div><div class="m-opt-hint">Grey brick · architectural, minimal</div></div>
         <div class="m-opt-check"></div>
@@ -1116,15 +1116,15 @@ document.querySelectorAll('.gl-feat').forEach(el => glFeatObs.observe(el));
 /* ════════════════════════════
    CONFIGURATOR STATE
 ════════════════════════════ */
-const state = { size:'luxe', wood:'ebony', interior:'crimson', atmo:'penthouse' }; // atmo fixed, not user-selectable
+const state = { size:'luxe', wood:'ebony', interior:'red', atmo:'penthouse' }; // atmo fixed, not user-selectable
 
 const descriptions = {
   'size-luxe':'A refined, versatile size designed for everyday living spaces. Balanced in proportion, it delivers the full depth experience without overwhelming the room.',
   'size-luxe-grand':'A larger, more commanding presence. Designed for open spaces and statement interiors, where scale and impact become part of the experience.',
   'wood-ebony':'The deep, rich tones of Smoked Ebony Oak add a sense of weight and luxury, pairing beautifully with both contemporary and classic interiors.',
   'wood-light':'For a brighter, more natural presence, Light Dune Oak brings warm honey tones and subtle grain detail, creating a softer, more relaxed feel.',
-  'interior-crimson':'Warm Imperium Red Brick framing — bold, atmospheric, and full of character. Urban energy made intimate.',
-  'interior-slate':'Charcoal Grey Brick surrounds with architectural rigour. Composed, minimal, and quietly powerful. A gallery within a table.',
+  'interior-red':'Warm Imperium Red Brick framing — bold, atmospheric, and full of character. Urban energy made intimate.',
+  'interior-grey':'Charcoal Grey Brick surrounds with architectural rigour. Composed, minimal, and quietly powerful. A gallery within a table.',
   'atmo-penthouse':'Floor-to-ceiling city light. Hard surfaces, deep shadows, restrained luxury. The table as centrepiece of something exceptional.',
   'atmo-gallery':'White cube silence. Soft, diffused light. The kind of room where nothing is superfluous — and this table still commands attention.',
   'atmo-boutique':'Warm low lighting, textured walls, a space that exists only at night. The table glows like a found artefact.',
@@ -1135,7 +1135,7 @@ const descriptions = {
 const displayNames = {
   'size-luxe':'Luxe Edition','size-luxe-grand':'Luxe Grand Edition',
   'wood-ebony':'Smoked Ebony Oak','wood-light':'Light Dune Oak',
-  'interior-crimson':'Imperium Red Brick','interior-slate':'Charcoal Grey Brick',
+  'interior-red':'Imperium Red Brick','interior-grey':'Charcoal Grey Brick',
   'atmo-penthouse':'Penthouse','atmo-gallery':'Gallery Quiet','atmo-boutique':'Boutique Suite','atmo-evening':'Evening Mood','atmo-warm':'Warm Residence'
 };
 
@@ -1156,8 +1156,8 @@ const woodPalette = {
 };
 
 const interiorColors = {
-  crimson:{ wall1:'#3a1008', wall2:'#5a2010', floor:'#2a1408', accent:'rgba(200,80,30,.3)' },
-  slate:  { wall1:'#1e2028', wall2:'#282a32', floor:'#181a20', accent:'rgba(100,120,160,.25)' },
+  red:{ wall1:'#3a1008', wall2:'#5a2010', floor:'#2a1408', accent:'rgba(200,80,30,.3)' },
+  grey:   { wall1:'#1e2028', wall2:'#282a32', floor:'#181a20', accent:'rgba(100,120,160,.25)' },
 };
 
 /* ════════════════════════════
@@ -1189,9 +1189,9 @@ function drawPreview(canvas, s) {
   ctx.fillStyle = ip.wall1; ctx.fillRect(0, 0, w, h*.62);
 
   // interior detail rendering
-  if(s.interior === 'crimson' || s.interior === 'slate') {
+  if(s.interior === 'red' || s.interior === 'grey') {
     // brick pattern
-    const bc = s.interior === 'crimson' ? 'rgba(180,60,20,.12)' : 'rgba(80,90,120,.1)';
+    const bc = s.interior === 'red' ? 'rgba(180,60,20,.12)' : 'rgba(80,90,120,.1)';
     const bh = 14, bw = 32, gap = 2;
     ctx.save();
     for(let row = 0; row*bh < h*.62; row++) {
