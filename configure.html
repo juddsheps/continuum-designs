@@ -603,16 +603,6 @@ from{opacity:0;transform:translateY(18px)}}
 .m-atmo-name{font-size:.46rem;letter-spacing:.18em;text-transform:uppercase;color:var(--linen);line-height:1.3}
 .m-atmo.active .m-atmo-name{color:var(--bronze-l)}
 
-/* Your Table preview panel */
-.m-preview-combo{padding:.75rem}
-.m-preview-hero{width:100%;overflow:hidden;background:#0a0910;margin-bottom:2px}
-.m-preview-hero img{width:100%;height:auto;max-height:320px;object-fit:cover;display:block}
-.m-preview-thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(60px,1fr));gap:2px;margin-bottom:1rem}
-.m-preview-thumbs .combo-thumb img{height:55px}
-.m-preview-label{font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(184,147,106,.6);text-align:center;margin-bottom:1rem}
-.m-preview-order-btn{display:block;width:100%;padding:1.1rem;background:var(--bronze);color:var(--ink);font-family:var(--sans);font-size:.65rem;font-weight:400;letter-spacing:.35em;text-transform:uppercase;text-align:center;text-decoration:none;transition:background .3s}
-.m-preview-order-btn:active{background:var(--bronze-l)}
-
 /* Mobile description + CTA strip at bottom of controls */
 .m-desc-strip{background:rgba(184,147,106,.04);border-top:1px solid rgba(184,147,106,.1);padding:1rem 1.25rem;min-height:54px}
 .m-desc-lbl{font-size:.48rem;letter-spacing:.38em;text-transform:uppercase;color:var(--bronze);margin-bottom:.3rem}
@@ -867,8 +857,6 @@ from{opacity:0;transform:translateY(18px)}}
     <div class="m-tab-sep">›</div>
     <div class="m-tab" data-tab="size">Size<div class="m-tab-dot"></div></div>
     <div class="m-tab-sep">›</div>
-    <div class="m-tab" data-tab="preview">Your<br>Table<div class="m-tab-dot"></div></div>
-    <div class="m-tab-sep">›</div>
     <div class="m-tab" data-tab="order">Order<div class="m-tab-dot"></div></div>
   </div>
 
@@ -924,18 +912,6 @@ from{opacity:0;transform:translateY(18px)}}
       <span>View in Real Spaces</span>
       <span class="portfolio-btn-arrow"></span>
     </button>
-  </div>
-
-  <!-- YOUR TABLE PANEL -->
-  <div class="m-panel" id="m-panel-preview">
-    <div class="m-preview-combo">
-      <div class="m-preview-hero">
-        <img id="mPreviewHero" src="images/configure/ebony-red/1.jpg" alt="">
-      </div>
-      <div class="m-preview-thumbs" id="mPreviewThumbs"></div>
-      <div class="m-preview-label" id="mPreviewLabel">Smoked Ebony Oak · Imperium Red Brick</div>
-      <a href="#" class="m-preview-order-btn" id="mPreviewOrderBtn">Looks Good — Order Now</a>
-    </div>
   </div>
 
   <!-- ORDER PANEL -->
@@ -1899,7 +1875,7 @@ function handleMobileOpt(e){
   const tabEl = document.querySelector(`.m-tab[data-tab="${group==='atmo'?'atmo':group}"]`);
   if(tabEl) tabEl.classList.add('done');
   // auto advance to next tab after selection (size→wood, wood→interior, interior→atmo)
-  const flow = ['wood','interior','size','preview'];
+  const flow = ['wood','interior','size'];
   const idx = flow.indexOf(group);
   if(idx >= 0 && idx < flow.length-1){
     setTimeout(()=>{
@@ -1915,44 +1891,9 @@ function handleMobileOpt(e){
 });
 
 /* Mobile buy now buttons */
-['mEnqBtn','mBarBtn','mPreviewOrderBtn'].forEach(id=>{
+['mEnqBtn','mBarBtn'].forEach(id=>{
   const el = document.getElementById(id);
   if(el) el.addEventListener('click', e=>{ e.preventDefault(); goToCheckout(); });
-});
-
-/* Your Table panel — populate when tab activated */
-function populateMPreview() {
-  const combo = getComboKey();
-  const wn = displayNames['wood-'+state.wood];
-  const inn = displayNames['interior-'+state.interior];
-  const label = document.getElementById('mPreviewLabel');
-  const hero = document.getElementById('mPreviewHero');
-  const thumbsEl = document.getElementById('mPreviewThumbs');
-  if(label) label.textContent = wn + ' · ' + inn;
-  probeComboImages(combo, srcs => {
-    if(!srcs.length) return;
-    if(hero) hero.src = srcs[0];
-    if(thumbsEl) {
-      thumbsEl.innerHTML = '';
-      srcs.forEach((src, i) => {
-        const div = document.createElement('div');
-        div.className = 'combo-thumb' + (i===0?' active':'');
-        const img = document.createElement('img'); img.src=src; img.alt='';
-        div.appendChild(img);
-        div.addEventListener('click', ()=>{
-          thumbsEl.querySelectorAll('.combo-thumb').forEach(t=>t.classList.remove('active'));
-          div.classList.add('active');
-          if(hero) hero.src = src;
-        });
-        thumbsEl.appendChild(div);
-      });
-    }
-  });
-}
-
-/* Hook into tab click to populate preview panel */
-document.querySelectorAll('.m-tab[data-tab="preview"]').forEach(tab => {
-  tab.addEventListener('click', populateMPreview);
 });
 
 /* Initial mobile summary */
