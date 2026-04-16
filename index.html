@@ -160,6 +160,7 @@ nav.solid::after{opacity:1}
 .s2-line.strong{font-family:var(--serif);font-size:clamp(1.1rem,2vw,1.45rem);font-weight:300;font-style:italic;color:rgba(212,207,200,.45)}
 .s2-line.strong.visible{color:var(--cream)}
 .s2-gap{height:.5rem;display:block}
+.s2-outro{display:none}
 
 .gallery-section{position:relative;padding:8rem 0 4rem;background:var(--obsidian)}
 .gallery-header{padding:0 3.5rem;margin-bottom:5rem;text-align:center}
@@ -243,6 +244,8 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
   .s2-photo-wrap{order:0;height:460px;max-height:460px;width:100%}
   .s2-photo-wrap img{height:460px;object-position:120% center}
   .s2-content{position:absolute;top:0;left:0;bottom:0;width:68%;padding:5rem 2rem 2.5rem;display:flex;flex-direction:column;justify-content:flex-start;padding-top:4rem;background:linear-gradient(to right,rgba(7,6,8,.65) 50%,transparent 100%);z-index:2}
+  .s2-outro{display:block;padding:2rem 2rem 3rem;background:var(--ink)}
+  .s2-outro .s2-line{display:block;opacity:1;transform:none}
   .gallery-grid{columns:2;padding:0 1.5rem}
   .gallery-header{padding:0 2rem;margin-bottom:3.5rem}
   .gallery-cta-wrap{padding:4rem 2rem 5rem}
@@ -351,6 +354,10 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
     <div class="s2-photo-wrap">
       <img src="images/feature.jpeg" alt="Infinity Coffee Table">
     </div>
+  </div>
+  <div class="s2-outro">
+    <span class="s2-line visible">It's not decoration.</span>
+    <span class="s2-line strong visible">It's an experience.</span>
   </div>
 </section>
 
