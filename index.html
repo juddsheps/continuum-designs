@@ -46,7 +46,9 @@ nav.solid::after{opacity:1}
 .nav-drawer a:hover{color:var(--bronze-l)}
 
 .hero{position:relative;height:100svh;min-height:600px;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 60% 40%,rgba(26,22,18,0) 0%,rgba(7,6,8,.5) 100%),linear-gradient(165deg,#0a0910 0%,#0f0d14 15%,#141218 30%,#0d0c11 50%,#080709 70%,#050406 100%);animation:hero-breathe 12s ease-in-out infinite}
+.hero-bg{position:absolute;inset:0;overflow:hidden;animation:hero-breathe 12s ease-in-out infinite}
+.hero-bg img{width:100%;height:100%;object-fit:cover;display:block}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(165deg,rgba(6,5,10,.72) 0%,rgba(10,9,16,.55) 40%,rgba(7,6,8,.65) 100%)}
 @keyframes hero-breathe{0%,100%{filter:brightness(1)}50%{filter:brightness(1.04)}}
 .hero-reflect{position:absolute;inset:0;pointer-events:none;background:linear-gradient(135deg,transparent 30%,rgba(184,147,106,.015) 48%,rgba(184,147,106,.03) 50%,rgba(184,147,106,.015) 52%,transparent 70%);animation:reflect-sweep 8s ease-in-out infinite}
 @keyframes reflect-sweep{0%,100%{transform:translateX(-100%) skewX(-10deg);opacity:0}40%,60%{opacity:1}80%{transform:translateX(200%) skewX(-10deg);opacity:0}}
@@ -223,7 +225,7 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
 </div>
 
 <section class="hero" id="home">
-  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-bg" aria-hidden="true"><img src="images/hero.jpg" alt=""></div>
   <div class="hero-reflect" aria-hidden="true"></div>
   <svg class="hero-table-silhouette" viewBox="0 0 560 180" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
@@ -289,6 +291,7 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
       </div>
     </div>
     <div class="s2-photo-wrap">
+      <img src="images/feature.jpg" alt="Infinity Coffee Table">
     </div>
   </div>
 </section>
@@ -298,7 +301,14 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
     <span class="lbl">The Collection</span>
     <h2>Designed to belong in exceptional spaces.</h2>
   </div>
-  <div class="gallery-grid" id="galleryGrid"></div>
+  <div class="gallery-grid" id="galleryGrid">
+    <div class="g-item reveal"><img src="images/collection-1.jpg" alt="Infinity Table" class="g-canvas"></div>
+    <div class="g-item reveal d1"><img src="images/collection-2.jpg" alt="Infinity Table" class="g-canvas"></div>
+    <div class="g-item reveal d2"><img src="images/collection-3.jpg" alt="Infinity Table" class="g-canvas"></div>
+    <div class="g-item reveal"><img src="images/collection-4.jpg" alt="Infinity Table" class="g-canvas"></div>
+    <div class="g-item reveal d1"><img src="images/collection-5.jpg" alt="Infinity Table" class="g-canvas"></div>
+    <div class="g-item reveal d2"><img src="images/collection-6.jpg" alt="Infinity Table" class="g-canvas"></div>
+  </div>
   <div class="gallery-cta-wrap reveal">
     <p class="gallery-cta-title">Customise size, materials, and interior atmosphere.</p>
     <a href="/configure.html" class="gallery-cta-btn">Design Yours<span class="cta-arrow"></span></a>
@@ -320,7 +330,12 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
       <div class="portfolio-rule"></div>
       <p style="font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(184,147,106,.5)">Portfolio here</p>
     </div>
-    <div class="portfolio-mosaic reveal d1" id="portfolioGrid"></div>
+    <div class="portfolio-mosaic reveal d1" id="portfolioGrid">
+      <div class="p-item"><img src="images/portfolio-1.jpg" alt="" class="p-canvas"><div class="p-label">Mosman Park</div></div>
+      <div class="p-item"><img src="images/portfolio-2.jpg" alt="" class="p-canvas"><div class="p-label">Cottesloe</div></div>
+      <div class="p-item"><img src="images/portfolio-3.jpg" alt="" class="p-canvas"><div class="p-label">Dalkeith</div></div>
+      <div class="p-item"><img src="images/portfolio-4.jpg" alt="" class="p-canvas"><div class="p-label">Applecross</div></div>
+    </div>
   </div>
 </section>
 
@@ -439,8 +454,7 @@ function buildPortfolio(){
     div.appendChild(canvas);div.appendChild(label);grid.appendChild(div);drawScene(canvas,item,null);
   });
 }
-// buildGallery(); // replaced with real photos
-buildPortfolio();
+// Gallery and portfolio now use real images in HTML
 
 /* PARALLAX */
 const sil=document.querySelector('.hero-table-silhouette');
