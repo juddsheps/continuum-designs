@@ -581,7 +581,8 @@ from{opacity:0;transform:translateY(18px)}}
 .m-panel.active{display:block}
 
 /* Compact option rows for mobile */
-.m-opt-row{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.5rem}
+.m-opt-row{display:flex;flex-direction:column;gap:0;margin-bottom:.5rem}
+.m-opt-arrow{display:flex;align-items:center;justify-content:center;height:22px;color:rgba(184,147,106,.35);font-size:.55rem;letter-spacing:.2em;line-height:1;pointer-events:none;user-select:none}
 .m-opt{display:flex;align-items:center;gap:.6rem;padding:.75rem 1rem;border:1px solid rgba(184,147,106,.12);cursor:pointer;flex:1;min-width:130px;transition:border-color .3s,background .3s;position:relative;overflow:hidden}
 .m-opt::after{content:'';position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.04) 50%,transparent 65%);transform:translateX(-100%);transition:transform .5s var(--ease)}
 .m-opt:active::after{transform:translateX(100%)}
@@ -646,7 +647,7 @@ from{opacity:0;transform:translateY(18px)}}
     background:var(--deep);
     border-bottom:1px solid rgba(184,147,106,.1);
   }
-  .combo-hero img{max-height:280px}
+  .combo-hero img{max-height:360px}
   .combo-thumbs{grid-template-columns:repeat(4,1fr)}
   .combo-thumb img{height:70px}
   .preview-label{
@@ -849,7 +850,7 @@ from{opacity:0;transform:translateY(18px)}}
 
   <!-- TAB BAR -->
   <div class="m-tab-bar">
-    <div class="m-tab active" data-tab="wood">Wood<div class="m-tab-dot"></div></div>
+    <div class="m-tab active" data-tab="wood">Wood Exterior<div class="m-tab-dot"></div></div>
     <div class="m-tab" data-tab="interior">Design Interior<div class="m-tab-dot"></div></div>
     <div class="m-tab" data-tab="size">Size<div class="m-tab-dot"></div></div>
     <div class="m-tab" data-tab="order">Order<div class="m-tab-dot"></div></div>
@@ -863,6 +864,7 @@ from{opacity:0;transform:translateY(18px)}}
         <div><div class="m-opt-name">Smoked Ebony Oak</div><div class="m-opt-hint">Deep, rich &amp; architectural</div></div>
         <div class="m-opt-check"></div>
       </div>
+      <div class="m-opt-arrow">∨</div>
       <div class="m-opt" data-group="wood" data-val="light">
         <div class="m-opt-sw" style="background:#DCC9B4"></div>
         <div><div class="m-opt-name">Light Dune Oak</div><div class="m-opt-hint">Warm honey tones</div></div>
@@ -873,12 +875,13 @@ from{opacity:0;transform:translateY(18px)}}
 
   <!-- INTERIOR PANEL -->
   <div class="m-panel" id="m-panel-interior">
-    <div class="m-opt-row" id="mInteriorOpts" style="flex-direction:column;gap:.45rem">
+    <div class="m-opt-row" id="mInteriorOpts">
       <div class="m-opt active" data-group="interior" data-val="red">
         <div class="m-opt-sw" style="background:#A62B1C;"></div>
         <div><div class="m-opt-name">Imperium Red Brick</div><div class="m-opt-hint">Red brick · warm, urban, atmospheric</div></div>
         <div class="m-opt-check"></div>
       </div>
+      <div class="m-opt-arrow">∨</div>
       <div class="m-opt" data-group="interior" data-val="grey">
         <div class="m-opt-sw" style="background:#54545A;"></div>
         <div><div class="m-opt-name">Charcoal Grey Brick</div><div class="m-opt-hint">Grey brick · architectural, minimal</div></div>
@@ -933,6 +936,7 @@ from{opacity:0;transform:translateY(18px)}}
     <div class="m-enq-summary">
       <div class="m-enq-name" id="mBarName">Luxe Edition</div>
       <div class="m-enq-detail" id="mBarDetail">Smoked Ebony Oak · Imperium Red Brick</div>
+
     </div>
     <a href="#" class="m-enq-btn" id="mBarBtn">Buy Now →</a>
   </div>
@@ -1836,7 +1840,7 @@ function mUpdateSummary(){
   const inn = displayNames['interior-'+state.interior];
   const el = id => document.getElementById(id);
   if(el('mBarName')) el('mBarName').textContent = sn;
-  if(el('mBarDetail')) el('mBarDetail').textContent = wn+' · '+an;
+  if(el('mBarDetail')) el('mBarDetail').textContent = wn+' · '+inn;
   if(el('meq-size')) el('meq-size').textContent = sn;
   if(el('meq-wood')) el('meq-wood').textContent = wn;
   if(el('meq-interior')) el('meq-interior').textContent = inn;
