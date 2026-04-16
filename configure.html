@@ -766,9 +766,6 @@ from{opacity:0;transform:translateY(18px)}}
           <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-1.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
           <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-2.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
           <div class="portfolio-item" data-interiors="slate"><img src="images/portfolio/slate-3.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
-          <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-1.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
-          <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-2.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
-          <div class="portfolio-item" data-interiors="jungle"><img src="images/portfolio/jungle-3.jpg" alt="" onerror="this.parentElement.classList.add('placeholder')"></div>
         </div>
       </div>
     </div>
@@ -843,14 +840,6 @@ from{opacity:0;transform:translateY(18px)}}
             <div class="opt-card-text">
               <div class="opt-card-name">Grey Bricks / Ladder</div>
               <div class="opt-card-hint">Grey brick · cooler, architectural, minimal</div>
-            </div>
-            <div class="opt-card-check"></div>
-          </div>
-          <div class="opt-card" data-group="interior" data-val="jungle">
-            <div class="opt-swatch" style="background:linear-gradient(135deg,#0a1808,#142810);border:1px solid rgba(60,130,60,.2)"></div>
-            <div class="opt-card-text">
-              <div class="opt-card-name">Jungle</div>
-              <div class="opt-card-hint">Lush foliage · immersive, organic, alive</div>
             </div>
             <div class="opt-card-check"></div>
           </div>
@@ -949,11 +938,6 @@ from{opacity:0;transform:translateY(18px)}}
       <div class="m-opt" data-group="interior" data-val="slate">
         <div class="m-opt-sw" style="background:linear-gradient(135deg,#1e2028,#282830);border:1px solid rgba(120,130,150,.25)"></div>
         <div><div class="m-opt-name">Grey Bricks / Ladder</div><div class="m-opt-hint">Grey brick · architectural, minimal</div></div>
-        <div class="m-opt-check"></div>
-      </div>
-      <div class="m-opt" data-group="interior" data-val="jungle">
-        <div class="m-opt-sw" style="background:linear-gradient(135deg,#0a1808,#142810);border:1px solid rgba(60,130,60,.25)"></div>
-        <div><div class="m-opt-name">Jungle</div><div class="m-opt-hint">Lush foliage · immersive, organic</div></div>
         <div class="m-opt-check"></div>
       </div>
     </div>
@@ -1176,7 +1160,6 @@ const descriptions = {
   'wood-light':'For a brighter, more natural presence, Light Oak brings warm honey tones and subtle grain detail, creating a softer, more relaxed feel.',
   'interior-crimson':'Warm red brick framing with a handcrafted vine ladder — bold, atmospheric, and full of character. Urban energy made intimate.',
   'interior-slate':'Cooler grey brick surrounds with architectural rigour. Composed, minimal, and quietly powerful. A gallery within a table.',
-  'interior-jungle':'Lush foliage and organic depth — a living world beneath glass. Immersive, unexpected, and impossible to look away from.',
   'atmo-penthouse':'Floor-to-ceiling city light. Hard surfaces, deep shadows, restrained luxury. The table as centrepiece of something exceptional.',
   'atmo-gallery':'White cube silence. Soft, diffused light. The kind of room where nothing is superfluous — and this table still commands attention.',
   'atmo-boutique':'Warm low lighting, textured walls, a space that exists only at night. The table glows like a found artefact.',
@@ -1187,7 +1170,7 @@ const descriptions = {
 const displayNames = {
   'size-luxe':'Luxe Edition','size-luxe-grand':'Luxe Grand Edition',
   'wood-ebony':'Ebony Oak','wood-light':'Light Oak',
-  'interior-crimson':'Red Bricks / Ladder','interior-slate':'Grey Bricks / Ladder','interior-jungle':'Jungle',
+  'interior-crimson':'Red Bricks / Ladder','interior-slate':'Grey Bricks / Ladder',
   'atmo-penthouse':'Penthouse','atmo-gallery':'Gallery Quiet','atmo-boutique':'Boutique Suite','atmo-evening':'Evening Mood','atmo-warm':'Warm Residence'
 };
 
@@ -1210,7 +1193,6 @@ const woodPalette = {
 const interiorColors = {
   crimson:{ wall1:'#3a1008', wall2:'#5a2010', floor:'#2a1408', accent:'rgba(200,80,30,.3)' },
   slate:  { wall1:'#1e2028', wall2:'#282a32', floor:'#181a20', accent:'rgba(100,120,160,.25)' },
-  jungle: { wall1:'#0a1808', wall2:'#142810', floor:'#0a1206', accent:'rgba(40,120,40,.3)' },
 };
 
 /* ════════════════════════════
@@ -1256,16 +1238,6 @@ function drawPreview(canvas, s) {
     }
     ctx.restore();
   }
-  if(s.interior === 'jungle') {
-    // foliage blobs
-    const leaves = [[.2,.3,.25],[.8,.25,.22],[.5,.18,.18],[.1,.5,.15],[.9,.45,.2],[.35,.55,.12],[.65,.6,.14]];
-    leaves.forEach(([lx,ly,lr])=>{
-      const g = ctx.createRadialGradient(w*lx,h*ly,0,w*lx,h*ly,w*lr);
-      g.addColorStop(0,'rgba(20,80,20,.7)'); g.addColorStop(.5,'rgba(10,50,10,.5)'); g.addColorStop(1,'transparent');
-      ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(w*lx,h*ly,w*lr,w*lr*.7,0,0,Math.PI*2); ctx.fill();
-    });
-  }
-
   // ─ AMBIENT LIGHT ─
   const al = ctx.createRadialGradient(w*.5, h*.5, 0, w*.5, h*.5, w*.55);
   al.addColorStop(0, atm.ambient); al.addColorStop(1, 'transparent');
