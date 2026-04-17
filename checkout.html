@@ -199,6 +199,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 <script>
 // ── Order state ──────────────────────────────
 const order = JSON.parse(localStorage.getItem('cd_order') || '{}');
+let priceDisplay = '';
 
 const displayNames = {
   'size-luxe':        'Luxe Edition',
@@ -242,7 +243,8 @@ let cardElement  = null;
 
     // Show price
     const amt = (data.amount / 100).toLocaleString('en-AU', { style: 'currency', currency: 'AUD' });
-    document.getElementById('sum-price').textContent = amt + ' AUD';
+    priceDisplay = amt + ' AUD';
+    document.getElementById('sum-price').textContent = priceDisplay;
 
     // Init Stripe with key returned from function (keeps key out of client HTML)
     const stripe_instance = Stripe(data.publishableKey);
@@ -287,9 +289,12 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
   const firstName = document.getElementById('firstName').value.trim();
   const lastName  = document.getElementById('lastName').value.trim();
   const email     = document.getElementById('email').value.trim();
+  const phone     = document.getElementById('phone').value.trim();
   const street    = document.getElementById('street').value.trim();
   const suburb    = document.getElementById('suburb').value.trim();
+  const state     = document.getElementById('stateField').value;
   const postcode  = document.getElementById('postcode').value.trim();
+  const notes     = document.getElementById('notes').value.trim();
 
   if (!firstName || !lastName || !email || !street || !suburb || !postcode) {
     document.getElementById('card-errors').textContent = 'Please fill in all required fields.';
@@ -327,8 +332,48 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
     document.getElementById('successScreen').classList.add('active');
     document.getElementById('successRef').textContent = 'Payment ref: ' + paymentIntent.id;
     localStorage.removeItem('cd_order');
+    sendOrderEmails({
+      name:     firstName + ' ' + lastName,
+      email:    email,
+      phone:    phone,
+      address:  street + ', ' + suburb + ' ' + state + ' ' + postcode,
+      size:     sizeLabel,
+      wood:     woodLabel,
+      interior: interiorLabel,
+      price:    priceDisplay,
+      notes:    notes,
+    });
   }
 });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+emailjs.init('i4ErNlFAoDcGVWibg');
+
+function sendOrderEmails(orderData) {
+  const templateParams = {
+    customer_name:    orderData.name,
+    customer_email:   orderData.email,
+    customer_phone:   orderData.phone,
+    delivery_address: orderData.address,
+    size:             orderData.size,
+    wood:             orderData.wood,
+    interior:         orderData.interior,
+    price:            orderData.price,
+    notes:            orderData.notes || 'None',
+  };
+
+  // Send customer confirmation
+  emailjs.send('service_7gkzap4', 'template_qkwgrvj', templateParams)
+    .then(() => console.log('Customer email sent'))
+    .catch(err => console.error('Customer email failed:', err));
+
+  // Send your notification
+  emailjs.send('service_7gkzap4', 'template_s57z31h', templateParams)
+    .then(() => console.log('Notification email sent'))
+    .catch(err => console.error('Notification email failed:', err));
+}
 </script>
 </body>
 </html>
