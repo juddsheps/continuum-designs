@@ -183,7 +183,7 @@ nav.solid::after{opacity:1}
    PROJECT MARQUEE
 ═══════════════════════════════ */
 .marquee-section{background:var(--deep);padding:0 0 8rem;overflow:hidden}
-.marquee-section .lbl{font-size:.57rem;letter-spacing:.5em;text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:4rem;padding:0 3.5rem}
+.marquee-section .lbl{font-size:.57rem;letter-spacing:.5em;text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:1.5rem;padding:0 3.5rem}
 .marquee-track{overflow:hidden;position:relative;margin-bottom:8px}
 .marquee-track::before,.marquee-track::after{content:'';position:absolute;top:0;bottom:0;width:80px;z-index:2;pointer-events:none}
 .marquee-track::before{left:0;background:linear-gradient(to right,var(--deep),transparent)}
@@ -273,6 +273,7 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
   .portfolio-section{padding:7rem 0 5rem}
   .portfolio-header{padding:0 2rem}
   .portfolio-split{grid-template-columns:1fr;gap:3rem;padding:0 2rem}
+  .portfolio-placeholder-hide{display:none}
   .portfolio-copy p{max-width:100%}
   .portfolio-mosaic{columns:2}
   .testi-section{padding:7rem 2rem}
@@ -411,7 +412,7 @@ footer{background:var(--ink);border-top:1px solid rgba(184,147,106,.08);padding:
       <p>With over <strong>30 years of experience</strong> delivering high-end kitchens, cabinetry, and architectural joinery, the focus has always been the same — precision, durability, and finish.</p>
       <p>We work closely with builders, designers, and homeowners to ensure every piece fits its environment perfectly.</p>
       <div class="portfolio-rule"></div>
-      <p style="font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(184,147,106,.5)">Portfolio here</p>
+      <p class="portfolio-placeholder-hide" style="font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(184,147,106,.5)">Portfolio here</p>
     </div>
     <div class="portfolio-mosaic reveal d1" id="portfolioGrid">
       <div class="p-item"><img src="images/portfolio-1.jpg" alt="" class="p-canvas"><div class="p-label">Mosman Park</div></div>
