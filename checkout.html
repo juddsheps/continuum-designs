@@ -161,21 +161,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
           <div class="field"><label>Special Instructions (optional)</label><textarea id="notes" placeholder="Gate code, delivery instructions..."></textarea></div>
         </div>
 
-        <div class="form-section">
-          <div class="payment-box">
-            <span class="payment-box-title">Payment</span>
-            <div class="stripe-placeholder" id="stripePlaceholder">
-              Stripe payment form will load here.<br>Card details are encrypted and never stored.
-            </div>
-          </div>
-          <span class="stripe-badge">Secured by Stripe · SSL Encrypted</span>
-        </div>
-
-        <button type="submit" class="submit-btn" id="submitBtn">
-          <span id="submitText">Place Order</span>
-        </button>
-        <p class="submit-note">By placing your order you agree to our terms. Full payment is charged immediately. Refunds available within 48 hours of ordering if not yet in production.</p>
-
       </form>
     </div>
 
@@ -198,48 +183,12 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 </footer>
 
 <script>
-// Load order from localStorage
-const order = JSON.parse(localStorage.getItem('cd_order') || '{}');
-
-if(order.sizeLabel) {
-  document.getElementById('sumTitle').textContent = order.sizeLabel;
-  document.getElementById('sumSub').textContent = order.woodLabel||'';
-  document.getElementById('sum-size').textContent = order.sizeLabel;
-  document.getElementById('sum-wood').textContent = order.woodLabel;
-  document.getElementById('sum-interior').textContent = order.interiorLabel;
-  document.getElementById('sum-atmo').textContent = order.atmoLabel;
-  document.getElementById('sum-price').textContent = '$' + (order.price||749).toLocaleString() + ' AUD';
+// If returning from Stripe after successful payment, show success screen
+if (new URLSearchParams(window.location.search).get('success') === 'true') {
+  document.getElementById('checkoutWrap').style.display = 'none';
+  document.getElementById('successScreen').classList.add('active');
+  localStorage.removeItem('cd_order');
 }
-
-// Form submit — placeholder until Stripe is wired up
-document.getElementById('checkoutForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const firstName = document.getElementById('firstName').value.trim();
-  const lastName = document.getElementById('lastName').value.trim();
-  const email = document.getElementById('email').value.trim();
-  const street = document.getElementById('street').value.trim();
-  const suburb = document.getElementById('suburb').value.trim();
-  const postcode = document.getElementById('postcode').value.trim();
-
-  if(!firstName || !lastName || !email || !street || !suburb || !postcode) {
-    alert('Please fill in all required fields.');
-    return;
-  }
-
-  const btn = document.getElementById('submitBtn');
-  btn.disabled = true;
-  document.getElementById('submitText').textContent = 'Processing...';
-
-  // Simulate processing — replace with Stripe payment intent call
-  setTimeout(() => {
-    const ref = 'CD-' + Math.random().toString(36).substring(2,8).toUpperCase();
-    document.getElementById('checkoutWrap').style.display = 'none';
-    const success = document.getElementById('successScreen');
-    success.classList.add('active');
-    document.getElementById('successRef').textContent = 'Order reference: ' + ref;
-    localStorage.removeItem('cd_order');
-  }, 1500);
-});
 </script>
 </body>
 </html>
