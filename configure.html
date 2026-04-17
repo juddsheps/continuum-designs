@@ -2057,15 +2057,6 @@ function handleMobileOpt(e){
   // mark tab done
   const tabEl = document.querySelector(`.m-tab[data-tab="${group==='atmo'?'atmo':group}"]`);
   if(tabEl) tabEl.classList.add('done');
-  // auto advance to next tab after selection (size→wood, wood→interior, interior→atmo)
-  const flow = ['wood','interior','size'];
-  const idx = flow.indexOf(group);
-  if(idx >= 0 && idx < flow.length-1){
-    setTimeout(()=>{
-      const nextTab = document.querySelector(`.m-tab[data-tab="${flow[idx+1]}"]`);
-      if(nextTab) nextTab.click();
-    }, 380);
-  }
 }
 
 ['mSizeOpts','mWoodOpts','mInteriorOpts','mAtmoOpts'].forEach(id=>{
