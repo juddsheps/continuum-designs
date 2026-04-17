@@ -1599,19 +1599,31 @@ function updateGallery() {
 updateGallery();
 
 /* buy now button */
-function goToCheckout() {
-  localStorage.setItem('cd_order', JSON.stringify({
-    size: state.size,
-    wood: state.wood,
-    interior: state.interior,
-    price: getPrice(),
-    sizeLabel: displayNames['size-'+state.size],
-    woodLabel: displayNames['wood-'+state.wood],
-    interiorLabel: displayNames['interior-'+state.interior]
-  }));
-  window.location.href = '/checkout';
+async function goToCheckout(btn) {
+  if (btn) { btn.textContent = 'Preparing checkout...'; btn.style.opacity = '0.7'; }
+  try {
+    const response = await fetch('/.netlify/functions/create-checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        size: state.size,
+        wood: state.wood,
+        interior: state.interior,
+        atmosphere: state.atmo,
+      }),
+    });
+    const data = await response.json();
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      throw new Error(data.error);
+    }
+  } catch (error) {
+    if (btn) { btn.textContent = 'Buy Now'; btn.style.opacity = '1'; }
+    alert('Something went wrong. Please try again.');
+  }
 }
-document.getElementById('enqBtn').addEventListener('click', e=>{ e.preventDefault(); goToCheckout(); });
+document.getElementById('enqBtn').addEventListener('click', async (e) => { e.preventDefault(); goToCheckout(e.currentTarget); });
 
 /* ════════════════════════════
    GLASS CANVAS
@@ -2048,7 +2060,7 @@ function handleMobileOpt(e){
 /* Mobile buy now buttons */
 ['mEnqBtn','mBarBtn'].forEach(id=>{
   const el = document.getElementById(id);
-  if(el) el.addEventListener('click', e=>{ e.preventDefault(); goToCheckout(); });
+  if(el) el.addEventListener('click', async (e) => { e.preventDefault(); goToCheckout(el); });
 });
 
 /* Initial mobile summary */
