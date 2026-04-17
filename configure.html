@@ -356,15 +356,39 @@ from{opacity:0;transform:translateY(18px)}}
 }
 .faq-q-list{display:flex;flex-direction:column;gap:0}
 .faq-q{
-  display:flex;align-items:center;gap:1.25rem;
-  padding:1rem 0;
+  display:block;
   border-bottom:1px solid rgba(184,147,106,.07);
-  cursor:pointer;
   position:relative;
-  transition:border-color .3s;
-  group:true;
 }
 .faq-q:first-child{border-top:1px solid rgba(184,147,106,.07)}
+.faq-q-trigger{
+  display:flex;align-items:center;gap:1.25rem;
+  padding:1rem 0;
+  cursor:pointer;
+  transition:border-color .3s;
+}
+.faq-inline-answer{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease;
+}
+.faq-inline-answer.open{max-height:600px}
+.faq-inline-answer-inner{
+  padding:.25rem 0 1.5rem;
+  border-top:1px solid rgba(184,147,106,.08);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .4s var(--ease),transform .4s var(--ease);
+}
+.faq-inline-answer-inner.visible{opacity:1;transform:none}
+.faq-inline-answer .faq-answer-tag{
+  font-size:.52rem;letter-spacing:.42em;text-transform:uppercase;
+  color:var(--bronze);margin-bottom:1rem;display:block;
+}
+.faq-inline-answer .faq-answer-body{
+  font-size:1rem;color:rgba(212,207,200,.7);font-weight:300;line-height:1.85;
+}
+.faq-inline-answer .faq-answer-body p{margin-bottom:.85rem}
+.faq-inline-answer .faq-answer-body p:last-child{margin-bottom:0}
+.faq-inline-answer .faq-answer-body strong{color:rgba(212,207,200,.82);font-weight:400}
 .faq-q-text{
   font-family:var(--serif);font-weight:300;
   font-size:clamp(.95rem,1.8vw,1.15rem);
@@ -388,9 +412,9 @@ from{opacity:0;transform:translateY(18px)}}
   border-top:1px solid rgba(184,147,106,.25);
   transition:border-color .3s;
 }
-.faq-q:hover .faq-q-text{color:rgba(212,207,200,.85)}
-.faq-q:hover .faq-q-arrow{width:32px;background:var(--bronze)}
-.faq-q:hover .faq-q-arrow::after{border-color:var(--bronze)}
+.faq-q-trigger:hover .faq-q-text{color:rgba(212,207,200,.85)}
+.faq-q-trigger:hover .faq-q-arrow{width:32px;background:var(--bronze)}
+.faq-q-trigger:hover .faq-q-arrow::after{border-color:var(--bronze)}
 .faq-q.active .faq-q-text{color:var(--bronze-l)}
 .faq-q.active .faq-q-arrow{background:var(--bronze);width:28px}
 .faq-q.active .faq-q-arrow::after{border-color:var(--bronze)}
@@ -1122,14 +1146,14 @@ from{opacity:0;transform:translateY(18px)}}
     <div class="faq-suggested" id="faqSuggested">
       <span class="faq-suggested-label">Suggested questions</span>
       <div class="faq-q-list" id="faqQList">
-        <div class="faq-q" data-faq="power"><span class="faq-q-text">How is the table powered?</span><span class="faq-q-arrow"></span></div>
-        <div class="faq-q" data-faq="cable"><span class="faq-q-text">How does cable management work?</span><span class="faq-q-arrow"></span></div>
-        <div class="faq-q" data-faq="shipping"><span class="faq-q-text">How is the table shipped and unboxed?</span><span class="faq-q-arrow"></span></div>
-        <div class="faq-q" data-faq="glass"><span class="faq-q-text">Is the glass safe and durable?</span><span class="faq-q-arrow"></span></div>
-        <div class="faq-q" data-faq="clean"><span class="faq-q-text">How do I clean and maintain it?</span><span class="faq-q-arrow"></span></div>
-        <div class="faq-q" data-faq="wrong"><span class="faq-q-text">What happens if something goes wrong?</span><span class="faq-q-arrow"></span></div>
-        <div class="faq-q" data-faq="support"><span class="faq-q-text">Do you offer support after purchase?</span><span class="faq-q-arrow"></span></div>
-        <div class="faq-q" data-faq="led"><span class="faq-q-text">What is the LED lighting system like?</span><span class="faq-q-arrow"></span></div>
+        <div class="faq-q" data-faq="power"><div class="faq-q-trigger"><span class="faq-q-text">How is the table powered?</span><span class="faq-q-arrow"></span></div><div class="faq-inline-answer"></div></div>
+        <div class="faq-q" data-faq="cable"><div class="faq-q-trigger"><span class="faq-q-text">How does cable management work?</span><span class="faq-q-arrow"></span></div><div class="faq-inline-answer"></div></div>
+        <div class="faq-q" data-faq="shipping"><div class="faq-q-trigger"><span class="faq-q-text">How is the table shipped and unboxed?</span><span class="faq-q-arrow"></span></div><div class="faq-inline-answer"></div></div>
+        <div class="faq-q" data-faq="glass"><div class="faq-q-trigger"><span class="faq-q-text">Is the glass safe and durable?</span><span class="faq-q-arrow"></span></div><div class="faq-inline-answer"></div></div>
+        <div class="faq-q" data-faq="clean"><div class="faq-q-trigger"><span class="faq-q-text">How do I clean and maintain it?</span><span class="faq-q-arrow"></span></div><div class="faq-inline-answer"></div></div>
+        <div class="faq-q" data-faq="wrong"><div class="faq-q-trigger"><span class="faq-q-text">What happens if something goes wrong?</span><span class="faq-q-arrow"></span></div><div class="faq-inline-answer"></div></div>
+        <div class="faq-q" data-faq="support"><div class="faq-q-trigger"><span class="faq-q-text">Do you offer support after purchase?</span><span class="faq-q-arrow"></span></div><div class="faq-inline-answer"></div></div>
+        <div class="faq-q" data-faq="led"><div class="faq-q-trigger"><span class="faq-q-text">What is the LED lighting system like?</span><span class="faq-q-arrow"></span></div><div class="faq-inline-answer"></div></div>
       </div>
     </div>
 
@@ -1157,14 +1181,6 @@ from{opacity:0;transform:translateY(18px)}}
       </div>
     </div>
 
-    <!-- ANSWER PANEL -->
-    <div class="faq-answer" id="faqAnswer">
-      <div class="faq-answer-inner" id="faqAnswerInner">
-        <span class="faq-answer-tag" id="faqAnswerTag">Answer</span>
-        <p class="faq-answer-q" id="faqAnswerQ"></p>
-        <div class="faq-answer-body" id="faqAnswerBody"></div>
-      </div>
-    </div>
 
   </div>
 </section>
@@ -1761,45 +1777,50 @@ const faqClear = document.getElementById('faqClear');
 const faqSuggested = document.getElementById('faqSuggested');
 const faqResults = document.getElementById('faqResults');
 const faqNoResult = document.getElementById('faqNoResult');
-const faqAnswer = document.getElementById('faqAnswer');
-const faqAnswerInner = document.getElementById('faqAnswerInner');
-const faqAnswerTag = document.getElementById('faqAnswerTag');
-const faqAnswerQ = document.getElementById('faqAnswerQ');
-const faqAnswerBody = document.getElementById('faqAnswerBody');
 const faqSendBtn = document.getElementById('faqSendBtn');
 const faqQueryForm = document.getElementById('faqQueryForm');
 
-let faqAnswerTimer = null;
 let currentFaqKey = null;
 
-function showFaqAnswer(key) {
-  if(currentFaqKey === key) return;
-  currentFaqKey = key;
+function showFaqAnswer(key, targetEl) {
   const d = faqData[key];
   if(!d) return;
 
-  // highlight active question
-  document.querySelectorAll('.faq-q').forEach(q => q.classList.toggle('active', q.dataset.faq === key));
-  document.querySelectorAll('.faq-result-item').forEach(r => r.classList.toggle('active', r.dataset.faq === key));
-
-  // close first if open, then reopen with new content
-  faqAnswerInner.classList.remove('visible');
-  if(faqAnswer.classList.contains('open')) {
-    setTimeout(populateAndOpen, 200);
-  } else {
-    populateAndOpen();
+  // If clicking same key on the same element — toggle closed
+  if(currentFaqKey === key && targetEl && targetEl.classList.contains('active')) {
+    closeFaqAnswer(targetEl);
+    currentFaqKey = null;
+    return;
   }
 
-  function populateAndOpen() {
-    faqAnswerTag.textContent = d.tag;
-    faqAnswerQ.textContent = d.q;
-    faqAnswerBody.innerHTML = d.a;
-    // measure natural height then set
-    faqAnswer.classList.add('open');
-    clearTimeout(faqAnswerTimer);
-    faqAnswerTimer = setTimeout(() => {
-      faqAnswerInner.classList.add('visible');
-    }, 30);
+  // Close any previously open item
+  document.querySelectorAll('.faq-q.active, .faq-result-item.active').forEach(el => closeFaqAnswer(el));
+
+  currentFaqKey = key;
+
+  // Mark active
+  if(targetEl) targetEl.classList.add('active');
+
+  // Find or create inline answer inside targetEl
+  let inlineEl = targetEl ? targetEl.querySelector('.faq-inline-answer') : null;
+  if(!inlineEl) return;
+
+  // Populate
+  inlineEl.innerHTML = `<div class="faq-inline-answer-inner"><span class="faq-answer-tag">${d.tag}</span><div class="faq-answer-body">${d.a}</div></div>`;
+  inlineEl.classList.add('open');
+  setTimeout(() => {
+    const inner = inlineEl.querySelector('.faq-inline-answer-inner');
+    if(inner) inner.classList.add('visible');
+  }, 30);
+}
+
+function closeFaqAnswer(el) {
+  el.classList.remove('active');
+  const inlineEl = el.querySelector('.faq-inline-answer');
+  if(inlineEl) {
+    const inner = inlineEl.querySelector('.faq-inline-answer-inner');
+    if(inner) inner.classList.remove('visible');
+    setTimeout(() => { inlineEl.classList.remove('open'); inlineEl.innerHTML = ''; }, 400);
   }
 }
 
@@ -1852,22 +1873,25 @@ function searchFaq(query) {
     const item = document.createElement('div');
     item.className = 'faq-result-item';
     item.dataset.faq = key;
-    item.innerHTML = `<span class="faq-result-text">${highlightMatch(faqData[key].q, q)}</span><span class="faq-q-arrow" style="width:22px;display:inline-block;height:1px;background:rgba(184,147,106,.2);position:relative;flex-shrink:0"></span>`;
-    item.addEventListener('click', () => showFaqAnswer(key));
+    item.innerHTML = `<div class="faq-q-trigger" style="display:flex;align-items:center;gap:1.25rem;padding:1rem 0;cursor:pointer;"><span class="faq-result-text">${highlightMatch(faqData[key].q, q)}</span><span class="faq-q-arrow" style="width:22px;display:inline-block;height:1px;background:rgba(184,147,106,.2);position:relative;flex-shrink:0"></span></div><div class="faq-inline-answer"></div>`;
+    item.querySelector('.faq-q-trigger').addEventListener('click', () => showFaqAnswer(key, item));
     item.addEventListener('mouseenter', () => {
       const arrow = item.querySelector('.faq-q-arrow');
       if(arrow){ arrow.style.width='32px'; arrow.style.background='var(--bronze)'; }
     });
     item.addEventListener('mouseleave', () => {
       const arrow = item.querySelector('.faq-q-arrow');
-      if(arrow){ arrow.style.width='22px'; arrow.style.background='rgba(184,147,106,.2)'; }
+      if(arrow && !item.classList.contains('active')){ arrow.style.width='22px'; arrow.style.background='rgba(184,147,106,.2)'; }
     });
     faqResults.appendChild(item);
   });
   faqResults.classList.add('visible');
 
   // auto-show top match
-  if(matches.length === 1) showFaqAnswer(matches[0].key);
+  if(matches.length === 1) {
+    const firstItem = faqResults.querySelector('.faq-result-item');
+    if(firstItem) showFaqAnswer(matches[0].key, firstItem);
+  }
 }
 
 // Debounce search
@@ -1880,15 +1904,14 @@ faqInput.addEventListener('input', () => {
 });
 
 faqInput.addEventListener('keydown', e => {
-  if(e.key === 'Escape') { faqInput.value = ''; faqClear.classList.remove('visible'); searchFaq(''); faqAnswer.classList.remove('open'); faqAnswerInner.classList.remove('visible'); currentFaqKey = null; }
+  if(e.key === 'Escape') { faqInput.value = ''; faqClear.classList.remove('visible'); searchFaq(''); document.querySelectorAll('.faq-q.active,.faq-result-item.active').forEach(el => closeFaqAnswer(el)); currentFaqKey = null; }
 });
 
 faqClear.addEventListener('click', () => {
   faqInput.value = '';
   faqClear.classList.remove('visible');
   searchFaq('');
-  faqAnswer.classList.remove('open');
-  faqAnswerInner.classList.remove('visible');
+  document.querySelectorAll('.faq-q.active,.faq-result-item.active').forEach(el => closeFaqAnswer(el));
   currentFaqKey = null;
   faqInput.focus();
 });
@@ -1904,10 +1927,8 @@ document.querySelectorAll('.pinfo-item').forEach(item => {
 
 // Suggested question clicks
 document.querySelectorAll('.faq-q').forEach(q => {
-  q.addEventListener('click', () => {
-    showFaqAnswer(q.dataset.faq);
-    // scroll answer into view gently
-    setTimeout(() => faqAnswer.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 300);
+  q.querySelector('.faq-q-trigger').addEventListener('click', () => {
+    showFaqAnswer(q.dataset.faq, q);
   });
 });
 
