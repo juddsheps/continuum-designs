@@ -26,21 +26,14 @@
 }
 html{font-size:16px;scroll-behavior:smooth}
 body{background:var(--deep);color:var(--linen);font-family:var(--sans);font-weight:300;min-height:100vh;-webkit-font-smoothing:antialiased}
-
-.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:9000;opacity:.025;
-background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-animation:grain-d 9s steps(10) infinite}
+.grain{position:fixed;inset:-50%;width:200%;height:200%;pointer-events:none;z-index:9000;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain-d 9s steps(10) infinite}
 @keyframes grain-d{0%,100%{transform:translate(0,0)}20%{transform:translate(-2%,3%)}40%{transform:translate(3%,-1%)}60%{transform:translate(-1%,-3%)}80%{transform:translate(2%,2%)}}
-
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1.5rem 3rem;background:linear-gradient(to bottom,rgba(7,6,8,.9),transparent)}
 .nav-logo{text-decoration:none}
 .nav-back{font-size:.65rem;letter-spacing:.3em;text-transform:uppercase;color:var(--silver);text-decoration:none;transition:color .3s}
 .nav-back:hover{color:var(--bronze)}
-
 .checkout-page{min-height:100vh;padding:8rem 2rem 6rem;display:flex;justify-content:center}
 .checkout-wrap{width:100%;max-width:960px;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
-
-/* ORDER SUMMARY */
 .summary-block{position:sticky;top:7rem}
 .section-lbl{font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:1.5rem}
 .summary-title{font-family:var(--serif);font-weight:300;font-size:clamp(1.6rem,3vw,2.4rem);color:var(--white);margin-bottom:.4rem;letter-spacing:.02em}
@@ -53,51 +46,44 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .sum-total .sum-key{color:var(--bronze);letter-spacing:.25em}
 .sum-total-price{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--bronze)}
 .summary-note{margin-top:1.5rem;font-size:1rem;line-height:1.8;color:var(--ash);letter-spacing:.02em}
-
-/* FORM */
+#sum-shipping-row{display:none}
 .form-title{font-family:var(--serif);font-weight:300;font-size:clamp(1.4rem,2.5vw,2rem);color:var(--white);margin-bottom:2rem;letter-spacing:.02em}
 .form-section{margin-bottom:2.5rem}
 .form-section-title{font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:var(--bronze);margin-bottom:1.25rem;display:block}
 .field{margin-bottom:1.25rem}
 .field label{display:block;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--silver);margin-bottom:.5rem}
-.field input,.field select,.field textarea{
-  width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(184,147,106,.18);
-  color:var(--linen);font-family:var(--sans);font-weight:300;font-size:1rem;
-  padding:.85rem 1rem;outline:none;transition:border-color .3s;
-  -webkit-appearance:none;border-radius:0;
-}
+.field input,.field select,.field textarea{width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(184,147,106,.18);color:var(--linen);font-family:var(--sans);font-weight:300;font-size:1rem;padding:.85rem 1rem;outline:none;transition:border-color .3s;-webkit-appearance:none;border-radius:0}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(184,147,106,.5)}
 .field input::placeholder,.field textarea::placeholder{color:var(--ash)}
 .field select option{background:var(--obsidian);color:var(--linen)}
 .field textarea{resize:vertical;min-height:80px}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
-
-/* STRIPE CARD ELEMENT */
+.shipping-notice{display:none;padding:1rem 1.25rem;border:1px solid rgba(184,147,106,.18);background:rgba(184,147,106,.04);margin-bottom:1.5rem}
+.shipping-notice.visible{display:block}
+.shipping-notice-label{font-size:.55rem;letter-spacing:.4em;text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:.35rem}
+.shipping-notice-val{font-size:.88rem;color:var(--linen);letter-spacing:.04em}
+.intl-notice{display:none;padding:1.5rem;border:1px solid rgba(184,147,106,.25);background:rgba(184,147,106,.06);margin-bottom:1.5rem;text-align:center}
+.intl-notice.visible{display:block}
+.intl-notice p{font-size:.8rem;color:var(--linen);line-height:1.8;letter-spacing:.04em;margin-bottom:1rem}
+.intl-enquire-btn{display:inline-block;font-size:.62rem;letter-spacing:.4em;text-transform:uppercase;color:var(--bronze-l);border:1px solid rgba(184,147,106,.4);padding:.75rem 2rem;cursor:pointer;background:transparent;font-family:var(--sans);transition:background .3s,color .3s}
+.intl-enquire-btn:hover{background:var(--bronze);color:var(--ink)}
 .payment-box{background:rgba(184,147,106,.04);border:1px solid rgba(184,147,106,.15);padding:2rem;margin-bottom:1.5rem}
 .payment-box-title{font-size:.6rem;letter-spacing:.35em;text-transform:uppercase;color:var(--bronze);margin-bottom:1.25rem;display:block}
-#stripe-card-element{
-  background:rgba(255,255,255,.03);border:1px solid rgba(184,147,106,.18);
-  padding:1rem;transition:border-color .3s;
-}
+#stripe-card-element{background:rgba(255,255,255,.03);border:1px solid rgba(184,147,106,.18);padding:1rem;transition:border-color .3s}
 #stripe-card-element.StripeElement--focus{border-color:rgba(184,147,106,.5)}
 #stripe-card-element.StripeElement--invalid{border-color:rgba(200,80,80,.5)}
 #card-errors{color:rgba(200,100,100,.9);font-size:1rem;letter-spacing:.02em;margin-top:.75rem;min-height:1.2em}
 .stripe-badge{font-size:.6rem;letter-spacing:.2em;color:var(--ash);margin-top:1rem;display:block;text-align:center}
-
-/* SUBMIT */
 .submit-btn{width:100%;background:transparent;border:1px solid rgba(184,147,106,.4);color:var(--bronze-l);font-family:var(--sans);font-weight:300;font-size:.68rem;letter-spacing:.45em;text-transform:uppercase;padding:1.25rem;cursor:pointer;transition:background .4s var(--ease),border-color .4s,color .4s,transform .3s var(--ease);display:flex;align-items:center;justify-content:center;gap:1rem}
 .submit-btn:hover:not(:disabled){background:var(--bronze);border-color:var(--bronze);color:var(--ink);transform:translateY(-2px)}
 .submit-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
 .submit-note{font-size:1rem;letter-spacing:.02em;color:var(--ash);text-align:center;margin-top:1rem;line-height:1.7}
-
-/* SUCCESS */
 .success-screen{display:none;text-align:center;padding:6rem 2rem}
 .success-screen.active{display:block}
 .success-icon{width:60px;height:60px;border:1px solid rgba(184,147,106,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;font-size:1.5rem;color:var(--bronze)}
 .success-h{font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,4vw,3rem);color:var(--white);margin-bottom:1rem;letter-spacing:.02em}
 .success-p{font-size:1rem;line-height:1.9;color:var(--silver);max-width:400px;margin:0 auto 2rem;letter-spacing:.02em}
 .success-ref{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bronze)}
-
 @media(max-width:768px){
   nav{padding:1.25rem 1.5rem}
   .checkout-wrap{grid-template-columns:1fr;gap:3rem}
@@ -109,7 +95,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
-
 <nav>
   <a href="index.html" class="nav-logo">
     <img src="images/Continuum Designs Logo - Full Horizontal - White.png" alt="Continuum Designs" style="height:32px;width:auto;display:block;">
@@ -130,6 +115,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
         <div class="sum-row"><span class="sum-key">Wood</span><span class="sum-val" id="sum-wood">—</span></div>
         <div class="sum-row"><span class="sum-key">Interior</span><span class="sum-val" id="sum-interior">—</span></div>
         <div class="sum-row"><span class="sum-key">Lead Time</span><span class="sum-val">2–3 weeks</span></div>
+        <div class="sum-row" id="sum-shipping-row"><span class="sum-key">Shipping</span><span class="sum-val" id="sum-shipping-val">—</span></div>
         <div class="sum-total">
           <span class="sum-key">Total</span>
           <span class="sum-total-price" id="sum-price">—</span>
@@ -141,7 +127,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
     <!-- FORM -->
     <div class="form-block" id="formBlock">
       <h2 class="form-title">Complete Your Order</h2>
-
       <form id="checkoutForm" novalidate>
 
         <div class="form-section">
@@ -156,36 +141,74 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 
         <div class="form-section">
           <span class="form-section-title">Delivery Address</span>
-          <div class="field"><label>Street Address</label><input type="text" id="street" placeholder="12 Example Street" required></div>
-          <div class="field-row">
-            <div class="field"><label>Suburb</label><input type="text" id="suburb" placeholder="Claremont" required></div>
-            <div class="field"><label>State</label>
-              <select id="stateField">
-                <option>WA</option><option>NSW</option><option>VIC</option><option>QLD</option><option>SA</option><option>TAS</option><option>ACT</option><option>NT</option>
-              </select>
-            </div>
+
+          <div class="field">
+            <label>Country</label>
+            <select id="countryField">
+              <option value="AU">Australia</option>
+              <option value="NZ">New Zealand</option>
+              <option value="US">United States</option>
+              <option value="GB">United Kingdom</option>
+              <option value="CA">Canada</option>
+              <option value="SG">Singapore</option>
+              <option value="AE">United Arab Emirates</option>
+              <option value="HK">Hong Kong</option>
+              <option value="JP">Japan</option>
+              <option value="OTHER">Other country</option>
+            </select>
           </div>
-          <div class="field"><label>Postcode</label><input type="text" id="postcode" placeholder="6010" required maxlength="4"></div>
+
+          <div id="au-address-fields">
+            <div class="field"><label>Street Address</label><input type="text" id="street" placeholder="12 Example Street" required></div>
+            <div class="field-row">
+              <div class="field"><label>Suburb</label><input type="text" id="suburb" placeholder="Claremont" required></div>
+              <div class="field"><label>State</label>
+                <select id="stateField">
+                  <option>WA</option><option>NSW</option><option>VIC</option><option>QLD</option><option>SA</option><option>TAS</option><option>ACT</option><option>NT</option>
+                </select>
+              </div>
+            </div>
+            <div class="field"><label>Postcode</label><input type="text" id="postcode" placeholder="6010" required maxlength="4" inputmode="numeric"></div>
+          </div>
+
+          <div id="intl-address-fields" style="display:none">
+            <div class="field"><label>Street Address</label><input type="text" id="intlStreet" placeholder="123 Example Street"></div>
+            <div class="field"><label>City</label><input type="text" id="intlCity" placeholder="City"></div>
+            <div class="field"><label>Postcode / ZIP</label><input type="text" id="intlPostcode" placeholder="Postcode"></div>
+          </div>
+
           <div class="field"><label>Special Instructions (optional)</label><textarea id="notes" placeholder="Gate code, delivery instructions..."></textarea></div>
         </div>
 
-        <div class="form-section">
-          <div class="payment-box">
-            <span class="payment-box-title">Payment</span>
-            <div id="stripe-card-element"></div>
-            <div id="card-errors" role="alert"></div>
-          </div>
-          <span class="stripe-badge">Secured by Stripe · SSL Encrypted</span>
+        <!-- Auto-detected shipping notice -->
+        <div class="shipping-notice" id="shippingNotice">
+          <span class="shipping-notice-label">Delivery</span>
+          <span class="shipping-notice-val" id="shippingNoticeVal">—</span>
         </div>
 
-        <button type="submit" class="submit-btn" id="submitBtn" disabled>
-          <span id="submitText">Place Order</span>
-        </button>
-        <p class="submit-note">Full payment is charged immediately. Refunds available within 48 hours if not yet in production.</p>
+        <!-- International contact notice -->
+        <div class="intl-notice" id="intlNotice">
+          <p>International shipping is available. Please contact us for a precise delivery quote to your location.</p>
+          <button type="button" class="intl-enquire-btn js-enquire">Request a Shipping Quote</button>
+        </div>
+
+        <div id="paymentSection">
+          <div class="form-section">
+            <div class="payment-box">
+              <span class="payment-box-title">Payment</span>
+              <div id="stripe-card-element"></div>
+              <div id="card-errors" role="alert"></div>
+            </div>
+            <span class="stripe-badge">Secured by Stripe · SSL Encrypted</span>
+          </div>
+          <button type="submit" class="submit-btn" id="submitBtn" disabled>
+            <span id="submitText">Place Order</span>
+          </button>
+          <p class="submit-note">Full payment is charged immediately. Refunds available within 48 hours if not yet in production.</p>
+        </div>
 
       </form>
     </div>
-
   </div>
 
   <!-- SUCCESS -->
@@ -204,31 +227,151 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
   <span style="font-size:.6rem;letter-spacing:.15em;color:rgba(212,207,200,.2);">© 2025 Continuum Designs. All rights reserved.</span>
 </footer>
 
+<!-- ENQUIRY MODAL -->
+<div id="enquiryOverlay" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(7,6,8,.85);backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:2rem;">
+  <div style="width:100%;max-width:520px;background:#0d0c12;border:1px solid rgba(184,147,106,.18);padding:3.5rem;position:relative;">
+    <button id="enquiryClose" style="position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:rgba(184,147,106,.5);font-size:1.2rem;cursor:pointer;line-height:1;padding:0;">✕</button>
+    <p style="font-size:.55rem;letter-spacing:.45em;text-transform:uppercase;color:#b8936a;margin-bottom:1rem;">Get in Touch</p>
+    <h2 style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(1.6rem,3vw,2.2rem);color:#f8f5f0;margin-bottom:.5rem;">Start a conversation.</h2>
+    <p style="font-size:.75rem;color:rgba(154,152,152,.6);letter-spacing:.06em;margin-bottom:2.5rem;line-height:1.7;">We'll be in touch within 24 hours.</p>
+    <form id="enquiryForm" name="enquiry" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+      <input type="hidden" name="form-name" value="enquiry">
+      <input type="hidden" name="bot-field" style="display:none">
+      <div style="margin-bottom:1.25rem;">
+        <label style="display:block;font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:#9a9898;margin-bottom:.5rem;">Name</label>
+        <input type="text" name="name" required placeholder="Your name" style="width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(184,147,106,.18);color:#d4cfc8;font-family:'Jost',sans-serif;font-weight:300;font-size:.85rem;padding:.85rem 1rem;outline:none;border-radius:0;">
+      </div>
+      <div style="margin-bottom:1.25rem;">
+        <label style="display:block;font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:#9a9898;margin-bottom:.5rem;">Email</label>
+        <input type="email" name="email" required placeholder="your@email.com" style="width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(184,147,106,.18);color:#d4cfc8;font-family:'Jost',sans-serif;font-weight:300;font-size:.85rem;padding:.85rem 1rem;outline:none;border-radius:0;">
+      </div>
+      <div style="margin-bottom:2rem;">
+        <label style="display:block;font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:#9a9898;margin-bottom:.5rem;">Message</label>
+        <textarea name="message" required placeholder="Tell us about your location and shipping requirements..." rows="4" style="width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(184,147,106,.18);color:#d4cfc8;font-family:'Jost',sans-serif;font-weight:300;font-size:.85rem;padding:.85rem 1rem;outline:none;border-radius:0;resize:vertical;"></textarea>
+      </div>
+      <button type="submit" style="width:100%;background:transparent;border:1px solid rgba(184,147,106,.4);color:#d4b08a;font-family:'Jost',sans-serif;font-weight:300;font-size:.68rem;letter-spacing:.45em;text-transform:uppercase;padding:1.25rem;cursor:pointer;">Send Enquiry</button>
+    </form>
+    <div id="enquiryThanks" style="display:none;text-align:center;padding:2rem 0;">
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.6rem;font-weight:300;color:#f8f5f0;margin-bottom:1rem;">Thank you.</p>
+      <p style="font-size:.78rem;color:rgba(154,152,152,.6);line-height:1.9;letter-spacing:.05em;">We've received your enquiry and will be in touch within 24 hours.</p>
+    </div>
+  </div>
+</div>
+
+<form name="enquiry" netlify netlify-honeypot="bot-field" hidden>
+  <input type="text" name="name">
+  <input type="email" name="email">
+  <textarea name="message"></textarea>
+</form>
+
 <script>
 // ── Order state ──────────────────────────────
 const order = JSON.parse(localStorage.getItem('cd_order') || '{}');
-let priceDisplay = '';
+const isLuxeGrand = (order.size === 'luxe-grand');
 
 const displayNames = {
-  'size-luxe':        'Luxe Edition',
-  'size-luxe-grand':  'Luxe Grand Edition',
-  'wood-ebony':       'Smoked Ebony Oak',
-  'wood-light':       'Light Dune Oak',
-  'interior-red':     'Imperium Red Brick',
-  'interior-grey':    'Charcoal Grey Brick',
+  'size-luxe':       'Luxe Edition',
+  'size-luxe-grand': 'Luxe Grand Edition',
+  'wood-ebony':      'Smoked Ebony Oak',
+  'wood-light':      'Light Dune Oak',
+  'interior-red':    'Imperium Red Brick',
+  'interior-grey':   'Charcoal Grey Brick',
 };
 
 const sizeLabel     = displayNames['size-'     + (order.size     || 'luxe')]  || 'Luxe Edition';
 const woodLabel     = displayNames['wood-'     + (order.wood     || 'ebony')] || '—';
 const interiorLabel = displayNames['interior-' + (order.interior || 'red')]   || '—';
 
-document.getElementById('sumTitle').textContent      = sizeLabel;
-document.getElementById('sumSub').textContent        = woodLabel;
-document.getElementById('sum-size').textContent      = sizeLabel;
-document.getElementById('sum-wood').textContent      = woodLabel;
-document.getElementById('sum-interior').textContent  = interiorLabel;
+document.getElementById('sumTitle').textContent     = sizeLabel;
+document.getElementById('sumSub').textContent       = woodLabel;
+document.getElementById('sum-size').textContent     = sizeLabel;
+document.getElementById('sum-wood').textContent     = woodLabel;
+document.getElementById('sum-interior').textContent = interiorLabel;
 
-// ── Fetch PaymentIntent then init Stripe ─────
+// ── Shipping logic ───────────────────────────
+const SHIPPING_METRO = 5000;           // $50 in cents
+const SHIPPING_AU    = isLuxeGrand ? 43000 : 29800; // $430 or $298 in cents
+
+let basePrice    = 0;
+let shippingCost = null;
+let isInternational = false;
+
+function formatAUD(cents) {
+  return (cents / 100).toLocaleString('en-AU', { style:'currency', currency:'AUD' }) + ' AUD';
+}
+
+function isMetroPerth(postcode) {
+  const pc = parseInt(postcode, 10);
+  return pc >= 6000 && pc <= 6214;
+}
+
+function updateShipping(zone) {
+  const shippingRow      = document.getElementById('sum-shipping-row');
+  const shippingVal      = document.getElementById('sum-shipping-val');
+  const shippingNotice   = document.getElementById('shippingNotice');
+  const shippingNoticeVal = document.getElementById('shippingNoticeVal');
+  const intlNotice       = document.getElementById('intlNotice');
+  const paymentSection   = document.getElementById('paymentSection');
+  const sumPrice         = document.getElementById('sum-price');
+
+  // Reset
+  intlNotice.classList.remove('visible');
+  shippingNotice.classList.remove('visible');
+  shippingRow.style.display = 'none';
+  isInternational = false;
+
+  if (zone === 'intl') {
+    isInternational = true;
+    intlNotice.classList.add('visible');
+    paymentSection.style.display = 'none';
+    sumPrice.textContent = basePrice > 0 ? formatAUD(basePrice) : '—';
+    return;
+  }
+
+  paymentSection.style.display = 'block';
+
+  if (zone === 'metro') {
+    shippingCost = SHIPPING_METRO;
+    shippingRow.style.display = 'flex';
+    shippingVal.textContent = '$50.00';
+    shippingNotice.classList.add('visible');
+    shippingNoticeVal.textContent = 'Metro Perth delivery — $50.00';
+  } else if (zone === 'au') {
+    shippingCost = SHIPPING_AU;
+    const display = isLuxeGrand ? '$430.00' : '$298.00';
+    shippingRow.style.display = 'flex';
+    shippingVal.textContent = display;
+    shippingNotice.classList.add('visible');
+    shippingNoticeVal.textContent = 'Australia-wide delivery — ' + display;
+  }
+
+  if (basePrice > 0 && shippingCost !== null) {
+    sumPrice.textContent = formatAUD(basePrice + shippingCost);
+  }
+}
+
+function detectShipping() {
+  const country  = document.getElementById('countryField').value;
+  const postcode = document.getElementById('postcode').value.trim();
+
+  if (country !== 'AU') { updateShipping('intl'); return; }
+  if (postcode.length === 4) {
+    updateShipping(isMetroPerth(postcode) ? 'metro' : 'au');
+  }
+}
+
+document.getElementById('countryField').addEventListener('change', function() {
+  const isAU = this.value === 'AU';
+  document.getElementById('au-address-fields').style.display   = isAU ? 'block' : 'none';
+  document.getElementById('intl-address-fields').style.display = isAU ? 'none'  : 'block';
+  detectShipping();
+});
+
+document.getElementById('postcode').addEventListener('input', function() {
+  if (this.value.length === 4) detectShipping();
+});
+
+// ── Stripe init ───────────────────────────────
 let clientSecret = null;
 let cardElement  = null;
 
@@ -245,54 +388,39 @@ let cardElement  = null;
       }),
     });
     const data = await res.json();
-    if (!data.clientSecret) throw new Error(data.error || 'No clientSecret returned');
+    if (!data.clientSecret) throw new Error(data.error || 'No clientSecret');
 
     clientSecret = data.clientSecret;
+    basePrice    = data.amount;
+    document.getElementById('sum-price').textContent = formatAUD(basePrice);
 
-    // Show price
-    const amt = (data.amount / 100).toLocaleString('en-AU', { style: 'currency', currency: 'AUD' });
-    priceDisplay = amt + ' AUD';
-    document.getElementById('sum-price').textContent = priceDisplay;
-
-    // Init Stripe with key returned from function (keeps key out of client HTML)
-    const stripe_instance = Stripe(data.publishableKey);
-    const elements = stripe_instance.elements();
-
+    const stripeInst = Stripe(data.publishableKey);
+    const elements   = stripeInst.elements();
     cardElement = elements.create('card', {
       style: {
         base: {
-          color: '#d4cfc8',
-          fontFamily: '"Jost", sans-serif',
-          fontWeight: '300',
-          fontSize: '16px',
-          letterSpacing: '0.04em',
-          '::placeholder': { color: '#5c5a62' },
-          iconColor: '#b8936a',
+          color: '#d4cfc8', fontFamily: '"Jost", sans-serif',
+          fontWeight: '300', fontSize: '16px', letterSpacing: '0.04em',
+          '::placeholder': { color: '#5c5a62' }, iconColor: '#b8936a',
         },
         invalid: { color: '#e06060', iconColor: '#e06060' },
       },
     });
-
     cardElement.mount('#stripe-card-element');
     cardElement.on('change', e => {
       document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
     });
-
     document.getElementById('submitBtn').disabled = false;
-
-    // Store stripe instance for form submit
-    window._stripe = stripe_instance;
-
+    window._stripe = stripeInst;
   } catch (err) {
-    console.error('Checkout init error:', err);
     document.getElementById('card-errors').textContent = 'Unable to load payment form. Please refresh and try again.';
   }
 })();
 
 // ── Form submit ───────────────────────────────
-document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
+document.getElementById('checkoutForm').addEventListener('submit', async e => {
   e.preventDefault();
-  if (!clientSecret || !cardElement || !window._stripe) return;
+  if (!clientSecret || !cardElement || !window._stripe || isInternational) return;
 
   const firstName = document.getElementById('firstName').value.trim();
   const lastName  = document.getElementById('lastName').value.trim();
@@ -303,6 +431,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
   const state     = document.getElementById('stateField').value;
   const postcode  = document.getElementById('postcode').value.trim();
   const notes     = document.getElementById('notes').value.trim();
+  const country   = document.getElementById('countryField').value;
 
   if (!firstName || !lastName || !email || !street || !suburb || !postcode) {
     document.getElementById('card-errors').textContent = 'Please fill in all required fields.';
@@ -318,14 +447,8 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
     payment_method: {
       card: cardElement,
       billing_details: {
-        name: firstName + ' ' + lastName,
-        email,
-        address: {
-          line1:       street,
-          city:        suburb,
-          postal_code: postcode,
-          country:     'AU',
-        },
+        name: firstName + ' ' + lastName, email,
+        address: { line1: street, city: suburb, postal_code: postcode, country },
       },
     },
     receipt_email: email,
@@ -340,17 +463,52 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
     document.getElementById('successScreen').classList.add('active');
     document.getElementById('successRef').textContent = 'Payment ref: ' + paymentIntent.id;
     localStorage.removeItem('cd_order');
+
+    const shippingLabel = shippingCost === SHIPPING_METRO
+      ? 'Metro Perth — $50.00'
+      : 'Australia-wide — ' + (isLuxeGrand ? '$430.00' : '$298.00');
+
     sendOrderEmails({
-      name:     firstName + ' ' + lastName,
-      email:    email,
-      phone:    phone,
-      address:  street + ', ' + suburb + ' ' + state + ' ' + postcode,
-      size:     sizeLabel,
-      wood:     woodLabel,
-      interior: interiorLabel,
-      price:    priceDisplay,
-      notes:    notes,
+      name: firstName + ' ' + lastName, email, phone,
+      address: street + ', ' + suburb + ' ' + state + ' ' + postcode + ', Australia',
+      size: sizeLabel, wood: woodLabel, interior: interiorLabel,
+      price: formatAUD(basePrice + (shippingCost || 0)),
+      notes: notes || 'None', shipping: shippingLabel,
     });
+  }
+});
+
+// ── Enquiry modal ─────────────────────────────
+const overlay = document.getElementById('enquiryOverlay');
+const enqForm = document.getElementById('enquiryForm');
+const thanks  = document.getElementById('enquiryThanks');
+
+document.querySelectorAll('.js-enquire').forEach(btn => {
+  btn.addEventListener('click', e => {
+    e.preventDefault();
+    overlay.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  });
+});
+
+document.getElementById('enquiryClose').addEventListener('click', closeEnq);
+overlay.addEventListener('click', e => { if (e.target === overlay) closeEnq(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeEnq(); });
+
+function closeEnq() {
+  overlay.style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+enqForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  try {
+    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams(new FormData(enqForm)).toString() });
+    enqForm.style.display = 'none';
+    thanks.style.display = 'block';
+    setTimeout(closeEnq, 3500);
+  } catch {
+    alert('Something went wrong. Please email us at hello@continuumdesigns.com.au');
   }
 });
 </script>
@@ -358,29 +516,14 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
 emailjs.init('i4ErNlFAoDcGVWibg');
-
-function sendOrderEmails(orderData) {
-  const templateParams = {
-    customer_name:    orderData.name,
-    customer_email:   orderData.email,
-    customer_phone:   orderData.phone,
-    delivery_address: orderData.address,
-    size:             orderData.size,
-    wood:             orderData.wood,
-    interior:         orderData.interior,
-    price:            orderData.price,
-    notes:            orderData.notes || 'None',
+function sendOrderEmails(d) {
+  const p = {
+    customer_name: d.name, customer_email: d.email, customer_phone: d.phone,
+    delivery_address: d.address, size: d.size, wood: d.wood, interior: d.interior,
+    price: d.price, notes: d.notes, shipping: d.shipping,
   };
-
-  // Send customer confirmation
-  emailjs.send('service_7gkzap4', 'template_qkwgrvj', templateParams)
-    .then(() => console.log('Customer email sent'))
-    .catch(err => console.error('Customer email failed:', err));
-
-  // Send your notification
-  emailjs.send('service_7gkzap4', 'template_s57z31h', templateParams)
-    .then(() => console.log('Notification email sent'))
-    .catch(err => console.error('Notification email failed:', err));
+  emailjs.send('service_7gkzap4','template_qkwgrvj',p).catch(e=>console.error(e));
+  emailjs.send('service_7gkzap4','template_s57z31h',p).catch(e=>console.error(e));
 }
 </script>
 </body>
