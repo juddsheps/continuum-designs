@@ -8,16 +8,11 @@ exports.handler = async (event) => {
   try {
     const { size, wood, interior, atmosphere } = JSON.parse(event.body);
 
-    const priceId = size === 'luxe-grand'
-      ? 'price_1TN3zpPQyguNOX8EyXXO3AJq'
-      : 'price_1TN3zTPQyguNOX8E2WJvf9on';
-
-    // Retrieve amount from Stripe so it stays in sync with your dashboard
-    const price = await stripe.prices.retrieve(priceId);
+    const amount = size === 'luxe-grand' ? 112000 : 74995; // cents AUD
 
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: price.unit_amount,
-      currency: price.currency,
+      amount,
+      currency: 'aud',
       metadata: {
         size: size === 'luxe-grand' ? 'Luxe Grand Edition (96×50cm)' : 'Luxe Edition (50×50cm)',
         wood: wood === 'ebony' ? 'Smoked Ebony Oak' : 'Light Dune Oak',
@@ -29,15 +24,18 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         clientSecret: paymentIntent.client_secret,
-        amount: price.unit_amount,
-        currency: price.currency,
+        publishableKey: process.env.STRIPE_PUBLISHABLE_KEY,
+        amount,
       }),
     };
   } catch (error) {
+    console.error('create-payment-intent error:', error.message);
     return {
       statusCode: 500,
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ error: error.message }),
     };
   }

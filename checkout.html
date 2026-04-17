@@ -197,8 +197,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 </footer>
 
 <script>
-const STRIPE_PK = 'pk_live_51TN3yBPQyguNOX8EZaUHLxQAP5A0fvgPSTFqWfKQCxLb98JqHKkJSmRZaxOT7dkaqiJifAaM1rAj2vW3E8Ai0vvE00RJ7nBCIj';
-
 // ── Order state ──────────────────────────────
 const order = JSON.parse(localStorage.getItem('cd_order') || '{}');
 
@@ -211,43 +209,19 @@ const displayNames = {
   'interior-grey':    'Charcoal Grey Brick',
 };
 
-const sizeLabel    = displayNames['size-'     + (order.size     || 'luxe')]     || 'Luxe Edition';
-const woodLabel    = displayNames['wood-'     + (order.wood     || 'ebony')]    || '—';
-const interiorLabel= displayNames['interior-' + (order.interior || 'red')]      || '—';
+const sizeLabel     = displayNames['size-'     + (order.size     || 'luxe')]  || 'Luxe Edition';
+const woodLabel     = displayNames['wood-'     + (order.wood     || 'ebony')] || '—';
+const interiorLabel = displayNames['interior-' + (order.interior || 'red')]   || '—';
 
-document.getElementById('sumTitle').textContent   = sizeLabel;
-document.getElementById('sumSub').textContent     = woodLabel;
-document.getElementById('sum-size').textContent   = sizeLabel;
-document.getElementById('sum-wood').textContent   = woodLabel;
-document.getElementById('sum-interior').textContent = interiorLabel;
+document.getElementById('sumTitle').textContent      = sizeLabel;
+document.getElementById('sumSub').textContent        = woodLabel;
+document.getElementById('sum-size').textContent      = sizeLabel;
+document.getElementById('sum-wood').textContent      = woodLabel;
+document.getElementById('sum-interior').textContent  = interiorLabel;
 
-// ── Stripe setup ─────────────────────────────
-const stripe = Stripe(STRIPE_PK);
-const elements = stripe.elements();
-
-const cardElement = elements.create('card', {
-  style: {
-    base: {
-      color: '#d4cfc8',
-      fontFamily: '"Jost", sans-serif',
-      fontWeight: '300',
-      fontSize: '15px',
-      letterSpacing: '0.04em',
-      '::placeholder': { color: '#5c5a62' },
-      iconColor: '#b8936a',
-    },
-    invalid: { color: '#e06060', iconColor: '#e06060' },
-  },
-});
-
-cardElement.mount('#stripe-card-element');
-
-cardElement.on('change', e => {
-  document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
-});
-
-// ── Fetch PaymentIntent ───────────────────────
+// ── Fetch PaymentIntent then init Stripe ─────
 let clientSecret = null;
+let cardElement  = null;
 
 (async () => {
   try {
@@ -255,23 +229,52 @@ let clientSecret = null;
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        size:      order.size      || 'luxe',
-        wood:      order.wood      || 'ebony',
-        interior:  order.interior  || 'red',
+        size:       order.size       || 'luxe',
+        wood:       order.wood       || 'ebony',
+        interior:   order.interior   || 'red',
         atmosphere: order.atmosphere || '',
       }),
     });
     const data = await res.json();
-    if (data.clientSecret) {
-      clientSecret = data.clientSecret;
-      // Show price from Stripe
-      const amt = (data.amount / 100).toLocaleString('en-AU', { style: 'currency', currency: 'AUD' });
-      document.getElementById('sum-price').textContent = amt + ' AUD';
-      document.getElementById('submitBtn').disabled = false;
-    } else {
-      throw new Error(data.error);
-    }
+    if (!data.clientSecret) throw new Error(data.error || 'No clientSecret returned');
+
+    clientSecret = data.clientSecret;
+
+    // Show price
+    const amt = (data.amount / 100).toLocaleString('en-AU', { style: 'currency', currency: 'AUD' });
+    document.getElementById('sum-price').textContent = amt + ' AUD';
+
+    // Init Stripe with key returned from function (keeps key out of client HTML)
+    const stripe_instance = Stripe(data.publishableKey);
+    const elements = stripe_instance.elements();
+
+    cardElement = elements.create('card', {
+      style: {
+        base: {
+          color: '#d4cfc8',
+          fontFamily: '"Jost", sans-serif',
+          fontWeight: '300',
+          fontSize: '15px',
+          letterSpacing: '0.04em',
+          '::placeholder': { color: '#5c5a62' },
+          iconColor: '#b8936a',
+        },
+        invalid: { color: '#e06060', iconColor: '#e06060' },
+      },
+    });
+
+    cardElement.mount('#stripe-card-element');
+    cardElement.on('change', e => {
+      document.getElementById('card-errors').textContent = e.error ? e.error.message : '';
+    });
+
+    document.getElementById('submitBtn').disabled = false;
+
+    // Store stripe instance for form submit
+    window._stripe = stripe_instance;
+
   } catch (err) {
+    console.error('Checkout init error:', err);
     document.getElementById('card-errors').textContent = 'Unable to load payment form. Please refresh and try again.';
   }
 })();
@@ -279,7 +282,7 @@ let clientSecret = null;
 // ── Form submit ───────────────────────────────
 document.getElementById('checkoutForm').addEventListener('submit', async (e) => {
   e.preventDefault();
-  if (!clientSecret) return;
+  if (!clientSecret || !cardElement || !window._stripe) return;
 
   const firstName = document.getElementById('firstName').value.trim();
   const lastName  = document.getElementById('lastName').value.trim();
@@ -298,7 +301,7 @@ document.getElementById('checkoutForm').addEventListener('submit', async (e) => 
   document.getElementById('submitText').textContent = 'Processing...';
   document.getElementById('card-errors').textContent = '';
 
-  const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
+  const { paymentIntent, error } = await window._stripe.confirmCardPayment(clientSecret, {
     payment_method: {
       card: cardElement,
       billing_details: {
