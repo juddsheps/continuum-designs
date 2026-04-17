@@ -40,11 +40,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .summary-rows{border-top:1px solid rgba(184,147,106,.12)}
 .sum-row{display:flex;justify-content:space-between;align-items:center;padding:.8rem 0;border-bottom:1px solid rgba(184,147,106,.07)}
 .sum-key{font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
-.sum-val{font-size:.75rem;color:var(--linen);text-align:right}
+.sum-val{font-size:1rem;color:var(--linen);text-align:right}
 .sum-total{display:flex;justify-content:space-between;align-items:center;padding:1.2rem 0;margin-top:.5rem;border-top:1px solid rgba(184,147,106,.2)}
 .sum-total .sum-key{color:var(--bronze);letter-spacing:.25em}
 .sum-total-price{font-family:var(--serif);font-size:1.8rem;font-weight:300;color:var(--bronze)}
-.summary-note{margin-top:1.5rem;font-size:.65rem;line-height:1.8;color:var(--ash);letter-spacing:.05em}
+.summary-note{margin-top:1.5rem;font-size:1rem;line-height:1.8;color:var(--ash);letter-spacing:.02em}
 
 /* FORM */
 .form-title{font-family:var(--serif);font-weight:300;font-size:clamp(1.4rem,2.5vw,2rem);color:var(--white);margin-bottom:2rem;letter-spacing:.02em}
@@ -54,7 +54,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 .field label{display:block;font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--silver);margin-bottom:.5rem}
 .field input,.field select,.field textarea{
   width:100%;background:rgba(255,255,255,.03);border:1px solid rgba(184,147,106,.18);
-  color:var(--linen);font-family:var(--sans);font-weight:300;font-size:.85rem;
+  color:var(--linen);font-family:var(--sans);font-weight:300;font-size:1rem;
   padding:.85rem 1rem;outline:none;transition:border-color .3s;
   -webkit-appearance:none;border-radius:0;
 }
@@ -73,21 +73,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:cen
 }
 #stripe-card-element.StripeElement--focus{border-color:rgba(184,147,106,.5)}
 #stripe-card-element.StripeElement--invalid{border-color:rgba(200,80,80,.5)}
-#card-errors{color:rgba(200,100,100,.9);font-size:.7rem;letter-spacing:.08em;margin-top:.75rem;min-height:1.2em}
+#card-errors{color:rgba(200,100,100,.9);font-size:1rem;letter-spacing:.02em;margin-top:.75rem;min-height:1.2em}
 .stripe-badge{font-size:.6rem;letter-spacing:.2em;color:var(--ash);margin-top:1rem;display:block;text-align:center}
 
 /* SUBMIT */
 .submit-btn{width:100%;background:transparent;border:1px solid rgba(184,147,106,.4);color:var(--bronze-l);font-family:var(--sans);font-weight:300;font-size:.68rem;letter-spacing:.45em;text-transform:uppercase;padding:1.25rem;cursor:pointer;transition:background .4s var(--ease),border-color .4s,color .4s,transform .3s var(--ease);display:flex;align-items:center;justify-content:center;gap:1rem}
 .submit-btn:hover:not(:disabled){background:var(--bronze);border-color:var(--bronze);color:var(--ink);transform:translateY(-2px)}
 .submit-btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
-.submit-note{font-size:.6rem;letter-spacing:.12em;color:var(--ash);text-align:center;margin-top:1rem;line-height:1.7}
+.submit-note{font-size:1rem;letter-spacing:.02em;color:var(--ash);text-align:center;margin-top:1rem;line-height:1.7}
 
 /* SUCCESS */
 .success-screen{display:none;text-align:center;padding:6rem 2rem}
 .success-screen.active{display:block}
 .success-icon{width:60px;height:60px;border:1px solid rgba(184,147,106,.4);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 2rem;font-size:1.5rem;color:var(--bronze)}
 .success-h{font-family:var(--serif);font-weight:300;font-size:clamp(1.8rem,4vw,3rem);color:var(--white);margin-bottom:1rem;letter-spacing:.02em}
-.success-p{font-size:.78rem;line-height:1.9;color:var(--silver);max-width:400px;margin:0 auto 2rem;letter-spacing:.05em}
+.success-p{font-size:1rem;line-height:1.9;color:var(--silver);max-width:400px;margin:0 auto 2rem;letter-spacing:.02em}
 .success-ref{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--bronze)}
 
 @media(max-width:768px){
@@ -254,7 +254,7 @@ let cardElement  = null;
           color: '#d4cfc8',
           fontFamily: '"Jost", sans-serif',
           fontWeight: '300',
-          fontSize: '15px',
+          fontSize: '16px',
           letterSpacing: '0.04em',
           '::placeholder': { color: '#5c5a62' },
           iconColor: '#b8936a',
