@@ -1427,18 +1427,28 @@ function getComboKey() {
 
 function probeComboImages(combo, callback) {
   if (comboCache[combo]) { callback(comboCache[combo]); return; }
-  const found = [];
-  let idx = 1;
   const max = 20;
-  function tryNext() {
-    if (idx > max) { comboCache[combo] = found; callback(found); return; }
+  const results = new Array(max).fill(null);
+  let pending = max;
+  for (let i = 1; i <= max; i++) {
+    const idx = i;
     const img = new Image();
-    img.onload = () => { found.push(img.src); idx++; tryNext(); };
-    img.onerror = () => { comboCache[combo] = found; callback(found); };
+    img.onload  = () => { results[idx-1] = img.src; if(--pending === 0) finish(); };
+    img.onerror = () => { results[idx-1] = false;   if(--pending === 0) finish(); };
     img.src = 'images/configure/' + combo + '/' + idx + '.jpg';
   }
-  tryNext();
+  function finish() {
+    const found = [];
+    for (let i = 0; i < max; i++) { if(!results[i]) break; found.push(results[i]); }
+    comboCache[combo] = found;
+    callback(found);
+  }
 }
+
+// Preload all combos on startup so switching is instant
+['ebony-red','ebony-grey','light-red','light-grey'].forEach(combo => {
+  probeComboImages(combo, () => {});
+});
 
 function buildThumbs(srcs) {
   comboThumbsEl.innerHTML = '';
