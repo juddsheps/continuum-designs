@@ -159,6 +159,40 @@ from{opacity:0;transform:translateY(18px)}}
 .enq-note{font-size:.6rem;letter-spacing:.12em;color:rgba(184,147,106,.4);text-align:center;margin-top:1rem;line-height:1.7}
 
 /* ═══════════════════════════════
+   PRODUCT INFO ACCORDION
+═══════════════════════════════ */
+.pinfo-section{padding:7rem 3.5rem;background:var(--ink);border-bottom:1px solid rgba(184,147,106,.07)}
+.pinfo-inner{max-width:860px;margin:0 auto}
+.pinfo-header{margin-bottom:3rem}
+.pinfo-header .lbl{font-size:.57rem;letter-spacing:.5em;text-transform:uppercase;color:var(--bronze);display:block;margin-bottom:1rem}
+.pinfo-header h2{font-family:var(--serif);font-weight:300;font-size:clamp(1.6rem,2.8vw,2.4rem);color:var(--white);line-height:1.05}
+.pinfo-list{display:flex;flex-direction:column}
+.pinfo-item{border-bottom:1px solid rgba(184,147,106,.1)}
+.pinfo-item:first-child{border-top:1px solid rgba(184,147,106,.1)}
+.pinfo-trigger{display:flex;align-items:center;justify-content:space-between;width:100%;padding:1.6rem 0;background:none;border:none;cursor:none;text-align:left;gap:2rem}
+.pinfo-trigger-text{font-size:.78rem;font-weight:400;letter-spacing:.18em;text-transform:uppercase;color:rgba(212,207,200,.6);transition:color .3s}
+.pinfo-item.open .pinfo-trigger-text,.pinfo-trigger:hover .pinfo-trigger-text{color:var(--linen)}
+.pinfo-icon{width:20px;height:20px;flex-shrink:0;position:relative;display:flex;align-items:center;justify-content:center}
+.pinfo-icon::before,.pinfo-icon::after{content:'';position:absolute;background:rgba(184,147,106,.5);border-radius:1px;transition:transform .35s var(--ease),opacity .35s var(--ease)}
+.pinfo-icon::before{width:12px;height:1px}
+.pinfo-icon::after{width:1px;height:12px}
+.pinfo-item.open .pinfo-icon::after{transform:rotate(90deg);opacity:0}
+.pinfo-item.open .pinfo-icon::before,.pinfo-item.open .pinfo-icon::after{background:var(--bronze)}
+.pinfo-body{max-height:0;overflow:hidden;transition:max-height .45s var(--ease)}
+.pinfo-item.open .pinfo-body{max-height:600px}
+.pinfo-body-inner{padding:.25rem 0 2.25rem}
+.pinfo-body-inner p{font-size:.86rem;font-weight:300;color:rgba(212,207,200,.55);line-height:2.1;margin-bottom:1rem;max-width:58ch}
+.pinfo-body-inner p:last-child{margin-bottom:0}
+.pinfo-body-inner p strong{color:rgba(212,207,200,.82);font-weight:400}
+.pinfo-specs{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem}
+.pinfo-spec-card{border:1px solid rgba(184,147,106,.12);padding:1.5rem}
+.pinfo-spec-name{font-size:.6rem;letter-spacing:.38em;text-transform:uppercase;color:var(--bronze);margin-bottom:1rem;display:block}
+.pinfo-spec-row{display:flex;justify-content:space-between;align-items:baseline;padding:.35rem 0;border-bottom:1px solid rgba(184,147,106,.06)}
+.pinfo-spec-row:last-child{border-bottom:none}
+.pinfo-spec-key{font-size:.72rem;font-weight:300;letter-spacing:.06em;color:rgba(212,207,200,.4)}
+.pinfo-spec-val{font-size:.72rem;font-weight:400;letter-spacing:.06em;color:rgba(212,207,200,.75)}
+
+/* ═══════════════════════════════
    GLASS SECTION
 ═══════════════════════════════ */
 .glass-section{padding:10rem 3.5rem;background:var(--ink);position:relative;overflow:hidden}
@@ -628,6 +662,8 @@ from{opacity:0;transform:translateY(18px)}}
   .nav-links,.nav-btn{display:none}
   .n-burger{display:flex}
   .config-sticky-wrap{display:none}
+  .pinfo-section{padding:5rem 2rem}
+  .pinfo-specs{grid-template-columns:1fr}
   .glass-section,.faq-section,.shepherd-section{padding:6rem 2rem}
   .glass-grid,.shepherd-grid{grid-template-columns:1fr;gap:3.5rem}
   .glass-canvas-wrap{order:-1}
@@ -949,6 +985,91 @@ from{opacity:0;transform:translateY(18px)}}
   </div>
 
 </div><!-- /m-tabs -->
+
+<!-- PRODUCT INFO ACCORDION -->
+<section class="pinfo-section" id="product-info">
+  <div class="pinfo-inner">
+    <div class="pinfo-header reveal">
+      <span class="lbl">Product Information</span>
+      <h2>Everything<em> about your piece</em></h2>
+    </div>
+    <div class="pinfo-list">
+
+      <!-- Specifications & Dimensions -->
+      <div class="pinfo-item open" data-pinfo="specs">
+        <button class="pinfo-trigger">
+          <span class="pinfo-trigger-text">Specifications &amp; Dimensions</span>
+          <span class="pinfo-icon"></span>
+        </button>
+        <div class="pinfo-body">
+          <div class="pinfo-body-inner">
+            <div class="pinfo-specs">
+              <div class="pinfo-spec-card">
+                <span class="pinfo-spec-name">Luxe Edition</span>
+                <div class="pinfo-spec-row"><span class="pinfo-spec-key">Dimensions</span><span class="pinfo-spec-val">50 × 50 × 43.5 cm</span></div>
+                <div class="pinfo-spec-row"><span class="pinfo-spec-key">Weight</span><span class="pinfo-spec-val">24 kg</span></div>
+                <div class="pinfo-spec-row"><span class="pinfo-spec-key">Glass Load Rating</span><span class="pinfo-spec-val">100 kg</span></div>
+                <div class="pinfo-spec-row"><span class="pinfo-spec-key">Cable Length</span><span class="pinfo-spec-val">3 metres</span></div>
+              </div>
+              <div class="pinfo-spec-card">
+                <span class="pinfo-spec-name">Luxe Grand Edition</span>
+                <div class="pinfo-spec-row"><span class="pinfo-spec-key">Dimensions</span><span class="pinfo-spec-val">96 × 50 × 43.5 cm</span></div>
+                <div class="pinfo-spec-row"><span class="pinfo-spec-key">Weight</span><span class="pinfo-spec-val">42 kg</span></div>
+                <div class="pinfo-spec-row"><span class="pinfo-spec-key">Glass Load Rating</span><span class="pinfo-spec-val">100 kg</span></div>
+                <div class="pinfo-spec-row"><span class="pinfo-spec-key">Cable Length</span><span class="pinfo-spec-val">3 metres</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two Way Mirror Safety -->
+      <div class="pinfo-item" data-pinfo="mirror">
+        <button class="pinfo-trigger">
+          <span class="pinfo-trigger-text">Two Way Mirror Safety</span>
+          <span class="pinfo-icon"></span>
+        </button>
+        <div class="pinfo-body">
+          <div class="pinfo-body-inner">
+            <p>The glass is <strong>tempered, edged, and safety-certified</strong>. It has been tested to hold <strong>100 kg of standing weight</strong> and passed hammer impact testing — not because we expect that of you, but because we believe in leaving nothing to chance.</p>
+            <p>Most infinity tables use a thin reflective film adhered to standard glass. Our glass is sourced internationally — made through a specialised process that <strong>infuses reflectivity directly into the material</strong>. The result is a clarity and depth that no film can replicate.</p>
+            <p>In the unlikely event of breakage, it shatters into thousands of small, harmless pieces rather than sharp shards. The edges are <strong>hand-finished</strong> for safe, comfortable handling. This is glass made to last generations, not seasons.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warranty -->
+      <div class="pinfo-item" data-pinfo="warranty">
+        <button class="pinfo-trigger">
+          <span class="pinfo-trigger-text">Warranty</span>
+          <span class="pinfo-icon"></span>
+        </button>
+        <div class="pinfo-body">
+          <div class="pinfo-body-inner">
+            <p>If any issue arises as a result of <strong>workmanship or manufacturing</strong>, we will fix it — free of charge, without debate. Your piece comes with a <strong>one-year full warranty</strong> covering any defect we've introduced.</p>
+            <p>We build every table as if it will be in someone's home for the next thirty years. We stand behind that belief. Support remains available beyond the warranty period — locally based in Perth, and available remotely to international customers.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Shipping & Returns -->
+      <div class="pinfo-item" data-pinfo="shipping-returns">
+        <button class="pinfo-trigger">
+          <span class="pinfo-trigger-text">Shipping &amp; Returns</span>
+          <span class="pinfo-icon"></span>
+        </button>
+        <div class="pinfo-body">
+          <div class="pinfo-body-inner">
+            <p>The packaging has been <strong>engineered for the experience</strong>. The outer top box lifts off cleanly — you never need to tilt or wrestle the table out of a box. Every piece is inspected before it leaves the studio.</p>
+            <p><strong>Australia:</strong> Expect delivery within 7–14 business days.<br><strong>International:</strong> Orders typically arrive within 14–21 days.</p>
+            <p>If your table arrives damaged as a result of transit, contact us immediately. We will arrange a replacement without question. Our packaging is designed to prevent this — but if it happens, we own it.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 <!-- GLASS SECTION -->
 <section class="glass-section" id="glass">
@@ -1783,6 +1904,15 @@ faqClear.addEventListener('click', () => {
   faqAnswerInner.classList.remove('visible');
   currentFaqKey = null;
   faqInput.focus();
+});
+
+// Product info accordion
+document.querySelectorAll('.pinfo-item').forEach(item => {
+  item.querySelector('.pinfo-trigger').addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.pinfo-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
 });
 
 // Suggested question clicks
